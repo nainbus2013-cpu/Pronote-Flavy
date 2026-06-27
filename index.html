@@ -4,69 +4,68 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>PRONOTE Collège</title>
+<title>PRONOTE - Collège</title>
 
 <style>
 
 *{
+margin:0;
+padding:0;
 box-sizing:border-box;
-font-family:Arial;
+font-family:Arial,sans-serif;
 }
 
 body{
-margin:0;
-background:#eef3f8;
-color:#222;
+background:#eef2f7;
 }
 
 header{
-background:#008060;
+background:#009879;
 color:white;
 padding:18px;
-font-size:26px;
+font-size:28px;
 font-weight:bold;
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
 #connexion{
-width:350px;
+width:380px;
 margin:80px auto;
 background:white;
 padding:30px;
 border-radius:15px;
-box-shadow:0 0 20px #aaa;
+box-shadow:0 5px 15px rgba(0,0,0,.2);
 text-align:center;
 }
 
-input,button{
-padding:12px;
-margin:8px;
-border-radius:10px;
-border:none;
-}
-
 input{
-width:90%;
+width:100%;
+padding:12px;
+margin:10px 0;
 border:1px solid #ccc;
+border-radius:10px;
+font-size:16px;
 }
 
 button{
-background:#008060;
+padding:12px 18px;
+border:none;
+border-radius:10px;
+background:#009879;
 color:white;
 cursor:pointer;
+margin:5px;
+font-size:15px;
+}
+
+button:hover{
+background:#007d64;
 }
 
 #app{
 display:none;
-}
-
-#menu{
-position:fixed;
-right:20px;
-top:80px;
-background:white;
-padding:15px;
-border-radius:15px;
-box-shadow:0 0 15px #aaa;
 }
 
 #contenu{
@@ -75,134 +74,163 @@ padding:20px;
 
 .carte{
 background:white;
+border-radius:15px;
 padding:20px;
 margin-bottom:20px;
-border-radius:15px;
-box-shadow:0 0 10px #ccc;
+box-shadow:0 3px 10px rgba(0,0,0,.15);
 }
 
+#sonnerieBtn{
+position:fixed;
+right:20px;
+top:80px;
+width:60px;
+height:60px;
+border-radius:50%;
+font-size:25px;
+display:none;
+z-index:999;
+}
+
+#menu{
+position:fixed;
+right:20px;
+top:150px;
+background:white;
+padding:15px;
+border-radius:15px;
+display:none;
+box-shadow:0 5px 15px rgba(0,0,0,.25);
+z-index:999;
+width:230px;
+}
 
 .eleve{
 display:inline-block;
-width:120px;
-height:130px;
-background:#fff;
+width:150px;
+padding:15px;
 margin:8px;
+background:white;
 border-radius:15px;
 text-align:center;
-padding:10px;
-box-shadow:0 2px 8px #bbb;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
 }
 
-.monstre{
-font-size:40px;
-}
-
-.badge{
-background:#087d3b;
-color:white;
-border-radius:50%;
-padding:6px;
+.avatar{
+font-size:50px;
+margin-bottom:10px;
 }
 
 table{
 width:100%;
 border-collapse:collapse;
+margin-top:10px;
 }
 
-td,th{
-border:1px solid #aaa;
+th,td{
+border:1px solid #ccc;
 padding:10px;
+text-align:center;
 }
 
-#sonnerieBox{
-display:none;
+th{
+background:#009879;
+color:white;
 }
 
+[contenteditable]{
+background:#fffde7;
+}
 
 </style>
-
 </head>
-
 
 <body>
 
-
 <header>
-PRONOTE - Collège
-<span style="float:right">
-👨‍🏫 M. Leroy
-</span>
+
+<span>PRONOTE - Collège</span>
+
+<span>👨‍🏫 M. Leroy</span>
+
 </header>
 
+<button id="sonnerieBtn" onclick="ouvrirMenu()">
+🔔
+</button>
+
+<div id="menu">
+
+<h3>🔔 Sonnerie</h3>
+
+<button onclick="sonner()">Sonner maintenant</button>
+
+<input id="minutes" type="number" placeholder="Dans combien de minutes ?">
+
+<button onclick="minuteur()">Programmer</button>
+
+<button onclick="stopSon()">Arrêter</button>
+
+</div>
 
 <div id="connexion">
 
 <h2>Connexion</h2>
 
-<input id="id" placeholder="Identifiant">
+<input id="identifiant" placeholder="Identifiant">
 
-<input id="mdp" type="password" placeholder="Mot de passe">
+<input id="motdepasse" type="password" placeholder="Mot de passe">
 
-<br>
-
-<button onclick="connexion()">Entrer</button>
+<button onclick="connexion()">
+Se connecter
+</button>
 
 </div>
-
-
 
 <div id="app">
 
-
-<div id="menu">
-
-<button onclick="ouvrirSonnerie()">🔔 Sonnerie</button>
-
-</div>
-
-
-
 <div id="contenu">
 
-
 <div class="carte">
 
-<h2>
-Bienvenue M. Leroy 👨‍🏫
-</h2>
-
-
-<button onclick="changerClasse('6A')">
-6e A
-</button>
-
-
-<button onclick="changerClasse('6B')">
-6e B
-</button>
-
-
-</div>
-
-
-
-<div class="carte">
-
-<h2>👨‍🎓 Élèves</h2>
-
-<div id="eleves"></div>
+<h2>Bienvenue M. Leroy 👋</h2>
 
 <br>
+
+<button onclick="changerClasse('6A')">
+Classe 6e A
+</button>
+
+<button onclick="changerClasse('6B')">
+Classe 6e B
+</button>
+
+</div>
+<div class="carte">
+
+<h2 id="titreClasse">
+Classe 6e A
+</h2>
+
+<br>
+
+<div id="listeEleves"></div>
+
+<br>
+
+<input
+id="nouvelEleve"
+placeholder="Nom du nouvel élève">
 
 <button onclick="ajouterEleve()">
 ➕ Ajouter un élève
 </button>
 
+<button onclick="supprimerEleve()">
+❌ Supprimer le dernier
+</button>
 
 </div>
-
-
 
 <div class="carte">
 
@@ -210,132 +238,123 @@ Bienvenue M. Leroy 👨‍🏫
 
 <div id="appel"></div>
 
-
 </div>
-
 
 <div class="carte">
 
 <h2>📝 Notes</h2>
 
-<button onclick="ajouterNote()">
-Ajouter une note
-</button>
+<table>
 
-<div id="notes"></div>
+<thead>
 
+<tr>
+
+<th>Élève</th>
+
+<th>Note</th>
+
+</tr>
+
+</thead>
+
+<tbody id="notes">
+
+</tbody>
+
+</table>
 
 </div>
-
 
 <div class="carte">
 
 <h2>📅 Emploi du temps</h2>
 
-
-<table>
+<table id="edt" contenteditable="true">
 
 <tr>
-<th>Heure</th>
+
 <th>Lundi</th>
 <th>Mardi</th>
+<th>Mercredi</th>
 <th>Jeudi</th>
 <th>Vendredi</th>
-</tr>
 
+</tr>
 
 <tr>
-<td>8h</td>
-<td contenteditable>Maths</td>
-<td contenteditable>Français</td>
-<td contenteditable>Histoire</td>
-<td contenteditable>Sport</td>
-</tr>
 
+<td>Français</td>
+<td>Maths</td>
+<td>Histoire</td>
+<td>EPS</td>
+<td>Anglais</td>
+
+</tr>
 
 <tr>
-<td>10h</td>
-<td contenteditable>SVT</td>
-<td contenteditable>Anglais</td>
-<td contenteditable>Arts</td>
-<td contenteditable>Techno</td>
+
+<td>SVT</td>
+<td>Musique</td>
+<td>Technologie</td>
+<td>Arts plastiques</td>
+<td>Maths</td>
+
 </tr>
 
+<tr>
+
+<td>Physique</td>
+<td>Français</td>
+<td>EMC</td>
+<td>Géographie</td>
+<td>Sport</td>
+
+</tr>
 
 </table>
 
-
-</div>
-
-
-
-<div id="sonnerieBox" class="carte">
-
-<h2>🔔 Sonnerie</h2>
-
-<button onclick="sonner()">
-Sonner maintenant
-</button>
-
-
-<br>
-
-
-<input id="minutes" placeholder="Minutes">
-
-
-<button onclick="minuteur()">
-Lancer minuteur
-</button>
-
-
-<br>
-
-
-<button onclick="stopSon()">
-Arrêter
-</button>
-
-
-</div>
-
-
+<p style="margin-top:10px;">
+💾 Les modifications sont sauvegardées automatiquement.
+</p>
 
 </div>
 
 </div>
+
+</div>
+
+<audio id="audio">
+
+<source
+src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"
+type="audio/ogg">
+
+</audio>
+
 <script>
 
-const LOGIN="t.leroy346";
-const PASSWORD="Théoleroy2013*";
-
+let timer=null;
 
 let classeActuelle="6A";
 
-
-let classes={
+let eleves={
 
 "6A":[
-"Bina Charlotte",
-"Boudma Charlie",
-"Bounette Lilio",
-"Deparis Lina",
-"Dupont Tibo",
-"Gérard Lalie",
-"Jean Ilan",
-"Langlet Agathe",
-"Leroi Lylan",
-"Lila Gaëtan",
-"Malie Louanne",
-"Marchandi Lylah",
-"Pade Victorine",
-"Rouale Corentin",
-"Thiebots Lily",
-"Winlaie Luna"
+
+"Martin Emma",
+"Petit Lucas",
+"Bernard Léo",
+"Thomas Chloé",
+"Dubois Noah",
+"Morel Jade",
+"Roux Hugo",
+"Leroy Nina"
+
 ],
 
-
 "6B":[
+
 "Caron Sophia",
 "Carpentier Gabin",
 "Carpentier Zoé",
@@ -348,180 +367,133 @@ let classes={
 "Lefevre Estebane",
 "Lefevre Mathis",
 "Lenoï Flin"
+
 ]
 
 };
 
+if(localStorage.getItem("elevesPronote")){
+eleves=JSON.parse(localStorage.getItem("elevesPronote"));
+}
 
+if(localStorage.getItem("classePronote")){
+classeActuelle=localStorage.getItem("classePronote");
+}
+  function connexion(){
 
-let notes=[];
+let id=document.getElementById("identifiant").value.trim();
+let mdp=document.getElementById("motdepasse").value;
 
-let audio=null;
-
-let timer=null;
-
-
-
-
-function connexion(){
-
-
-let id=document.getElementById("id").value;
-
-let mdp=document.getElementById("mdp").value;
-
-
-
-if(id===LOGIN && mdp===PASSWORD){
-
+if(id==="t.leroy346" && mdp==="Théoleroy2013*"){
 
 document.getElementById("connexion").style.display="none";
-
 document.getElementById("app").style.display="block";
+document.getElementById("sonnerieBtn").style.display="block";
 
-
-afficherEleves();
-
+afficherClasse();
 
 }
-
 else{
 
-
-alert("Identifiant incorrect");
-
-}
-
+alert("Identifiant ou mot de passe incorrect.");
 
 }
 
+}
 
+function ouvrirMenu(){
 
+let menu=document.getElementById("menu");
 
+if(menu.style.display==="block"){
+menu.style.display="none";
+}else{
+menu.style.display="block";
+}
+
+}
+
+function sonner(){
+
+let audio=document.getElementById("audio");
+
+audio.currentTime=0;
+audio.play();
+
+}
+
+function stopSon(){
+
+let audio=document.getElementById("audio");
+
+audio.pause();
+audio.currentTime=0;
+
+}
+
+function minuteur(){
+
+let m=parseInt(document.getElementById("minutes").value);
+
+if(isNaN(m) || m<=0){
+
+alert("Entre un nombre de minutes valide.");
+return;
+
+}
+
+clearTimeout(timer);
+
+timer=setTimeout(function(){
+
+sonner();
+
+},m*60000);
+
+alert("🔔 Sonnerie programmée dans "+m+" minute(s).");
+
+}
 
 function changerClasse(c){
 
-
 classeActuelle=c;
 
-afficherEleves();
+localStorage.setItem("classePronote",c);
 
+afficherClasse();
 
 }
 
+function afficherClasse(){
 
+document.getElementById("titreClasse").innerText=
+(classeActuelle==="6A")
+?
+"Classe 6e A"
+:
+"Classe 6e B";
 
+let liste=document.getElementById("listeEleves");
+let appel=document.getElementById("appel");
+let notes=document.getElementById("notes");
 
-function afficherEleves(){
+liste.innerHTML="";
+appel.innerHTML="";
+notes.innerHTML="";
 
+eleves[classeActuelle].forEach(function(nom){
 
-let zone=document.getElementById("eleves");
-
-
-zone.innerHTML="";
-
-
-classes[classeActuelle].forEach((nom,i)=>{
-
-
-zone.innerHTML+=`
-
+liste.innerHTML+=`
 <div class="eleve">
 
-<div class="monstre">👾</div>
+<div class="avatar">👨‍🎓</div>
 
 <b>${nom}</b>
 
-<br>
-
-<span class="badge">${i+1}</span>
-
-
-<br><br>
-
-
-<button onclick="supprimerEleve(${i})">
-❌
-</button>
-
-
 </div>
-
-
 `;
 
-
-});
-
-
-faireAppel();
-
-
-}
-
-
-
-
-function ajouterEleve(){
-
-
-let nom=prompt(
-"Nom de l'élève :"
-);
-
-
-if(nom){
-
-
-classes[classeActuelle].push(nom);
-
-
-afficherEleves();
-
-
-}
-
-
-}
-
-
-
-
-function supprimerEleve(i){
-
-
-if(confirm("Supprimer cet élève ?")){
-
-
-classes[classeActuelle].splice(i,1);
-
-
-afficherEleves();
-
-
-}
-
-
-}
-
-
-
-
-
-function faireAppel(){
-
-
-let zone=document.getElementById("appel");
-
-
-zone.innerHTML="";
-
-
-classes[classeActuelle].forEach(nom=>{
-
-
-zone.innerHTML+=`
-
+appel.innerHTML+=`
 <p>
 
 ${nom}
@@ -529,167 +501,96 @@ ${nom}
 <select>
 
 <option>Présent</option>
-
 <option>Absent</option>
 
 </select>
 
-
 </p>
-
-
 `;
 
+notes.innerHTML+=`
+<tr>
+
+<td>${nom}</td>
+
+<td contenteditable="true">/20</td>
+
+</tr>
+`;
 
 });
 
-
 }
+  function ajouterEleve(){
 
+let nom=document.getElementById("nouvelEleve").value.trim();
 
+if(nom===""){
 
-
-
-
-function ajouterNote(){
-
-
-let eleve=prompt("Élève");
-
-let matiere=prompt("Matière");
-
-let note=prompt("Note /20");
-
-
-
-if(eleve && matiere && note){
-
-
-notes.push(
-`${eleve} - ${matiere} : ${note}/20`
-);
-
-
-afficherNotes();
-
-
-}
-
-
-}
-
-
-
-
-function afficherNotes(){
-
-
-document.getElementById("notes").innerHTML=
-notes.map(n=>"<p>"+n+"</p>").join("");
-
-
-}
-
-
-
-
-
-function ouvrirSonnerie(){
-
-
-let box=document.getElementById("sonnerieBox");
-
-
-box.style.display =
-box.style.display==="block"
-?"none"
-:"block";
-
-
-}
-
-
-
-
-
-function sonner(){
-
-
-if(audio){
-audio.pause();
-}
-
-
-audio=new Audio(
-"https://actions.google.com/sounds/v1/alarms/school_bell.ogg"
-);
-
-
-audio.play();
-
-
-}
-
-
-
-
-function stopSon(){
-
-
-if(audio){
-
-audio.pause();
-
-audio.currentTime=0;
-
-}
-
-
-clearTimeout(timer);
-
-
-}
-
-
-
-
-function minuteur(){
-
-
-let m=
-document.getElementById("minutes").value;
-
-
-if(!m){
-
-alert("Mets un nombre de minutes");
+alert("Entre un nom d'élève.");
 
 return;
 
 }
 
+eleves[classeActuelle].push(nom);
 
+localStorage.setItem("elevesPronote",JSON.stringify(eleves));
 
-timer=setTimeout(()=>{
+document.getElementById("nouvelEleve").value="";
 
-
-sonner();
-
-
-},m*60000);
-
-
-
-alert(
-"Sonnerie dans "+m+" minutes"
-);
-
-
+afficherClasse();
 
 }
 
+function supprimerEleve(){
 
+if(eleves[classeActuelle].length===0){
+
+alert("Il n'y a plus d'élèves.");
+
+return;
+
+}
+
+if(confirm("Supprimer le dernier élève ?")){
+
+eleves[classeActuelle].pop();
+
+localStorage.setItem("elevesPronote",JSON.stringify(eleves));
+
+afficherClasse();
+
+}
+
+}
+
+const edt=document.getElementById("edt");
+
+if(localStorage.getItem("emploiDuTemps")){
+
+edt.innerHTML=localStorage.getItem("emploiDuTemps");
+
+}
+
+edt.addEventListener("input",function(){
+
+localStorage.setItem("emploiDuTemps",edt.innerHTML);
+
+});
+
+window.onload=function(){
+
+if(document.getElementById("app").style.display==="block"){
+
+afficherClasse();
+
+}
+
+};
 
 </script>
+
 </body>
+
 </html>

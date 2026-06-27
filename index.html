@@ -3,61 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PRONOTE - Jeu Maîtresse</title>
+<title>PRONOTE - Collège</title>
 
 <style>
-body{
+*{
     margin:0;
+    padding:0;
+    box-sizing:border-box;
     font-family:Arial,sans-serif;
-    background:#f2f4f7;
+}
+
+body{
+    background:#eef2f7;
 }
 
 header{
-    background:#0b7a5c;
+    background:#008060;
     color:white;
-    padding:15px;
-    font-size:24px;
+    padding:18px;
+    font-size:28px;
     font-weight:bold;
 }
 
 #connexion{
-    width:350px;
+    width:380px;
     margin:80px auto;
     background:white;
     padding:30px;
     border-radius:15px;
-    box-shadow:0 0 15px rgba(0,0,0,0.2);
+    box-shadow:0 0 20px rgba(0,0,0,0.2);
     text-align:center;
 }
 
 input{
-    width:90%;
+    width:95%;
     padding:12px;
-    margin:10px;
+    margin:10px 0;
     border-radius:8px;
     border:1px solid #ccc;
 }
 
 button{
-    background:#0b7a5c;
+    background:#008060;
     color:white;
     border:none;
-    padding:12px 20px;
+    padding:10px 15px;
     border-radius:8px;
     cursor:pointer;
 }
 
+button:hover{
+    opacity:0.9;
+}
+
 #pronote{
     display:none;
+}
+
+#eleves{
+    position:fixed;
+    top:90px;
+    right:20px;
+    width:260px;
+    background:white;
     padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.15);
+}
+
+#contenu{
+    margin:20px;
+    margin-right:320px;
 }
 
 .carte{
     background:white;
     padding:20px;
+    margin-bottom:20px;
     border-radius:15px;
-    margin:20px 0;
     box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+td,th{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+}
+
+li{
+    margin:5px 0;
 }
 </style>
 </head>
@@ -65,16 +104,21 @@ button{
 <body>
 
 <header>
-PRONOTE - Jeu Maîtresse
+PRONOTE - Collège
 </header>
 
 <div id="connexion">
 
 <h2>Connexion</h2>
 
-<input id="identifiant" placeholder="Identifiant">
+<input
+id="identifiant"
+placeholder="Identifiant">
 
-<input id="motdepasse" type="password" placeholder="Mot de passe">
+<input
+id="motdepasse"
+type="password"
+placeholder="Mot de passe">
 
 <br><br>
 
@@ -86,57 +130,150 @@ Se connecter
 
 <div id="pronote">
 
-<h2>
-Bienvenue Mme Leroy 👩‍🏫
-</h2>
+<div id="eleves">
 
-<div class="carte">
-<h3>📚 Élèves</h3>
-<ul id="liste">
+<h3>👨‍🎓 Élèves</h3>
+
+<ul id="listeEleves">
 <li>Emma Martin</li>
 <li>Lucas Dupont</li>
 <li>Léa Bernard</li>
+<li>Nathan Petit</li>
 </ul>
 
 <button onclick="ajouterEleve()">
-Ajouter un élève
+Ajouter
 </button>
+
+</div>
+
+<div id="contenu">
+
+<div class="carte">
+
+<h2>
+Bienvenue M. Leroy 👨‍🏫
+</h2>
+
 </div>
 
 <div class="carte">
-<h3>📞 Appel</h3>
+
+<h3>
+📞 Appel
+</h3>
+
 <div id="appel"></div>
+
 </div>
 
 <div class="carte">
-<h3>🔔 Sonnerie</h3>
+
+<h3>
+📚 Notes
+</h3>
+
+<button onclick="ajouterNote()">
+Ajouter une note
+</button>
+
+<br><br>
+
+<div id="notes"></div>
+
+</div>
+
+<div class="carte">
+
+<h3>
+📅 Emploi du temps
+</h3>
+
+<table>
+
+<tr>
+<th>Heure</th>
+<th>Lundi</th>
+<th>Mardi</th>
+<th>Jeudi</th>
+<th>Vendredi</th>
+</tr>
+
+<tr>
+<td>8h</td>
+<td contenteditable>Maths</td>
+<td contenteditable>Français</td>
+<td contenteditable>Histoire</td>
+<td contenteditable>Sport</td>
+</tr>
+
+<tr>
+<td>10h</td>
+<td contenteditable>SVT</td>
+<td contenteditable>Anglais</td>
+<td contenteditable>Maths</td>
+<td contenteditable>Arts</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="carte">
+
+<h3>
+🔔 Sonnerie
+</h3>
+
 <button onclick="sonnerie()">
 Faire sonner
 </button>
+
+</div>
+
 </div>
 
 </div>
 
 <script>
 
-const login="t.leroy346";
-const mdp="Théoleroy2013*";
+const LOGIN="t.leroy346";
+const PASSWORD="Théoleroy2013*";
+
+let notes=[];
 
 function connexion(){
 
-let a=document.getElementById("identifiant").value;
-let b=document.getElementById("motdepasse").value;
+let id=
+document.getElementById(
+"identifiant"
+).value;
 
-if(a===login && b===mdp){
+let mdp=
+document.getElementById(
+"motdepasse"
+).value;
 
-document.getElementById("connexion").style.display="none";
-document.getElementById("pronote").style.display="block";
+if(
+id===LOGIN &&
+mdp===PASSWORD
+){
+
+document.getElementById(
+"connexion"
+).style.display="none";
+
+document.getElementById(
+"pronote"
+).style.display="block";
 
 faireAppel();
 
 }else{
 
-alert("Identifiant ou mot de passe incorrect");
+alert(
+"Identifiant ou mot de passe incorrect"
+);
 
 }
 
@@ -144,47 +281,116 @@ alert("Identifiant ou mot de passe incorrect");
 
 function ajouterEleve(){
 
-let nom=prompt("Nom de l'élève");
+let nom=
+prompt(
+"Nom de l'élève"
+);
 
-if(nom){
+if(!nom) return;
 
-let li=document.createElement("li");
+let li=
+document.createElement(
+"li"
+);
+
 li.textContent=nom;
 
-document.getElementById("liste")
-.appendChild(li);
+document.getElementById(
+"listeEleves"
+).appendChild(li);
 
 faireAppel();
 
 }
 
-}
-
 function faireAppel(){
 
-let appel="";
+let html="";
 
 document
-.querySelectorAll("#liste li")
+.querySelectorAll(
+"#listeEleves li"
+)
 .forEach(e=>{
 
-appel+=`
+html+=`
 <div>
 ${e.textContent}
 <input type="checkbox" checked>
+Présent
 </div>
 `;
 
 });
 
-document.getElementById("appel")
-.innerHTML=appel;
+document.getElementById(
+"appel"
+).innerHTML=html;
+
+}
+
+function ajouterNote(){
+
+let eleve=
+prompt(
+"Nom de l'élève"
+);
+
+if(!eleve) return;
+
+let matiere=
+prompt(
+"Matière"
+);
+
+if(!matiere) return;
+
+let note=
+prompt(
+"Note sur 20"
+);
+
+if(!note) return;
+
+notes.push({
+eleve,
+matiere,
+note
+});
+
+afficherNotes();
+
+}
+
+function afficherNotes(){
+
+let html="";
+
+notes.forEach(n=>{
+
+html+=`
+<div>
+📚
+<b>${n.eleve}</b>
+ -
+ ${n.matiere}
+ :
+ ${n.note}/20
+</div>
+`;
+
+});
+
+document.getElementById(
+"notes"
+).innerHTML=html;
 
 }
 
 function sonnerie(){
 
-let a=new Audio(
+let a=
+new Audio(
 "https://actions.google.com/sounds/v1/alarms/school_bell.ogg"
 );
 

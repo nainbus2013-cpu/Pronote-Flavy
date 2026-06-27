@@ -1,1 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRONOTE - Jeu Maîtresse</title>
 
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f2f4f7;
+}
+
+header{
+    background:#0b7a5c;
+    color:white;
+    padding:15px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+#connexion{
+    width:350px;
+    margin:80px auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 15px rgba(0,0,0,0.2);
+    text-align:center;
+}
+
+input{
+    width:90%;
+    padding:12px;
+    margin:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+button{
+    background:#0b7a5c;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#pronote{
+    display:none;
+    padding:20px;
+}
+
+.carte{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    margin:20px 0;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+PRONOTE - Jeu Maîtresse
+</header>
+
+<div id="connexion">
+
+<h2>Connexion</h2>
+
+<input id="identifiant" placeholder="Identifiant">
+
+<input id="motdepasse" type="password" placeholder="Mot de passe">
+
+<br><br>
+
+<button onclick="connexion()">
+Se connecter
+</button>
+
+</div>
+
+<div id="pronote">
+
+<h2>
+Bienvenue Mme Leroy 👩‍🏫
+</h2>
+
+<div class="carte">
+<h3>📚 Élèves</h3>
+<ul id="liste">
+<li>Emma Martin</li>
+<li>Lucas Dupont</li>
+<li>Léa Bernard</li>
+</ul>
+
+<button onclick="ajouterEleve()">
+Ajouter un élève
+</button>
+</div>
+
+<div class="carte">
+<h3>📞 Appel</h3>
+<div id="appel"></div>
+</div>
+
+<div class="carte">
+<h3>🔔 Sonnerie</h3>
+<button onclick="sonnerie()">
+Faire sonner
+</button>
+</div>
+
+</div>
+
+<script>
+
+const login="t.leroy346";
+const mdp="Théoleroy2013*";
+
+function connexion(){
+
+let a=document.getElementById("identifiant").value;
+let b=document.getElementById("motdepasse").value;
+
+if(a===login && b===mdp){
+
+document.getElementById("connexion").style.display="none";
+document.getElementById("pronote").style.display="block";
+
+faireAppel();
+
+}else{
+
+alert("Identifiant ou mot de passe incorrect");
+
+}
+
+}
+
+function ajouterEleve(){
+
+let nom=prompt("Nom de l'élève");
+
+if(nom){
+
+let li=document.createElement("li");
+li.textContent=nom;
+
+document.getElementById("liste")
+.appendChild(li);
+
+faireAppel();
+
+}
+
+}
+
+function faireAppel(){
+
+let appel="";
+
+document
+.querySelectorAll("#liste li")
+.forEach(e=>{
+
+appel+=`
+<div>
+${e.textContent}
+<input type="checkbox" checked>
+</div>
+`;
+
+});
+
+document.getElementById("appel")
+.innerHTML=appel;
+
+}
+
+function sonnerie(){
+
+let a=new Audio(
+"https://actions.google.com/sounds/v1/alarms/school_bell.ogg"
+);
+
+a.play();
+
+}
+
+</script>
+
+</body>
+</html>

@@ -3,151 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PRONOTE - Collège</title>
+
+<title>PRONOTE Collège</title>
 
 <style>
+
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
+box-sizing:border-box;
+font-family:Arial;
 }
 
 body{
-    background:#eef2f7;
+margin:0;
+background:#eef3f8;
+color:#222;
 }
 
 header{
-    background:#008060;
-    color:white;
-    padding:18px;
-    font-size:28px;
-    font-weight:bold;
+background:#008060;
+color:white;
+padding:18px;
+font-size:26px;
+font-weight:bold;
 }
 
 #connexion{
-    width:380px;
-    margin:80px auto;
-    background:white;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0 0 20px rgba(0,0,0,0.2);
-    text-align:center;
+width:350px;
+margin:80px auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 20px #aaa;
+text-align:center;
+}
+
+input,button{
+padding:12px;
+margin:8px;
+border-radius:10px;
+border:none;
 }
 
 input{
-    width:95%;
-    padding:12px;
-    margin:10px 0;
-    border-radius:8px;
-    border:1px solid #ccc;
+width:90%;
+border:1px solid #ccc;
 }
 
 button{
-    background:#008060;
-    color:white;
-    border:none;
-    padding:10px 15px;
-    border-radius:8px;
-    cursor:pointer;
+background:#008060;
+color:white;
+cursor:pointer;
 }
 
-button:hover{
-    opacity:0.9;
+#app{
+display:none;
 }
 
-#pronote{
-    display:none;
-}
-
-#eleves{
-    position:fixed;
-    top:90px;
-    right:20px;
-    width:260px;
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 0 10px rgba(0,0,0,0.15);
+#menu{
+position:fixed;
+right:20px;
+top:80px;
+background:white;
+padding:15px;
+border-radius:15px;
+box-shadow:0 0 15px #aaa;
 }
 
 #contenu{
-    margin:20px;
-    margin-right:320px;
+padding:20px;
 }
 
 .carte{
-    background:white;
-    padding:20px;
-    margin-bottom:20px;
-    border-radius:15px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:15px;
+box-shadow:0 0 10px #ccc;
+}
+
+
+.eleve{
+display:inline-block;
+width:120px;
+height:130px;
+background:#fff;
+margin:8px;
+border-radius:15px;
+text-align:center;
+padding:10px;
+box-shadow:0 2px 8px #bbb;
+}
+
+.monstre{
+font-size:40px;
+}
+
+.badge{
+background:#087d3b;
+color:white;
+border-radius:50%;
+padding:6px;
 }
 
 table{
-    width:100%;
-    border-collapse:collapse;
+width:100%;
+border-collapse:collapse;
 }
 
 td,th{
-    border:1px solid #ddd;
-    padding:10px;
-    text-align:center;
+border:1px solid #aaa;
+padding:10px;
 }
 
-li{
-    margin:5px 0;
+#sonnerieBox{
+display:none;
 }
+
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <header>
 PRONOTE - Collège
+<span style="float:right">
+👨‍🏫 M. Leroy
+</span>
 </header>
+
 
 <div id="connexion">
 
 <h2>Connexion</h2>
 
-<input
-id="identifiant"
-placeholder="Identifiant">
+<input id="id" placeholder="Identifiant">
 
-<input
-id="motdepasse"
-type="password"
-placeholder="Mot de passe">
+<input id="mdp" type="password" placeholder="Mot de passe">
 
-<br><br>
+<br>
 
-<button onclick="connexion()">
-Se connecter
-</button>
+<button onclick="connexion()">Entrer</button>
 
 </div>
 
-<div id="pronote">
 
-<div id="eleves">
 
-<h3>👨‍🎓 Élèves</h3>
+<div id="app">
 
-<ul id="listeEleves">
-<li>Emma Martin</li>
-<li>Lucas Dupont</li>
-<li>Léa Bernard</li>
-<li>Nathan Petit</li>
-</ul>
 
-<button onclick="ajouterEleve()">
-Ajouter
-</button>
+<div id="menu">
+
+<button onclick="ouvrirSonnerie()">🔔 Sonnerie</button>
 
 </div>
+
+
 
 <div id="contenu">
+
 
 <div class="carte">
 
@@ -155,39 +172,66 @@ Ajouter
 Bienvenue M. Leroy 👨‍🏫
 </h2>
 
+
+<button onclick="changerClasse('6A')">
+6e A
+</button>
+
+
+<button onclick="changerClasse('6B')">
+6e B
+</button>
+
+
 </div>
+
+
 
 <div class="carte">
 
-<h3>
-📞 Appel
-</h3>
+<h2>👨‍🎓 Élèves</h2>
+
+<div id="eleves"></div>
+
+<br>
+
+<button onclick="ajouterEleve()">
+➕ Ajouter un élève
+</button>
+
+
+</div>
+
+
+
+<div class="carte">
+
+<h2>📞 Appel</h2>
 
 <div id="appel"></div>
 
+
 </div>
+
 
 <div class="carte">
 
-<h3>
-📚 Notes
-</h3>
+<h2>📝 Notes</h2>
 
 <button onclick="ajouterNote()">
 Ajouter une note
 </button>
 
-<br><br>
-
 <div id="notes"></div>
+
 
 </div>
 
+
 <div class="carte">
 
-<h3>
-📅 Emploi du temps
-</h3>
+<h2>📅 Emploi du temps</h2>
+
 
 <table>
 
@@ -199,6 +243,7 @@ Ajouter une note
 <th>Vendredi</th>
 </tr>
 
+
 <tr>
 <td>8h</td>
 <td contenteditable>Maths</td>
@@ -207,198 +252,444 @@ Ajouter une note
 <td contenteditable>Sport</td>
 </tr>
 
+
 <tr>
 <td>10h</td>
 <td contenteditable>SVT</td>
 <td contenteditable>Anglais</td>
-<td contenteditable>Maths</td>
 <td contenteditable>Arts</td>
+<td contenteditable>Techno</td>
 </tr>
+
 
 </table>
 
+
 </div>
 
-<div class="carte">
 
-<h3>
-🔔 Sonnerie
-</h3>
 
-<button onclick="sonnerie()">
-Faire sonner
+<div id="sonnerieBox" class="carte">
+
+<h2>🔔 Sonnerie</h2>
+
+<button onclick="sonner()">
+Sonner maintenant
 </button>
 
+
+<br>
+
+
+<input id="minutes" placeholder="Minutes">
+
+
+<button onclick="minuteur()">
+Lancer minuteur
+</button>
+
+
+<br>
+
+
+<button onclick="stopSon()">
+Arrêter
+</button>
+
+
 </div>
+
+
 
 </div>
 
 </div>
-
 <script>
 
 const LOGIN="t.leroy346";
 const PASSWORD="Théoleroy2013*";
 
+
+let classeActuelle="6A";
+
+
+let classes={
+
+"6A":[
+"Bina Charlotte",
+"Boudma Charlie",
+"Bounette Lilio",
+"Deparis Lina",
+"Dupont Tibo",
+"Gérard Lalie",
+"Jean Ilan",
+"Langlet Agathe",
+"Leroi Lylan",
+"Lila Gaëtan",
+"Malie Louanne",
+"Marchandi Lylah",
+"Pade Victorine",
+"Rouale Corentin",
+"Thiebots Lily",
+"Winlaie Luna"
+],
+
+
+"6B":[
+"Caron Sophia",
+"Carpentier Gabin",
+"Carpentier Zoé",
+"Dupuis Ismaël",
+"Fontaine Jade",
+"Gréjin Hantoine",
+"Harmant Antoine",
+"Lambert Aya",
+"Lefevre Adams",
+"Lefevre Estebane",
+"Lefevre Mathis",
+"Lenoï Flin"
+]
+
+};
+
+
+
 let notes=[];
+
+let audio=null;
+
+let timer=null;
+
+
+
 
 function connexion(){
 
-let id=
-document.getElementById(
-"identifiant"
-).value;
 
-let mdp=
-document.getElementById(
-"motdepasse"
-).value;
+let id=document.getElementById("id").value;
 
-if(
-id===LOGIN &&
-mdp===PASSWORD
-){
+let mdp=document.getElementById("mdp").value;
 
-document.getElementById(
-"connexion"
-).style.display="none";
 
-document.getElementById(
-"pronote"
-).style.display="block";
+
+if(id===LOGIN && mdp===PASSWORD){
+
+
+document.getElementById("connexion").style.display="none";
+
+document.getElementById("app").style.display="block";
+
+
+afficherEleves();
+
+
+}
+
+else{
+
+
+alert("Identifiant incorrect");
+
+}
+
+
+}
+
+
+
+
+
+function changerClasse(c){
+
+
+classeActuelle=c;
+
+afficherEleves();
+
+
+}
+
+
+
+
+function afficherEleves(){
+
+
+let zone=document.getElementById("eleves");
+
+
+zone.innerHTML="";
+
+
+classes[classeActuelle].forEach((nom,i)=>{
+
+
+zone.innerHTML+=`
+
+<div class="eleve">
+
+<div class="monstre">👾</div>
+
+<b>${nom}</b>
+
+<br>
+
+<span class="badge">${i+1}</span>
+
+
+<br><br>
+
+
+<button onclick="supprimerEleve(${i})">
+❌
+</button>
+
+
+</div>
+
+
+`;
+
+
+});
+
 
 faireAppel();
 
-}else{
-
-alert(
-"Identifiant ou mot de passe incorrect"
-);
 
 }
 
-}
+
+
 
 function ajouterEleve(){
 
-let nom=
-prompt(
-"Nom de l'élève"
+
+let nom=prompt(
+"Nom de l'élève :"
 );
 
-if(!nom) return;
 
-let li=
-document.createElement(
-"li"
-);
+if(nom){
 
-li.textContent=nom;
 
-document.getElementById(
-"listeEleves"
-).appendChild(li);
+classes[classeActuelle].push(nom);
 
-faireAppel();
+
+afficherEleves();
+
 
 }
+
+
+}
+
+
+
+
+function supprimerEleve(i){
+
+
+if(confirm("Supprimer cet élève ?")){
+
+
+classes[classeActuelle].splice(i,1);
+
+
+afficherEleves();
+
+
+}
+
+
+}
+
+
+
+
 
 function faireAppel(){
 
-let html="";
 
-document
-.querySelectorAll(
-"#listeEleves li"
-)
-.forEach(e=>{
+let zone=document.getElementById("appel");
 
-html+=`
-<div>
-${e.textContent}
-<input type="checkbox" checked>
-Présent
-</div>
+
+zone.innerHTML="";
+
+
+classes[classeActuelle].forEach(nom=>{
+
+
+zone.innerHTML+=`
+
+<p>
+
+${nom}
+
+<select>
+
+<option>Présent</option>
+
+<option>Absent</option>
+
+</select>
+
+
+</p>
+
+
 `;
+
 
 });
 
-document.getElementById(
-"appel"
-).innerHTML=html;
 
 }
+
+
+
+
+
 
 function ajouterNote(){
 
-let eleve=
-prompt(
-"Nom de l'élève"
+
+let eleve=prompt("Élève");
+
+let matiere=prompt("Matière");
+
+let note=prompt("Note /20");
+
+
+
+if(eleve && matiere && note){
+
+
+notes.push(
+`${eleve} - ${matiere} : ${note}/20`
 );
 
-if(!eleve) return;
-
-let matiere=
-prompt(
-"Matière"
-);
-
-if(!matiere) return;
-
-let note=
-prompt(
-"Note sur 20"
-);
-
-if(!note) return;
-
-notes.push({
-eleve,
-matiere,
-note
-});
 
 afficherNotes();
 
+
 }
+
+
+}
+
+
+
 
 function afficherNotes(){
 
-let html="";
 
-notes.forEach(n=>{
+document.getElementById("notes").innerHTML=
+notes.map(n=>"<p>"+n+"</p>").join("");
 
-html+=`
-<div>
-📚
-<b>${n.eleve}</b>
- -
- ${n.matiere}
- :
- ${n.note}/20
-</div>
-`;
-
-});
-
-document.getElementById(
-"notes"
-).innerHTML=html;
 
 }
 
-function sonnerie(){
 
-let a=
-new Audio(
+
+
+
+function ouvrirSonnerie(){
+
+
+let box=document.getElementById("sonnerieBox");
+
+
+box.style.display =
+box.style.display==="block"
+?"none"
+:"block";
+
+
+}
+
+
+
+
+
+function sonner(){
+
+
+if(audio){
+audio.pause();
+}
+
+
+audio=new Audio(
 "https://actions.google.com/sounds/v1/alarms/school_bell.ogg"
 );
 
-a.play();
+
+audio.play();
+
 
 }
 
-</script>
 
+
+
+function stopSon(){
+
+
+if(audio){
+
+audio.pause();
+
+audio.currentTime=0;
+
+}
+
+
+clearTimeout(timer);
+
+
+}
+
+
+
+
+function minuteur(){
+
+
+let m=
+document.getElementById("minutes").value;
+
+
+if(!m){
+
+alert("Mets un nombre de minutes");
+
+return;
+
+}
+
+
+
+timer=setTimeout(()=>{
+
+
+sonner();
+
+
+},m*60000);
+
+
+
+alert(
+"Sonnerie dans "+m+" minutes"
+);
+
+
+
+}
+
+
+
+</script>
 </body>
 </html>

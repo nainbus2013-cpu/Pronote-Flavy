@@ -1,32 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon École</title>
 
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Faux Pronote</title>
 <style>
-body{font-family:Arial;background:#eef2f7;margin:0}header{background:#009879;color:#fff;padding:15px;display:flex;justify-content:space-between}
-.card{background:#fff;margin:20px;padding:15px;border-radius:10px}button,input{padding:8px;margin:4px}
-#app,#menu,#ring{display:none}#ring{position:fixed;right:15px;top:70px}#menu{position:fixed;right:15px;top:120px;background:#fff;padding:10px;border:1px solid #ccc}
-.e{display:inline-block;border:1px solid #ccc;border-radius:8px;padding:8px;margin:4px;width:140px;text-align:center}
-table{border-collapse:collapse;width:100%}td,th{border:1px solid #bbb;padding:6px}
-</style></head><body>
-<header><b>PRONOTE - Collège</b><span>👨‍🏫 M. Leroy</span></header>
-<button id="ring" onclick="menu.style.display=menu.style.display=='block'?'none':'block'">🔔</button>
-<div id="menu"><button onclick="son()">Sonner</button><br><input id="min" type="number" placeholder="minutes"><button onclick="prog()">Programmer</button><button onclick="stop()">Stop</button></div>
-<div id="login" class="card"><h2>Connexion</h2><input id="id" placeholder="Identifiant"><input id="pw" type="password" placeholder="Mot de passe"><button onclick="login()">Entrer</button></div>
-<div id="app">
-<div class="card"><button onclick="cls('6A')">6e A</button><button onclick="cls('6B')">6e B</button><h2 id="t"></h2><div id="list"></div><input id="new"><button onclick="add()">Ajouter</button><button onclick="delE()">Supprimer dernier</button></div>
-<div class="card"><h3>Appel</h3><div id="appel"></div></div>
-<div class="card"><h3>Notes</h3><table><tbody id="notes"></tbody></table></div>
-<div class="card"><h3>Emploi du temps</h3><table id="edt" contenteditable=true><tr><th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th></tr><tr><td>Français</td><td>Maths</td><td>Histoire</td><td>EPS</td><td>Anglais</td></tr></table></div>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f2f5f8;
+}
+
+header{
+    background:#0b7bdc;
+    color:white;
+    padding:20px;
+    text-align:center;
+}
+
+.container{
+    display:flex;
+}
+
+.menu{
+    width:220px;
+    background:white;
+    height:100vh;
+    box-shadow:2px 0 8px rgba(0,0,0,.1);
+}
+
+.menu h3{
+    text-align:center;
+    color:#0b7bdc;
+}
+
+.menu button{
+    width:90%;
+    margin:10px;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#e7f2ff;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.menu button:hover{
+    background:#cfe6ff;
+}
+
+.content{
+    flex:1;
+    padding:30px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:12px;
+    text-align:center;
+}
+
+th{
+    background:#0b7bdc;
+    color:white;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+<h1>📚 Mon École</h1>
+<p>Espace Enseignant</p>
+</header>
+
+<div class="container">
+
+<div class="menu">
+<h3>Menu</h3>
+
+<button onclick="alert('Fonction bientôt disponible')">🏠 Accueil</button>
+
+<button onclick="alert('Gestion des élèves')">👨‍🎓 Élèves</button>
+
+<button onclick="alert('Ajouter une note')">📝 Notes</button>
+
+<button onclick="alert('Faire l’appel')">📋 Appel</button>
+
+<button onclick="alert('Messages')">✉️ Messages</button>
+
 </div>
-<audio id="a" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
-<script>
-let c=localStorage.c||'6A',timer;
-let e=JSON.parse(localStorage.e||'{"6A":["Martin Emma","Petit Lucas"],"6B":["Caron Sophia","Carpentier Gabin","Carpentier Zoé","Dupuis Ismaël","Fontaine Jade","Gréjin Hantoine","Harmant Antoine","Lambert Aya","Lefevre Adams","Lefevre Estebane","Lefevre Mathis","Lenoï Flin"]}');
-if(localStorage.edt) edt.innerHTML=localStorage.edt; edt.oninput=()=>localStorage.edt=edt.innerHTML;
-function login(){if(id.value==="t.leroy346"&&pw.value==="Théoleroy2013*"){login.style.display="none";app.style.display="block";ring.style.display="block";show()}else alert("Identifiants incorrects");}
-function show(){t.textContent="Classe "+(c=="6A"?"6e A":"6e B");list.innerHTML="";appel.innerHTML="";notes.innerHTML="";
-e[c].forEach(n=>{list.innerHTML+=`<div class=e>👨‍🎓<br>${n}</div>`;appel.innerHTML+=`${n} <select><option>Présent</option><option>Absent</option></select><br>`;notes.innerHTML+=`<tr><td>${n}</td><td contenteditable>/20</td></tr>`});localStorage.e=JSON.stringify(e);localStorage.c=c;}
-function cls(x){c=x;show()} function add(){if(new.value){e[c].push(new.value);new.value="";show()}} function delE(){e[c].pop();show()}
-function son(){a.currentTime=0;a.play()} function stop(){a.pause();a.currentTime=0}
-function prog(){clearTimeout(timer);timer=setTimeout(son,(+min.value||1)*60000);alert("Programmée");}
-</script></body></html>
+
+<div class="content">
+
+<div class="card">
+
+<h2>Classe : CM2 A</h2>
+
+<table>
+<tr>
+<th>Élève</th>
+<th>Maths</th>
+<th>Français</th>
+<th>Comportement</th>
+</tr>
+
+<tr>
+<td>Emma</td>
+<td>18</td>
+<td>17</td>
+<td>😊</td>
+</tr>
+
+<tr>
+<td>Léo</td>
+<td>15</td>
+<td>14</td>
+<td>🙂</td>
+</tr>
+
+<tr>
+<td>Lucas</td>
+<td>20</td>
+<td>19</td>
+<td>⭐</td>
+</tr>
+
+<tr>
+<td>Chloé</td>
+<td>16</td>
+<td>18</td>
+<td>😊</td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

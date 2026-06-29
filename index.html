@@ -8,7 +8,6 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:#1a1a2e;min-height:100vh;display:flex;flex-direction:column}
 
-/* HEADER */
 .header{background:#1a5276;color:white;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .header-left{display:flex;align-items:center;gap:14px}
 .logo{background:#2e86c1;padding:6px 12px;border-radius:6px;font-weight:700;font-size:15px;letter-spacing:1px}
@@ -18,10 +17,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:#1a1a2e;mi
 .notif-btn{background:none;border:none;color:white;cursor:pointer;font-size:18px;position:relative}
 .notif-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:#e74c3c;border-radius:50%}
 
-/* LAYOUT */
 .app-body{display:flex;flex:1;height:calc(100vh - 52px)}
 
-/* SIDEBAR */
 .sidebar{width:200px;background:#1a2744;color:white;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
 .sidebar-section{padding:12px 8px 4px;font-size:10px;color:#7fb3d3;text-transform:uppercase;letter-spacing:1px;font-weight:600}
 .nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;font-size:13px;color:#b8cfe8;transition:all .2s;border-left:3px solid transparent}
@@ -29,20 +26,20 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:#1a1a2e;mi
 .nav-item.active{background:rgba(46,134,193,.3);color:white;border-left-color:#2e86c1}
 .nav-icon{font-size:16px;width:18px;text-align:center}
 
-/* MAIN */
-.main{flex:1;overflow-y:auto;padding:20px}
+/* Classe switcher */
+.classe-tabs{display:flex;gap:8px;margin-bottom:16px}
+.classe-tab{padding:8px 20px;border-radius:8px;border:2px solid #d5dbdf;background:white;cursor:pointer;font-size:13px;font-weight:600;color:#6c7a89;transition:all .2s}
+.classe-tab.active{border-color:#2e86c1;background:#2e86c1;color:white}
 
-/* SECTIONS */
+.main{flex:1;overflow-y:auto;padding:20px}
 .section{display:none}
 .section.active{display:block}
 
-/* CARDS */
 .card{background:white;border-radius:10px;box-shadow:0 1px 6px rgba(0,0,0,.08);padding:20px;margin-bottom:16px}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .card-title{font-size:15px;font-weight:600;color:#1a2744}
 .card-badge{background:#eaf4fc;color:#1a5276;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
 
-/* STATS ACCUEIL */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .stat-card{background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,.08)}
 .stat-number{font-size:28px;font-weight:700}
@@ -52,7 +49,6 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:#1a1a2e;mi
 .stat-orange .stat-number{color:#e67e22}
 .stat-green .stat-number{color:#27ae60}
 
-/* TABLEAU APPEL */
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{background:#1a5276;color:white;padding:10px 12px;text-align:left;font-weight:500}
@@ -62,47 +58,30 @@ tr:hover td{background:#f7fbff}
 .badge-present{background:#d5f5e3;color:#1e8449}
 .badge-absent{background:#fde8e8;color:#c0392b}
 .badge-retard{background:#fef9e7;color:#b7770d}
-.badge-exclus{background:#f5eef8;color:#7d3c98}
 
-/* BOUTONS APPEL */
 .appel-btns{display:flex;gap:6px}
 .btn-appel{border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;transition:all .15s}
-.btn-p{background:#d5f5e3;color:#1e8449}
-.btn-p:hover{background:#a9dfbf}
-.btn-a{background:#fde8e8;color:#c0392b}
-.btn-a:hover{background:#f5b7b1}
-.btn-r{background:#fef9e7;color:#b7770d}
-.btn-r:hover{background:#fdebd0}
+.btn-p{background:#d5f5e3;color:#1e8449}.btn-p:hover{background:#a9dfbf}
+.btn-a{background:#fde8e8;color:#c0392b}.btn-a:hover{background:#f5b7b1}
+.btn-r{background:#fef9e7;color:#b7770d}.btn-r:hover{background:#fdebd0}
 
-/* EMPLOI DU TEMPS */
+/* EDT éditable */
 .edt-grid{display:grid;grid-template-columns:60px repeat(5,1fr);gap:2px;font-size:12px}
 .edt-header{background:#1a5276;color:white;padding:8px;text-align:center;font-weight:500;border-radius:4px}
 .edt-time{background:#eef2f7;padding:8px 4px;text-align:center;color:#6c7a89;font-size:11px;display:flex;align-items:center;justify-content:center;border-radius:4px}
-.edt-slot{min-height:54px;border-radius:6px;padding:6px;cursor:pointer;transition:opacity .2s}
-.edt-slot:hover{opacity:.85}
+.edt-slot{min-height:54px;border-radius:6px;padding:6px;cursor:pointer;transition:all .2s;position:relative}
+.edt-slot:hover{opacity:.85;transform:scale(1.02)}
 .edt-slot.vide{background:#f7f9fc;border:1px dashed #d5dbdf}
+.edt-slot.vide:hover{background:#eaf4fc;border-color:#2e86c1}
 .edt-slot.cours{color:white}
 .edt-slot .cours-nom{font-weight:600;font-size:12px}
 .edt-slot .cours-salle{font-size:10px;opacity:.85;margin-top:2px}
-.mat-fr{background:#1a5276}
-.mat-math{background:#c0392b}
-.mat-hist{background:#6c3483}
-.mat-svt{background:#1e8449}
-.mat-ang{background:#b7770d}
-.mat-sport{background:#2471a3}
-.mat-art{background:#a04000}
-.mat-musi{background:#117a65}
-.mat-info{background:#616a6b}
+.edt-slot .cours-classe{font-size:10px;opacity:.75;margin-top:1px}
+.edt-edit-hint{position:absolute;top:2px;right:4px;font-size:9px;opacity:.6}
+.mat-6a{background:#1a5276}
+.mat-6b{background:#6c3483}
+.mat-vide-hint{color:#9bb5cc;font-size:10px;text-align:center;padding-top:14px}
 
-/* NOTES */
-.notes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.note-card{background:#f7fbff;border-radius:8px;padding:14px;border-left:4px solid #2e86c1}
-.note-eleve{font-weight:600;font-size:13px}
-.note-matiere{font-size:11px;color:#6c7a89;margin-top:2px}
-.note-val{font-size:22px;font-weight:700;color:#1a5276;margin-top:8px}
-.note-sur{font-size:12px;color:#6c7a89}
-
-/* FORM NOTES */
 .form-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px}
 .form-group{display:flex;flex-direction:column;gap:4px}
 .form-group label{font-size:11px;color:#6c7a89;font-weight:500}
@@ -112,7 +91,6 @@ tr:hover td{background:#f7fbff}
 .btn-primary:hover{background:#2e86c1}
 .btn-danger{background:#e74c3c;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px}
 
-/* ABSENCES RETARDS */
 .event-list{display:flex;flex-direction:column;gap:8px}
 .event-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#f9fafb;border-radius:8px;border-left:4px solid}
 .event-item.abs{border-left-color:#e74c3c}
@@ -124,7 +102,6 @@ tr:hover td{background:#f7fbff}
 .event-detail{font-size:12px;color:#6c7a89;margin-top:2px}
 .event-time{font-size:11px;color:#6c7a89;text-align:right}
 
-/* MESSAGES */
 .msg-list{display:flex;flex-direction:column;gap:6px}
 .msg-item{padding:12px 16px;background:#f9fafb;border-radius:8px;cursor:pointer;transition:background .15s;border-left:3px solid transparent}
 .msg-item:hover{background:#eef2f7}
@@ -137,29 +114,27 @@ tr:hover td{background:#f7fbff}
 .msg-compose{width:100%;background:#f7fbff;border:1px solid #d5dbdf;border-radius:8px;padding:14px;margin-bottom:14px}
 .msg-compose textarea{width:100%;border:1px solid #d5dbdf;border-radius:6px;padding:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px;outline:none}
 
-/* BULLETINS */
 .bulletin-header{background:#1a5276;color:white;border-radius:10px 10px 0 0;padding:16px 20px}
-.bulletin-body{background:white;border:1px solid #d5dbdf;border-top:none;border-radius:0 0 10px 10px;padding:0}
 .bul-table{width:100%;border-collapse:collapse}
 .bul-table th{background:#eef2f7;padding:10px 14px;font-size:12px;color:#6c7a89;font-weight:500;text-align:left;border-bottom:1px solid #d5dbdf}
 .bul-table td{padding:10px 14px;font-size:13px;border-bottom:1px solid #f0f3f7}
-.bul-table tr:last-child td{border-bottom:none}
 .moy-cell{font-weight:700;color:#1a5276}
 .apprec{color:#6c7a89;font-style:italic;font-size:12px}
 .moy-generale{padding:16px 20px;background:#eef2f7;border-radius:0 0 10px 10px;display:flex;align-items:center;justify-content:space-between}
 .moy-gen-val{font-size:22px;font-weight:700;color:#1a5276}
 
-/* SANCTIONS */
 .sanc-form{background:#fff8f0;border:1px solid #fdebd0;border-radius:8px;padding:14px;margin-bottom:16px}
 
-/* MODAL */
+/* MODAL EDT */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
-.modal{background:white;border-radius:12px;padding:24px;width:90%;max-width:480px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.modal{background:white;border-radius:12px;padding:24px;width:90%;max-width:420px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
 .modal-title{font-size:16px;font-weight:600;margin-bottom:16px;color:#1a2744}
 .modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:#6c7a89}
+.edt-legend{display:flex;gap:12px;margin-top:12px;font-size:12px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px}
+.legend-dot{width:14px;height:14px;border-radius:3px}
 
-/* TOAST */
 .toast{position:fixed;bottom:24px;right:24px;background:#1e8449;color:white;padding:12px 20px;border-radius:8px;font-size:13px;z-index:300;transform:translateY(80px);opacity:0;transition:all .35s}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.error{background:#c0392b}
@@ -168,21 +143,19 @@ tr:hover td{background:#f7fbff}
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-left">
     <div class="logo">EcoleNet</div>
-    <div class="header-info">Année 2024–2025 · Collège Jean Moulin</div>
+    <div class="header-info">Collège Jean Moulin · Professeur de Français</div>
   </div>
   <div class="header-right">
-    <span class="prof-badge">👩‍🏫 Mme Dupont</span>
+    <span class="prof-badge">👨‍🏫 M. Leroy — Français</span>
     <button class="notif-btn" onclick="navigate('messages')">🔔<span class="notif-dot"></span></button>
   </div>
 </div>
 
 <div class="app-body">
 
-<!-- SIDEBAR -->
 <div class="sidebar">
   <div class="sidebar-section">Principal</div>
   <div class="nav-item active" onclick="navigate('accueil')" id="nav-accueil"><span class="nav-icon">🏠</span> Accueil</div>
@@ -198,48 +171,40 @@ tr:hover td{background:#f7fbff}
   <div class="nav-item" onclick="navigate('bulletins')" id="nav-bulletins"><span class="nav-icon">📊</span> Bulletins</div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
 <!-- ACCUEIL -->
 <div class="section active" id="s-accueil">
+  <div class="classe-tabs">
+    <button class="classe-tab active" onclick="switchClasse('6A', this)">6ème A</button>
+    <button class="classe-tab" onclick="switchClasse('6B', this)">6ème B</button>
+  </div>
   <div class="stats-grid">
-    <div class="stat-card stat-blue"><div class="stat-number" id="nb-eleves">28</div><div class="stat-label">Élèves</div></div>
-    <div class="stat-card stat-red"><div class="stat-number" id="nb-abs">3</div><div class="stat-label">Absents aujourd'hui</div></div>
-    <div class="stat-card stat-orange"><div class="stat-number" id="nb-ret">2</div><div class="stat-label">Retards ce mois</div></div>
-    <div class="stat-card stat-green"><div class="stat-number" id="nb-moy">13.4</div><div class="stat-label">Moyenne de classe</div></div>
+    <div class="stat-card stat-blue"><div class="stat-number" id="nb-eleves">13</div><div class="stat-label">Élèves</div></div>
+    <div class="stat-card stat-red"><div class="stat-number" id="nb-abs">0</div><div class="stat-label">Absents aujourd'hui</div></div>
+    <div class="stat-card stat-orange"><div class="stat-number" id="nb-ret">0</div><div class="stat-label">Retards ce mois</div></div>
+    <div class="stat-card stat-green"><div class="stat-number" id="nb-moy">—</div><div class="stat-label">Moyenne de classe</div></div>
   </div>
-
   <div class="card">
-    <div class="card-header"><span class="card-title">📌 Alertes & Rappels</span></div>
-    <div class="event-list" id="alertes-list">
-      <div class="event-item abs"><span class="event-icon">❌</span><div class="event-body"><div class="event-eleve">Mathieu R. — Absent</div><div class="event-detail">Non justifié · Cours de Français (08h00)</div></div><div class="event-time">Aujourd'hui</div></div>
-      <div class="event-item ret"><span class="event-icon">⏰</span><div class="event-body"><div class="event-eleve">Léa M. — Retard</div><div class="event-detail">15 min · Cours de Maths</div></div><div class="event-time">Hier</div></div>
-      <div class="event-item oub"><span class="event-icon">📚</span><div class="event-body"><div class="event-eleve">Tom B. — Oubli de carnet</div><div class="event-detail">3ème oubli ce trimestre</div></div><div class="event-time">Hier</div></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header"><span class="card-title">📅 Mes cours aujourd'hui — 6ème A</span></div>
-    <table><thead><tr><th>Heure</th><th>Matière</th><th>Salle</th><th>Élèves</th></tr></thead>
-    <tbody>
-      <tr><td>08h00 – 09h00</td><td>Français</td><td>Salle 12</td><td>28</td></tr>
-      <tr><td>10h00 – 11h00</td><td>Français</td><td>Salle 12</td><td>28</td></tr>
-      <tr><td>14h00 – 15h00</td><td>Histoire-Géo</td><td>Salle 08</td><td>28</td></tr>
-    </tbody></table>
+    <div class="card-header"><span class="card-title" id="accueil-title">📌 Classe 6ème A — Élèves</span></div>
+    <div class="table-wrap"><table><thead><tr><th>Nom</th><th>Prénom</th></tr></thead>
+    <tbody id="accueil-eleves"></tbody></table></div>
   </div>
 </div>
 
 <!-- APPEL -->
 <div class="section" id="s-appel">
+  <div class="classe-tabs">
+    <button class="classe-tab active" onclick="switchClasseAppel('6A', this)">6ème A</button>
+    <button class="classe-tab" onclick="switchClasseAppel('6B', this)">6ème B</button>
+  </div>
   <div class="card">
     <div class="card-header">
-      <span class="card-title">📋 Appel — 6ème A</span>
+      <span class="card-title" id="appel-title">📋 Appel — 6ème A</span>
       <div style="display:flex;gap:8px;align-items:center">
         <select id="cours-select" style="border:1px solid #d5dbdf;border-radius:6px;padding:6px 10px;font-size:12px">
-          <option>Français — 08h00</option>
-          <option>Français — 10h00</option>
-          <option>Histoire-Géo — 14h00</option>
+          <option>08h00</option><option>09h00</option><option>10h00</option><option>11h00</option>
+          <option>14h00</option><option>15h00</option><option>16h00</option>
         </select>
         <button class="btn-primary" onclick="sauvegarderAppel()">💾 Valider l'appel</button>
       </div>
@@ -253,23 +218,33 @@ tr:hover td{background:#f7fbff}
   </div>
 </div>
 
-<!-- EMPLOI DU TEMPS -->
+<!-- EDT -->
 <div class="section" id="s-edt">
   <div class="card">
-    <div class="card-header"><span class="card-title">📅 Emploi du temps — Mme Dupont</span><span class="card-badge">Semaine 42</span></div>
+    <div class="card-header">
+      <span class="card-title">📅 Emploi du temps — M. Leroy · Français</span>
+      <span class="card-badge">Cliquer sur un créneau pour modifier</span>
+    </div>
     <div class="edt-grid" id="edt-grid"></div>
+    <div class="edt-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#1a5276"></div> 6ème A</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#6c3483"></div> 6ème B</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f0f0f0;border:1px dashed #aaa"></div> Libre</div>
+    </div>
   </div>
 </div>
 
 <!-- NOTES -->
 <div class="section" id="s-notes">
+  <div class="classe-tabs">
+    <button class="classe-tab active" onclick="switchClasseNotes('6A', this)">6ème A</button>
+    <button class="classe-tab" onclick="switchClasseNotes('6B', this)">6ème B</button>
+  </div>
   <div class="card">
     <div class="card-header"><span class="card-title">➕ Ajouter une note</span></div>
     <div class="form-row">
       <div class="form-group"><label>Élève</label>
         <select id="note-eleve"><option value="">-- Choisir --</option></select></div>
-      <div class="form-group"><label>Matière</label>
-        <select id="note-mat"><option>Français</option><option>Histoire-Géo</option><option>Maths</option><option>SVT</option><option>Anglais</option></select></div>
       <div class="form-group"><label>Note (/20)</label>
         <input type="number" id="note-val" min="0" max="20" step="0.5" style="width:80px"></div>
       <div class="form-group"><label>Commentaire</label>
@@ -280,15 +255,19 @@ tr:hover td{background:#f7fbff}
   </div>
   <div class="card">
     <div class="card-header"><span class="card-title">📝 Notes enregistrées</span><span class="card-badge" id="nb-notes-badge">0 note(s)</span></div>
-    <div class="table-wrap"><table id="notes-table">
-      <thead><tr><th>Élève</th><th>Matière</th><th>Note</th><th>Commentaire</th><th>Action</th></tr></thead>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Élève</th><th>Classe</th><th>Note</th><th>Commentaire</th><th>Action</th></tr></thead>
       <tbody id="notes-body"></tbody>
     </table></div>
   </div>
 </div>
 
-<!-- ABSENCES / RETARDS -->
+<!-- ABSENCES -->
 <div class="section" id="s-absences">
+  <div class="classe-tabs">
+    <button class="classe-tab active" onclick="switchClasseAbs('6A', this)">6ème A</button>
+    <button class="classe-tab" onclick="switchClasseAbs('6B', this)">6ème B</button>
+  </div>
   <div class="card">
     <div class="card-header"><span class="card-title">➕ Signaler une absence / retard</span></div>
     <div class="form-row">
@@ -296,8 +275,8 @@ tr:hover td{background:#f7fbff}
         <select id="abs-eleve"><option value="">-- Choisir --</option></select></div>
       <div class="form-group"><label>Type</label>
         <select id="abs-type"><option value="abs">Absence</option><option value="ret">Retard</option></select></div>
-      <div class="form-group"><label>Cours</label>
-        <select id="abs-cours"><option>Français</option><option>Histoire-Géo</option><option>Maths</option></select></div>
+      <div class="form-group"><label>Créneau</label>
+        <select id="abs-cours"><option>08h00</option><option>09h00</option><option>10h00</option><option>11h00</option><option>14h00</option><option>15h00</option><option>16h00</option></select></div>
       <div class="form-group"><label>Motif</label>
         <input type="text" id="abs-motif" placeholder="Motif (optionnel)" style="width:160px"></div>
       <div class="form-group"><label>&nbsp;</label>
@@ -312,6 +291,10 @@ tr:hover td{background:#f7fbff}
 
 <!-- OUBLIS -->
 <div class="section" id="s-oublis">
+  <div class="classe-tabs">
+    <button class="classe-tab active" onclick="switchClasseOubli('6A', this)">6ème A</button>
+    <button class="classe-tab" onclick="switchClasseOubli('6B', this)">6ème B</button>
+  </div>
   <div class="card">
     <div class="card-header"><span class="card-title">➕ Signaler un oubli</span></div>
     <div class="form-row">
@@ -334,6 +317,10 @@ tr:hover td{background:#f7fbff}
 
 <!-- SANCTIONS -->
 <div class="section" id="s-sanctions">
+  <div class="classe-tabs">
+    <button class="classe-tab active" onclick="switchClasseSan('6A', this)">6ème A</button>
+    <button class="classe-tab" onclick="switchClasseSan('6B', this)">6ème B</button>
+  </div>
   <div class="card">
     <div class="card-header"><span class="card-title">⚠️ Ajouter une sanction / observation</span></div>
     <div class="sanc-form">
@@ -362,13 +349,13 @@ tr:hover td{background:#f7fbff}
 <div class="section" id="s-messages">
   <div class="card">
     <div class="card-header"><span class="card-title">✉️ Messages</span>
-      <button class="btn-primary" onclick="document.getElementById('compose-area').style.display = document.getElementById('compose-area').style.display==='none'?'block':'none'">✏️ Nouveau</button>
+      <button class="btn-primary" onclick="toggleCompose()">✏️ Nouveau</button>
     </div>
     <div id="compose-area" style="display:none;margin-bottom:14px">
       <div class="msg-compose">
         <div class="form-row">
           <div class="form-group"><label>À</label>
-            <select id="msg-dest" style="width:180px"><option>Direction</option><option>Parents de Emma</option><option>Parents de Léo</option><option>Parents de Lucas</option><option>Parents de Tom</option><option>Collègues</option></select></div>
+            <select id="msg-dest" style="width:180px"><option>Direction</option><option>Famille 6A</option><option>Famille 6B</option><option>Collègues</option></select></div>
           <div class="form-group" style="flex:1"><label>Objet</label>
             <input type="text" id="msg-objet" placeholder="Objet du message" style="width:100%"></div>
         </div>
@@ -384,6 +371,10 @@ tr:hover td{background:#f7fbff}
 
 <!-- BULLETINS -->
 <div class="section" id="s-bulletins">
+  <div class="classe-tabs">
+    <button class="classe-tab active" onclick="switchClasseBul('6A', this)">6ème A</button>
+    <button class="classe-tab" onclick="switchClasseBul('6B', this)">6ème B</button>
+  </div>
   <div class="card">
     <div class="card-header"><span class="card-title">📊 Générer un bulletin</span></div>
     <div class="form-row">
@@ -398,55 +389,106 @@ tr:hover td{background:#f7fbff}
   <div id="bulletin-display"></div>
 </div>
 
-</div><!-- /main -->
-</div><!-- /app-body -->
+</div>
+</div>
 
-<!-- TOAST -->
+<!-- MODAL EDT -->
+<div class="modal-overlay" id="edt-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeEdtModal()">✕</button>
+    <div class="modal-title" id="modal-slot-title">Modifier le créneau</div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label>Classe</label>
+      <select id="modal-classe">
+        <option value="">— Libre —</option>
+        <option value="6A">6ème A</option>
+        <option value="6B">6ème B</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+      <button class="btn-danger" onclick="clearSlot()">🗑 Vider</button>
+      <button class="btn-primary" onclick="saveSlot()">💾 Enregistrer</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-const ELEVES = [
-  {nom:'Emma Bernard',moy:{fr:17,hist:16,math:18,svt:15,ang:14}},
-  {nom:'Léo Martin',moy:{fr:14,hist:13,math:15,svt:16,ang:12}},
-  {nom:'Lucas Petit',moy:{fr:19,hist:18,math:20,svt:17,ang:18}},
-  {nom:'Chloé Dubois',moy:{fr:18,hist:15,math:16,svt:14,ang:17}},
-  {nom:'Tom Bernard',moy:{fr:12,hist:11,math:13,svt:10,ang:9}},
-  {nom:'Mathieu Roux',moy:{fr:11,hist:10,math:12,svt:13,ang:11}},
-  {nom:'Lucie Simon',moy:{fr:16,hist:17,math:14,svt:15,ang:16}},
-  {nom:'Noah Lambert',moy:{fr:15,hist:14,math:17,svt:16,ang:13}},
-  {nom:'Inès Moreau',moy:{fr:13,hist:12,math:11,svt:14,ang:12}},
-  {nom:'Alexis Garnier',moy:{fr:10,hist:11,math:9,svt:12,ang:10}},
-  {nom:'Jade Fontaine',moy:{fr:17,hist:16,math:15,svt:18,ang:17}},
-  {nom:'Théo Blanc',moy:{fr:8,hist:9,math:7,svt:10,ang:8}},
-];
+// DONNÉES ÉLÈVES
+const CLASSES = {
+  '6A': [
+    {nom:'Caron',prenom:'Sophia'},
+    {nom:'Carpentier',prenom:'Gabin'},
+    {nom:'Carpentier',prenom:'Zoé'},
+    {nom:'Dupuis',prenom:'Ismaël'},
+    {nom:'Fontaine',prenom:'Jade'},
+    {nom:'Gréjin',prenom:'Hantoine'},
+    {nom:'Harmant',prenom:'Antoine'},
+    {nom:'Lambert',prenom:'Aya'},
+    {nom:'Lefevre',prenom:'Adams'},
+    {nom:'Lefevre',prenom:'Estebane'},
+    {nom:'Lefevre',prenom:'Mathis'},
+    {nom:'Lenoï',prenom:'Flin'},
+  ],
+  '6B': [
+    {nom:'Bina',prenom:'Charlotte'},
+    {nom:'Boudma',prenom:'Charlie'},
+    {nom:'Bounette',prenom:'Lilio'},
+    {nom:'Deparis',prenom:'Lina'},
+    {nom:'Dupont',prenom:'Tibo'},
+    {nom:'Gérard',prenom:'Lalie'},
+    {nom:'Jean',prenom:'Ilan'},
+    {nom:'Langlet',prenom:'Agathe'},
+    {nom:'Leroï',prenom:'Lylan'},
+    {nom:'Lila',prenom:'Gaëtan'},
+    {nom:'Malie',prenom:'Louanne'},
+    {nom:'Marchandi',prenom:'Lylan'},
+    {nom:'Pade',prenom:'Victorine'},
+    {nom:'Rouale',prenom:'Corentin'},
+    {nom:'Thiebots',prenom:'Lily'},
+    {nom:'Winlaie',prenom:'Luna'},
+  ]
+};
 
 const JOURS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi'];
 const HEURES = ['08h00','09h00','10h00','11h00','12h00','14h00','15h00','16h00'];
-const EDT = [
-  [{c:'Français',m:'mat-fr',s:'S.12'},{c:'',m:'',s:''},{c:'Français',m:'mat-fr',s:'S.12'},{c:'',m:'',s:''},{c:'Français',m:'mat-fr',s:'S.12'}],
-  [{c:'',m:'',s:''},{c:'Histoire',m:'mat-hist',s:'S.08'},{c:'',m:'',s:''},{c:'Histoire',m:'mat-hist',s:'S.08'},{c:''}],
-  [{c:'Français',m:'mat-fr',s:'S.12'},{c:'',m:'',s:''},{c:'',m:'',s:''},{c:'Français',m:'mat-fr',s:'S.12'},{c:''}],
-  [{c:'',m:'',s:''},{c:'Français',m:'mat-fr',s:'S.12'},{c:'',m:'',s:''},{c:'',m:'',s:''},{c:''}],
-  [{c:'',m:'',s:''},{c:'',m:'',s:''},{c:'',m:'',s:''},{c:'',m:'',s:''},{c:''}],
-  [{c:'Histoire',m:'mat-hist',s:'S.08'},{c:'',m:'',s:''},{c:'Histoire',m:'mat-hist',s:'S.08'},{c:'',m:'',s:''},{c:'Histoire',m:'mat-hist',s:'S.08'}],
-  [{c:'',m:'',s:''},{c:'Français',m:'mat-fr',s:'S.12'},{c:'',m:'',s:''},{c:'',m:'',s:''},{c:''}],
-  [{c:'',m:'',s:''},{c:'',m:'',s:''},{c:'',m:'',s:''},{c:'',m:'',s:''},{c:''}],
+
+// EDT : tableau [heure][jour] = '' | '6A' | '6B'
+let EDT = [
+  ['6A','','6A','','6A'],   // 08h
+  ['','6B','','6B',''],      // 09h
+  ['6A','','','6A',''],      // 10h
+  ['','6A','','',''],        // 11h
+  ['','','','',''],           // 12h
+  ['6B','','6B','','6B'],    // 14h
+  ['','6A','','',''],        // 15h
+  ['','','','',''],           // 16h
 ];
 
-let statuts = {};
+let currentClasse = '6A';
+let currentClasseAppel = '6A';
+let currentClasseNotes = '6A';
+let currentClasseAbs = '6A';
+let currentClasseOubli = '6A';
+let currentClasseSan = '6A';
+let currentClasseBul = '6A';
+
+let statuts = {'6A':{},'6B':{}};
 let notes = [];
 let absences = [];
 let oublis = [];
 let sanctions = [];
 let messages = [
   {de:'Direction',objet:'Réunion pédagogique vendredi',preview:'Rappel : réunion pédagogique vendredi 17h…',date:'Auj.',lu:false},
-  {de:'Parents de Emma',objet:'Absence prévue lundi',preview:'Bonjour madame, Emma sera absente lundi matin…',date:'Hier',lu:true},
   {de:'Collègues',objet:'Conseil de classe',preview:'Le conseil de classe du trimestre 1 aura lieu…',date:'Lun.',lu:true},
 ];
 
+let edtEditHi = null, edtEditJi = null;
+
 function toast(msg,type=''){
   const t=document.getElementById('toast');
-  t.textContent=msg; t.className='toast '+(type||''); 
+  t.textContent=msg;t.className='toast '+(type||'');
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2800);
 }
@@ -458,82 +500,170 @@ function navigate(id){
   document.getElementById('nav-'+id).classList.add('active');
 }
 
-function populateSelects(){
-  const ids=['note-eleve','abs-eleve','oub-eleve','san-eleve','bul-eleve'];
-  ids.forEach(id=>{
-    const sel=document.getElementById(id);
-    sel.innerHTML='<option value="">-- Choisir --</option>';
-    ELEVES.forEach((e,i)=>sel.innerHTML+=`<option value="${i}">${e.nom}</option>`);
-  });
+// CLASSE SWITCH HELPERS
+function switchClasse(cl,btn){
+  currentClasse=cl;
+  btn.closest('.classe-tabs').querySelectorAll('.classe-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAccueil();
+}
+function switchClasseAppel(cl,btn){
+  currentClasseAppel=cl;
+  btn.closest('.classe-tabs').querySelectorAll('.classe-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildAppel();
+}
+function switchClasseNotes(cl,btn){
+  currentClasseNotes=cl;
+  btn.closest('.classe-tabs').querySelectorAll('.classe-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  populateSelect('note-eleve',cl);
+}
+function switchClasseAbs(cl,btn){
+  currentClasseAbs=cl;
+  btn.closest('.classe-tabs').querySelectorAll('.classe-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  populateSelect('abs-eleve',cl);
+}
+function switchClasseOubli(cl,btn){
+  currentClasseOubli=cl;
+  btn.closest('.classe-tabs').querySelectorAll('.classe-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  populateSelect('oub-eleve',cl);
+}
+function switchClasseSan(cl,btn){
+  currentClasseSan=cl;
+  btn.closest('.classe-tabs').querySelectorAll('.classe-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  populateSelect('san-eleve',cl);
+}
+function switchClasseBul(cl,btn){
+  currentClasseBul=cl;
+  btn.closest('.classe-tabs').querySelectorAll('.classe-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  populateBulSelect(cl);
+}
+
+function populateSelect(selId,cl){
+  const sel=document.getElementById(selId);
+  sel.innerHTML='<option value="">-- Choisir --</option>';
+  CLASSES[cl].forEach((e,i)=>sel.innerHTML+=`<option value="${i}">${e.nom} ${e.prenom}</option>`);
+}
+
+function populateBulSelect(cl){
+  const sel=document.getElementById('bul-eleve');
+  sel.innerHTML='<option value="">-- Choisir --</option>';
+  CLASSES[cl].forEach((e,i)=>sel.innerHTML+=`<option value="${i}">${e.nom} ${e.prenom}</option>`);
+}
+
+function renderAccueil(){
+  const eleves=CLASSES[currentClasse];
+  document.getElementById('nb-eleves').textContent=eleves.length;
+  document.getElementById('accueil-title').textContent=`📌 Classe 6ème ${currentClasse.replace('6','')} — Élèves`;
+  const tbody=document.getElementById('accueil-eleves');
+  tbody.innerHTML=eleves.map(e=>`<tr><td>${e.nom}</td><td>${e.prenom}</td></tr>`).join('');
+  // stats notes pour cette classe
+  const cn=notes.filter(n=>n.classe===currentClasse);
+  if(cn.length){
+    const m=(cn.reduce((a,n)=>a+n.val,0)/cn.length).toFixed(1);
+    document.getElementById('nb-moy').textContent=m;
+  }else{
+    document.getElementById('nb-moy').textContent='—';
+  }
 }
 
 function buildAppel(){
+  const eleves=CLASSES[currentClasseAppel];
+  document.getElementById('appel-title').textContent=`📋 Appel — 6ème ${currentClasseAppel.replace('6','')}`;
   const body=document.getElementById('appel-body');
   body.innerHTML='';
-  ELEVES.forEach((e,i)=>{
-    if(!statuts[i])statuts[i]='present';
-    const s=statuts[i];
+  eleves.forEach((e,i)=>{
+    if(!statuts[currentClasseAppel][i])statuts[currentClasseAppel][i]='present';
+    const s=statuts[currentClasseAppel][i];
     body.innerHTML+=`<tr>
-      <td><strong>${e.nom}</strong></td>
-      <td><span class="badge badge-${s==='present'?'present':s==='absent'?'absent':'retard'}" id="badge-${i}">${s==='present'?'Présent':s==='absent'?'Absent':'Retard'}</span></td>
+      <td><strong>${e.nom} ${e.prenom}</strong></td>
+      <td><span class="badge badge-${s==='present'?'present':s==='absent'?'absent':'retard'}" id="badge-${currentClasseAppel}-${i}">${s==='present'?'Présent':s==='absent'?'Absent':'Retard'}</span></td>
       <td><div class="appel-btns">
-        <button class="btn-appel btn-p" onclick="setStatut(${i},'present')">✅ P</button>
-        <button class="btn-appel btn-a" onclick="setStatut(${i},'absent')">❌ A</button>
-        <button class="btn-appel btn-r" onclick="setStatut(${i},'retard')">⏰ R</button>
+        <button class="btn-appel btn-p" onclick="setStatut('${currentClasseAppel}',${i},'present')">✅ P</button>
+        <button class="btn-appel btn-a" onclick="setStatut('${currentClasseAppel}',${i},'absent')">❌ A</button>
+        <button class="btn-appel btn-r" onclick="setStatut('${currentClasseAppel}',${i},'retard')">⏰ R</button>
       </div></td>
-      <td><input type="number" min="0" max="60" placeholder="min" style="width:60px;border:1px solid #d5dbdf;border-radius:5px;padding:4px 6px;font-size:12px" id="ret-${i}"></td>
+      <td><input type="number" min="0" max="60" placeholder="min" style="width:60px;border:1px solid #d5dbdf;border-radius:5px;padding:4px 6px;font-size:12px" id="ret-${currentClasseAppel}-${i}"></td>
     </tr>`;
   });
 }
 
-function setStatut(i,s){
-  statuts[i]=s;
-  const b=document.getElementById('badge-'+i);
+function setStatut(cl,i,s){
+  statuts[cl][i]=s;
+  const b=document.getElementById(`badge-${cl}-${i}`);
+  if(!b)return;
   b.className='badge '+(s==='present'?'badge-present':s==='absent'?'badge-absent':'badge-retard');
   b.textContent=s==='present'?'Présent':s==='absent'?'Absent':'Retard';
 }
 
 function sauvegarderAppel(){
+  const cl=currentClasseAppel;
+  const eleves=CLASSES[cl];
   let abs=0,ret=0;
-  ELEVES.forEach((e,i)=>{
-    if(statuts[i]==='absent'){abs++;absences.push({eleve:e.nom,type:'abs',cours:document.getElementById('cours-select').value,motif:'Via appel',date:new Date().toLocaleDateString('fr-FR')});}
-    if(statuts[i]==='retard'){ret++;const min=document.getElementById('ret-'+i).value||'?';absences.push({eleve:e.nom,type:'ret',cours:document.getElementById('cours-select').value,motif:`${min} min de retard`,date:new Date().toLocaleDateString('fr-FR')});}
+  eleves.forEach((e,i)=>{
+    if(statuts[cl][i]==='absent'){abs++;absences.push({eleve:e.nom+' '+e.prenom,classe:cl,type:'abs',cours:document.getElementById('cours-select').value,motif:'Via appel',date:new Date().toLocaleDateString('fr-FR')});}
+    if(statuts[cl][i]==='retard'){ret++;const min=document.getElementById(`ret-${cl}-${i}`)?.value||'?';absences.push({eleve:e.nom+' '+e.prenom,classe:cl,type:'ret',cours:document.getElementById('cours-select').value,motif:`${min} min de retard`,date:new Date().toLocaleDateString('fr-FR')});}
   });
   document.getElementById('nb-abs').textContent=abs;
-  document.getElementById('nb-ret').textContent=(parseInt(document.getElementById('nb-ret').textContent)||0)+ret;
   toast(`✅ Appel validé — ${abs} absent(s), ${ret} retard(s)`);
   renderAbsences();
 }
 
+// EDT
 function buildEDT(){
   const g=document.getElementById('edt-grid');
   g.innerHTML='<div class="edt-header"></div>'+JOURS.map(j=>`<div class="edt-header">${j}</div>`).join('');
   HEURES.forEach((h,hi)=>{
     g.innerHTML+=`<div class="edt-time">${h}</div>`;
     JOURS.forEach((_,ji)=>{
-      const slot=EDT[hi]?.[ji];
-      if(slot&&slot.c){
-        g.innerHTML+=`<div class="edt-slot cours ${slot.m}"><div class="cours-nom">${slot.c}</div><div class="cours-salle">${slot.s}</div></div>`;
+      const cl=EDT[hi][ji];
+      if(cl){
+        const colorClass=cl==='6A'?'mat-6a':'mat-6b';
+        g.innerHTML+=`<div class="edt-slot cours ${colorClass}" onclick="openEdtModal(${hi},${ji})">
+          <div class="cours-nom">6ème ${cl.replace('6','')}</div>
+          <div class="cours-salle">Français — M. Leroy</div>
+          <div class="edt-edit-hint">✏️</div>
+        </div>`;
       }else{
-        g.innerHTML+=`<div class="edt-slot vide"></div>`;
+        g.innerHTML+=`<div class="edt-slot vide" onclick="openEdtModal(${hi},${ji})"><div class="mat-vide-hint">+ Ajouter</div></div>`;
       }
     });
   });
 }
 
+function openEdtModal(hi,ji){
+  edtEditHi=hi; edtEditJi=ji;
+  document.getElementById('modal-slot-title').textContent=`${HEURES[hi]} — ${JOURS[ji]}`;
+  document.getElementById('modal-classe').value=EDT[hi][ji]||'';
+  document.getElementById('edt-modal').classList.add('open');
+}
+function closeEdtModal(){document.getElementById('edt-modal').classList.remove('open');}
+function clearSlot(){EDT[edtEditHi][edtEditJi]='';closeEdtModal();buildEDT();toast('Créneau vidé');}
+function saveSlot(){
+  EDT[edtEditHi][edtEditJi]=document.getElementById('modal-classe').value;
+  closeEdtModal();buildEDT();toast('✅ Emploi du temps mis à jour !');
+}
+
+// NOTES
 function ajouterNote(){
   const i=document.getElementById('note-eleve').value;
-  const mat=document.getElementById('note-mat').value;
   const val=parseFloat(document.getElementById('note-val').value);
   const com=document.getElementById('note-comment').value;
+  const cl=currentClasseNotes;
   if(i===''||isNaN(val)){toast('Remplis tous les champs !','error');return;}
   if(val<0||val>20){toast('Note entre 0 et 20','error');return;}
-  notes.push({eleve:ELEVES[i].nom,mat,val,com,date:new Date().toLocaleDateString('fr-FR')});
+  const e=CLASSES[cl][i];
+  notes.push({eleve:e.nom+' '+e.prenom,classe:cl,val,com,date:new Date().toLocaleDateString('fr-FR')});
   renderNotes();
   document.getElementById('note-val').value='';
   document.getElementById('note-comment').value='';
   toast('✅ Note ajoutée !');
-  updateMoyenne();
+  renderAccueil();
 }
 
 function renderNotes(){
@@ -541,76 +671,75 @@ function renderNotes(){
   body.innerHTML=notes.length===0?'<tr><td colspan="5" style="text-align:center;color:#6c7a89;padding:20px">Aucune note enregistrée</td></tr>':'';
   notes.forEach((n,i)=>{
     const col=n.val>=10?'#27ae60':n.val>=8?'#e67e22':'#e74c3c';
-    body.innerHTML+=`<tr><td>${n.eleve}</td><td>${n.mat}</td><td><strong style="color:${col}">${n.val}/20</strong></td><td>${n.com||'—'}</td><td><button class="btn-danger" onclick="suppNote(${i})">🗑</button></td></tr>`;
+    body.innerHTML+=`<tr><td>${n.eleve}</td><td>${n.classe}</td><td><strong style="color:${col}">${n.val}/20</strong></td><td>${n.com||'—'}</td><td><button class="btn-danger" onclick="suppNote(${i})">🗑</button></td></tr>`;
   });
   document.getElementById('nb-notes-badge').textContent=notes.length+' note(s)';
 }
-
 function suppNote(i){notes.splice(i,1);renderNotes();toast('Note supprimée','warn');}
 
-function updateMoyenne(){
-  if(!notes.length)return;
-  const m=(notes.reduce((a,n)=>a+n.val,0)/notes.length).toFixed(1);
-  document.getElementById('nb-moy').textContent=m;
-}
-
+// ABSENCES
 function ajouterAbsence(){
   const i=document.getElementById('abs-eleve').value;
   const type=document.getElementById('abs-type').value;
   const cours=document.getElementById('abs-cours').value;
   const motif=document.getElementById('abs-motif').value||'Non précisé';
+  const cl=currentClasseAbs;
   if(i===''){toast('Choisis un élève !','error');return;}
-  absences.push({eleve:ELEVES[i].nom,type,cours,motif,date:new Date().toLocaleDateString('fr-FR')});
+  const e=CLASSES[cl][i];
+  absences.push({eleve:e.nom+' '+e.prenom,classe:cl,type,cours,motif,date:new Date().toLocaleDateString('fr-FR')});
   renderAbsences();
   toast(type==='abs'?'✅ Absence enregistrée !':'✅ Retard enregistré !');
 }
-
 function renderAbsences(){
   const list=document.getElementById('abs-list');
   list.innerHTML=absences.length===0?'<p style="color:#6c7a89;padding:10px">Aucun événement enregistré</p>':'';
   absences.forEach(a=>{
-    const ico=a.type==='abs'?'❌':'⏰';
-    const lab=a.type==='abs'?'Absence':'Retard';
-    list.innerHTML+=`<div class="event-item ${a.type}"><span class="event-icon">${ico}</span><div class="event-body"><div class="event-eleve">${a.eleve} — ${lab}</div><div class="event-detail">${a.cours} · ${a.motif}</div></div><div class="event-time">${a.date}</div></div>`;
+    list.innerHTML+=`<div class="event-item ${a.type}"><span class="event-icon">${a.type==='abs'?'❌':'⏰'}</span><div class="event-body"><div class="event-eleve">${a.eleve} <span style="font-size:11px;color:#2e86c1">[${a.classe}]</span> — ${a.type==='abs'?'Absence':'Retard'}</div><div class="event-detail">${a.cours} · ${a.motif}</div></div><div class="event-time">${a.date}</div></div>`;
   });
 }
 
+// OUBLIS
 function ajouterOubli(){
   const i=document.getElementById('oub-eleve').value;
   const type=document.getElementById('oub-type').value;
+  const cl=currentClasseOubli;
   if(i===''){toast('Choisis un élève !','error');return;}
-  oublis.push({eleve:ELEVES[i].nom,type,date:new Date().toLocaleDateString('fr-FR')});
+  const e=CLASSES[cl][i];
+  oublis.push({eleve:e.nom+' '+e.prenom,classe:cl,type,date:new Date().toLocaleDateString('fr-FR')});
   renderOublis();
   toast('✅ Oubli signalé !');
 }
-
 function renderOublis(){
   const list=document.getElementById('oub-list');
   list.innerHTML=oublis.length===0?'<p style="color:#6c7a89;padding:10px">Aucun oubli signalé</p>':'';
   oublis.forEach(o=>{
-    list.innerHTML+=`<div class="event-item oub"><span class="event-icon">📚</span><div class="event-body"><div class="event-eleve">${o.eleve}</div><div class="event-detail">Oubli : ${o.type}</div></div><div class="event-time">${o.date}</div></div>`;
+    list.innerHTML+=`<div class="event-item oub"><span class="event-icon">📚</span><div class="event-body"><div class="event-eleve">${o.eleve} <span style="font-size:11px;color:#2e86c1">[${o.classe}]</span></div><div class="event-detail">Oubli : ${o.type}</div></div><div class="event-time">${o.date}</div></div>`;
   });
 }
 
+// SANCTIONS
 function ajouterSanction(){
   const i=document.getElementById('san-eleve').value;
   const type=document.getElementById('san-type').value;
   const motif=document.getElementById('san-motif').value||'Non précisé';
+  const cl=currentClasseSan;
   if(i===''){toast('Choisis un élève !','error');return;}
-  sanctions.push({eleve:ELEVES[i].nom,type,motif,date:new Date().toLocaleDateString('fr-FR')});
+  const e=CLASSES[cl][i];
+  sanctions.push({eleve:e.nom+' '+e.prenom,classe:cl,type,motif,date:new Date().toLocaleDateString('fr-FR')});
   renderSanctions();
   document.getElementById('san-motif').value='';
   toast('✅ Sanction enregistrée !');
 }
-
 function renderSanctions(){
   const list=document.getElementById('san-list');
   list.innerHTML=sanctions.length===0?'<p style="color:#6c7a89;padding:10px">Aucune sanction enregistrée</p>':'';
   sanctions.forEach(s=>{
-    list.innerHTML+=`<div class="event-item abs"><span class="event-icon">⚠️</span><div class="event-body"><div class="event-eleve">${s.eleve} — ${s.type}</div><div class="event-detail">${s.motif}</div></div><div class="event-time">${s.date}</div></div>`;
+    list.innerHTML+=`<div class="event-item abs"><span class="event-icon">⚠️</span><div class="event-body"><div class="event-eleve">${s.eleve} <span style="font-size:11px;color:#2e86c1">[${s.classe}]</span> — ${s.type}</div><div class="event-detail">${s.motif}</div></div><div class="event-time">${s.date}</div></div>`;
   });
 }
 
+// MESSAGES
+function toggleCompose(){const a=document.getElementById('compose-area');a.style.display=a.style.display==='none'?'block':'none';}
 function renderMessages(){
   const list=document.getElementById('msg-list');
   list.innerHTML='';
@@ -622,15 +751,13 @@ function renderMessages(){
     </div>`;
   });
 }
-
-function lireMsg(i){messages[i].lu=true;renderMessages();toast('Message ouvert');}
-
+function lireMsg(i){messages[i].lu=true;renderMessages();}
 function envoyerMessage(){
   const dest=document.getElementById('msg-dest').value;
   const objet=document.getElementById('msg-objet').value;
   const body=document.getElementById('msg-body').value;
   if(!objet||!body){toast('Remplis l\'objet et le message !','error');return;}
-  messages.unshift({de:'Mme Dupont → '+dest,objet,preview:body.substring(0,60)+'…',date:'Maintenant',lu:true});
+  messages.unshift({de:'M. Leroy → '+dest,objet,preview:body.substring(0,60)+'…',date:'Maintenant',lu:true});
   renderMessages();
   document.getElementById('msg-objet').value='';
   document.getElementById('msg-body').value='';
@@ -638,38 +765,47 @@ function envoyerMessage(){
   toast('✅ Message envoyé !');
 }
 
+// BULLETINS
 function genererBulletin(){
   const i=document.getElementById('bul-eleve').value;
   const trim=document.getElementById('bul-trim').value;
+  const cl=currentClasseBul;
   if(i===''){toast('Choisis un élève !','error');return;}
-  const e=ELEVES[i];
-  const matieres=[
-    {nom:'Français',prof:'Mme Dupont',moy:e.moy.fr,apprec:e.moy.fr>=15?'Très bon trimestre, élève sérieux(se).':e.moy.fr>=10?'Travail correct, peut progresser.':'Des difficultés persistent, encouragements.'},
-    {nom:'Histoire-Géo',prof:'Mme Dupont',moy:e.moy.hist,apprec:e.moy.hist>=15?'Excellent travail, participe activement.':e.moy.hist>=10?'Résultats satisfaisants.':'Des lacunes à combler rapidement.'},
-    {nom:'Mathématiques',prof:'M. Leroy',moy:e.moy.math,apprec:e.moy.math>=15?'Très bonne maîtrise des notions.':e.moy.math>=10?'Résultats encourageants.':'Doit renforcer ses bases.'},
-    {nom:'SVT',prof:'Mme Thomas',moy:e.moy.svt,apprec:e.moy.svt>=15?'Excellent élève, curieux et investi.':e.moy.svt>=10?'Travail régulier et sérieux.':'Doit s\'impliquer davantage.'},
-    {nom:'Anglais',prof:'M. Girard',moy:e.moy.ang,apprec:e.moy.ang>=15?'Très bonnes compétences linguistiques.':e.moy.ang>=10?'Progression satisfaisante.':'Des efforts supplémentaires nécessaires.'},
-  ];
-  const gen=matieres.reduce((a,m)=>a+m.moy,0)/matieres.length;
+  const e=CLASSES[cl][i];
+  // notes de cet élève
+  const enNotes=notes.filter(n=>n.eleve===e.nom+' '+e.prenom&&n.classe===cl);
+  const moy=enNotes.length?(enNotes.reduce((a,n)=>a+n.val,0)/enNotes.length).toFixed(1):'—';
   const disp=document.getElementById('bulletin-display');
   disp.innerHTML=`
     <div class="bulletin-header">
-      <strong>Bulletin scolaire — ${e.nom}</strong><br>
-      <small>${trim} · Classe 6ème A · Collège Jean Moulin · 2024–2025</small>
+      <strong>Bulletin scolaire — ${e.nom} ${e.prenom}</strong><br>
+      <small>${trim} · Classe 6ème ${cl.replace('6','')} · Collège Jean Moulin</small>
     </div>
     <table class="bul-table">
-      <thead><tr><th>Matière</th><th>Professeur</th><th>Moyenne</th><th>Appréciation</th></tr></thead>
-      <tbody>${matieres.map(m=>`<tr><td>${m.nom}</td><td>${m.prof}</td><td class="moy-cell" style="color:${m.moy>=10?'#1e8449':'#c0392b'}">${m.moy}/20</td><td class="apprec">${m.apprec}</td></tr>`).join('')}</tbody>
+      <thead><tr><th>Matière</th><th>Professeur</th><th>Nombre de notes</th><th>Moyenne</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Cours principal</td>
+          <td>M. Leroy</td>
+          <td>${enNotes.length}</td>
+          <td class="moy-cell" style="color:${moy!=='—'&&parseFloat(moy)>=10?'#1e8449':'#c0392b'}">${moy}/20</td>
+        </tr>
+      </tbody>
     </table>
     <div class="moy-generale">
-      <div><strong>Moyenne générale</strong><br><small style="color:#6c7a89">Rang : 3ème / 28 élèves</small></div>
-      <div class="moy-gen-val" style="color:${gen>=10?'#1e8449':'#c0392b'}">${gen.toFixed(1)}/20</div>
+      <div><strong>Moyenne générale</strong></div>
+      <div class="moy-gen-val" style="color:${moy!=='—'&&parseFloat(moy)>=10?'#1e8449':'#c0392b'}">${moy}/20</div>
     </div>`;
   toast('📄 Bulletin généré !');
 }
 
 // INIT
-populateSelects();
+populateSelect('note-eleve','6A');
+populateSelect('abs-eleve','6A');
+populateSelect('oub-eleve','6A');
+populateSelect('san-eleve','6A');
+populateBulSelect('6A');
+renderAccueil();
 buildAppel();
 buildEDT();
 renderAbsences();

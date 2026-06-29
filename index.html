@@ -8,6 +8,20 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:#1a1a2e;min-height:100vh;display:flex;flex-direction:column}
 
+/* LOGIN */
+#login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#1a2744 0%,#1a5276 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
+.login-box{background:white;border-radius:16px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
+.login-logo{background:#1a5276;color:white;display:inline-block;padding:10px 22px;border-radius:10px;font-weight:700;font-size:22px;letter-spacing:2px;margin-bottom:8px}
+.login-subtitle{color:#6c7a89;font-size:13px;margin-bottom:28px}
+.login-group{text-align:left;margin-bottom:16px}
+.login-group label{display:block;font-size:12px;font-weight:600;color:#6c7a89;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.login-group input{width:100%;border:1.5px solid #d5dbdf;border-radius:8px;padding:11px 14px;font-size:14px;outline:none;transition:border-color .2s}
+.login-group input:focus{border-color:#1a5276}
+.login-btn{width:100%;background:#1a5276;color:white;border:none;padding:13px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:background .2s}
+.login-btn:hover{background:#2e86c1}
+.login-error{color:#c0392b;font-size:13px;margin-top:10px;display:none}
+.login-footer{margin-top:20px;font-size:11px;color:#aab;}
+
 .header{background:#1a5276;color:white;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .header-left{display:flex;align-items:center;gap:14px}
 .logo{background:#2e86c1;padding:6px 12px;border-radius:6px;font-weight:700;font-size:15px;letter-spacing:1px}
@@ -143,7 +157,27 @@ tr:hover td{background:#f7fbff}
 </head>
 <body>
 
-<div class="header">
+<!-- ÉCRAN DE CONNEXION -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">EcoleNet</div>
+    <div class="login-subtitle">Espace Enseignant · Collège Jean Moulin</div>
+    <div class="login-group">
+      <label>Identifiant</label>
+      <input type="text" id="login-id" placeholder="ex: p.martin123" autocomplete="username">
+    </div>
+    <div class="login-group">
+      <label>Mot de passe</label>
+      <input type="password" id="login-pw" placeholder="••••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')tryLogin()">
+    </div>
+    <button class="login-btn" onclick="tryLogin()">Se connecter</button>
+    <div class="login-error" id="login-error">❌ Identifiant ou mot de passe incorrect.</div>
+    <div class="login-footer">EcoleNet v2.4 — Accès réservé au personnel</div>
+  </div>
+</div>
+
+
+
   <div class="header-left">
     <div class="logo">EcoleNet</div>
     <div class="header-info">Collège Jean Moulin · Professeur de Français</div>
@@ -797,6 +831,20 @@ function genererBulletin(){
       <div class="moy-gen-val" style="color:${moy!=='—'&&parseFloat(moy)>=10?'#1e8449':'#c0392b'}">${moy}/20</div>
     </div>`;
   toast('📄 Bulletin généré !');
+}
+
+// LOGIN
+function tryLogin(){
+  const id=document.getElementById('login-id').value.trim();
+  const pw=document.getElementById('login-pw').value;
+  if(id==='t.leroy346' && pw==='Theoleroy2013'){
+    document.getElementById('login-screen').style.display='none';
+  } else {
+    const err=document.getElementById('login-error');
+    err.style.display='block';
+    document.getElementById('login-pw').value='';
+    setTimeout(()=>err.style.display='none',3000);
+  }
 }
 
 // INIT

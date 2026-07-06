@@ -208,6 +208,14 @@ tr:hover td{background:#f7fbff}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.error{background:#c0392b}
 .toast.warn{background:#b7770d}
+
+/* OVERLAY FIN D'APPEL */
+.appel-overlay{position:fixed;inset:0;background:rgba(20,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:400;opacity:0;pointer-events:none;transition:opacity .3s}
+.appel-overlay.show{opacity:1}
+.appel-overlay-box{background:white;border-radius:20px;padding:36px 50px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4);transform:scale(.9);transition:transform .3s}
+.appel-overlay.show .appel-overlay-box{transform:scale(1)}
+.appel-overlay-num{font-size:52px;font-weight:800;color:#2e7d32}
+.appel-overlay-txt{font-size:15px;color:#333;margin-top:8px;font-weight:600}
 </style>
 </head>
 <body>
@@ -318,8 +326,36 @@ tr:hover td{background:#f7fbff}
     </div>
     <div>
       <div class="widget">
-        <div class="widget-head"><span>📅 Agenda</span></div>
-        <div class="widget-body" id="dash-agenda"></div>
+        <div class="widget-head"><span>📅 Agenda</span><button class="btn-primary" style="padding:4px 10px;font-size:11px;background:rgba(255,255,255,.2)" onclick="toggleAgendaForm()">➕ Ajouter</button></div>
+        <div class="widget-body">
+          <div id="agenda-form" style="display:none;margin-bottom:12px;background:#f7f7f9;border-radius:10px;padding:10px">
+            <div class="form-row" style="margin-bottom:8px">
+              <div class="form-group"><label>Jour</label><input type="text" id="ag-jour" placeholder="17" style="width:50px"></div>
+              <div class="form-group"><label>Mois</label><input type="text" id="ag-mois" placeholder="JUIL" style="width:60px"></div>
+              <div class="form-group" style="flex:1"><label>Titre</label><input type="text" id="ag-titre" placeholder="Réunion, sortie…" style="width:100%"></div>
+            </div>
+            <div class="form-row" style="margin-bottom:0">
+              <div class="form-group" style="flex:1"><label>Détail</label><input type="text" id="ag-detail" placeholder="17h00 — Salle des professeurs" style="width:100%"></div>
+              <div class="form-group"><label>&nbsp;</label><button class="btn-primary" onclick="ajouterAgenda()">✅ Ajouter</button></div>
+            </div>
+          </div>
+          <div id="dash-agenda"></div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-head"><span>🔔 Sonnerie</span></div>
+        <div class="widget-body">
+          <div style="display:flex;gap:8px;margin-bottom:10px">
+            <button class="btn-primary" onclick="playBell()">🔊 Sonner</button>
+            <button class="btn-danger" onclick="stopBell()">⏹ Arrêter</button>
+          </div>
+          <div class="form-row" style="margin-bottom:0;align-items:flex-end">
+            <div class="form-group"><label>Minuteur (min)</label><input type="number" id="bell-timer-min" min="1" max="120" value="5" style="width:70px"></div>
+            <div class="form-group"><button class="btn-primary" onclick="startBellTimer()">⏱ Lancer</button></div>
+            <div class="form-group"><button class="btn-danger" onclick="stopBellTimer()">✖ Annuler</button></div>
+          </div>
+          <div id="bell-timer-display" style="margin-top:10px;font-size:13px;color:#6c7a89"></div>
+        </div>
       </div>
       <div class="widget">
         <div class="widget-head"><span>✉️ Messages</span></div>
@@ -582,6 +618,13 @@ tr:hover td{background:#f7fbff}
 
 <div class="toast" id="toast"></div>
 
+<div class="appel-overlay" id="appel-overlay">
+  <div class="appel-overlay-box">
+    <div class="appel-overlay-num" id="appel-overlay-num">0</div>
+    <div class="appel-overlay-txt" id="appel-overlay-txt">élève(s) présent(s) dans la salle</div>
+  </div>
+</div>
+
 <script>
 // DONNÉES ÉLÈVES
 const CLASSES = {
@@ -664,8 +707,16 @@ function toast(msg,type=''){
 function navigate(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('s-'+id).classList.add('active');
-  document.getElementById('nav-'+id).classList.add('active');
+  const sec=document.getElementById('s-'+id);
+  const nav=document.getElementById('nav-'+id);
+  if(sec)sec.classList.add('active');
+  if(nav)nav.classList.add('active');
+  // Reconstruction défensive : garantit que le contenu s'affiche à chaque fois
+  try{
+    if(id==='appel') buildAppel();
+    if(id==='edt') buildEDT();
+    if(id==='accueil') renderDashboardWidgets();
+  }catch(e){ console.error('Erreur navigate('+id+')', e); }
 }
 
 // CLASSE SWITCH HELPERS
@@ -741,6 +792,90 @@ function renderAccueil(){
   renderDashboardWidgets();
 }
 
+let agendaItems=[
+  {j:'17',m:'JUIL',t:"Réunion pédagogique",s:"17h00 — Salle des professeurs"},
+  {j:'22',m:'JUIL',t:"Conseil de classe 6ème A",s:"16h30 — Salle B12"}
+];
+
+function toggleAgendaForm(){
+  const f=document.getElementById('agenda-form');
+  f.style.display = f.style.display==='none' ? 'block' : 'none';
+}
+function ajouterAgenda(){
+  const j=document.getElementById('ag-jour').value.trim();
+  const m=document.getElementById('ag-mois').value.trim().toUpperCase();
+  const t=document.getElementById('ag-titre').value.trim();
+  const s=document.getElementById('ag-detail').value.trim();
+  if(!j||!m||!t){toast('Remplis au moins le jour, le mois et le titre !','error');return;}
+  agendaItems.push({j,m,t,s:s||'—'});
+  document.getElementById('ag-jour').value='';
+  document.getElementById('ag-mois').value='';
+  document.getElementById('ag-titre').value='';
+  document.getElementById('ag-detail').value='';
+  document.getElementById('agenda-form').style.display='none';
+  renderDashboardWidgets();
+  toast('✅ Événement ajouté à l\'agenda !');
+}
+function supprimerAgenda(i){
+  agendaItems.splice(i,1);
+  renderDashboardWidgets();
+  toast('Événement supprimé','warn');
+}
+
+// SONNERIE
+let bellAudioCtx=null, bellOscillators=[], bellTimerInterval=null;
+function playBell(){
+  stopBell();
+  bellAudioCtx = bellAudioCtx || new (window.AudioContext||window.webkitAudioContext)();
+  const ctx=bellAudioCtx;
+  const now=ctx.currentTime;
+  // Sonnerie classique à 2 tons (façon collège)
+  [0,0.6,1.2,1.8].forEach((t,i)=>{
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.type='sine';
+    osc.frequency.value = i%2===0 ? 880 : 660;
+    gain.gain.setValueAtTime(0,now+t);
+    gain.gain.linearRampToValueAtTime(0.3,now+t+0.05);
+    gain.gain.linearRampToValueAtTime(0,now+t+0.5);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(now+t);
+    osc.stop(now+t+0.55);
+    bellOscillators.push(osc);
+  });
+  toast('🔔 Sonnerie en cours…');
+}
+function stopBell(){
+  bellOscillators.forEach(o=>{try{o.stop();}catch(e){}});
+  bellOscillators=[];
+}
+function startBellTimer(){
+  stopBellTimer();
+  let seconds = Math.max(1,parseInt(document.getElementById('bell-timer-min').value)||5) * 60;
+  const disp=document.getElementById('bell-timer-display');
+  const tick=()=>{
+    const mm=String(Math.floor(seconds/60)).padStart(2,'0');
+    const ss=String(seconds%60).padStart(2,'0');
+    disp.textContent = `⏱ Sonnerie dans ${mm}:${ss}`;
+    if(seconds<=0){
+      clearInterval(bellTimerInterval);
+      bellTimerInterval=null;
+      disp.textContent='';
+      playBell();
+      return;
+    }
+    seconds--;
+  };
+  tick();
+  bellTimerInterval=setInterval(tick,1000);
+  toast('⏱ Minuteur lancé !');
+}
+function stopBellTimer(){
+  if(bellTimerInterval){clearInterval(bellTimerInterval);bellTimerInterval=null;}
+  const disp=document.getElementById('bell-timer-display');
+  if(disp)disp.textContent='';
+}
+
 function renderDashboardWidgets(){
   const cl=currentClasse;
   // Fil d'activité récente : combine absences, oublis, sanctions de la classe
@@ -755,13 +890,11 @@ function renderDashboardWidgets(){
     ? '<div class="widget-empty">Aucune activité récente pour cette classe</div>'
     : feed.map(f=>`<div class="mini-feed-item"><span class="mini-feed-icon">${f.icon}</span><div class="mini-feed-txt"><strong>${f.eleve}</strong> — ${f.label}<div class="mini-feed-sub">${f.detail} · ${f.date}</div></div></div>`).join('');
 
-  // Agenda (statique, à titre d'exemple)
+  // Agenda (dynamique, modifiable)
   const agendaEl=document.getElementById('dash-agenda');
-  const agendaItems=[
-    {j:'17',m:'JUIL',t:"Réunion pédagogique",s:"17h00 — Salle des professeurs"},
-    {j:'22',m:'JUIL',t:"Conseil de classe 6ème A",s:"16h30 — Salle B12"}
-  ];
-  agendaEl.innerHTML = agendaItems.map(a=>`<div class="agenda-item"><div class="agenda-date">${a.j}<br>${a.m}</div><div><strong style="font-size:12.5px">${a.t}</strong><div class="mini-feed-sub">${a.s}</div></div></div>`).join('');
+  agendaEl.innerHTML = agendaItems.length===0
+    ? '<div class="widget-empty">Aucun événement à venir</div>'
+    : agendaItems.map((a,i)=>`<div class="agenda-item"><div class="agenda-date">${a.j}<br>${a.m}</div><div style="flex:1"><strong style="font-size:12.5px">${a.t}</strong><div class="mini-feed-sub">${a.s}</div></div><button class="btn-danger" style="padding:3px 8px" onclick="supprimerAgenda(${i})">🗑</button></div>`).join('');
 
   // Messages non lus
   const msgEl=document.getElementById('dash-messages');
@@ -852,6 +985,18 @@ function toggleAppelTermine(){
   const absCount=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,i).absence>0?1:0),0);
   document.getElementById('nb-abs').textContent=absCount;
   toast(appelTermine[cl]?'✅ Appel terminé !':'Appel rouvert');
+  if(appelTermine[cl]){
+    const presents=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,i).absence>0?0:1),0);
+    showAppelOverlay(presents);
+  }
+}
+
+function showAppelOverlay(presents){
+  const ov=document.getElementById('appel-overlay');
+  document.getElementById('appel-overlay-num').textContent=presents;
+  document.getElementById('appel-overlay-txt').textContent=`élève(s) présent(s) dans la salle`;
+  ov.classList.add('show');
+  setTimeout(()=>ov.classList.remove('show'),1500);
 }
 
 function updateAppelStatus(){

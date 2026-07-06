@@ -173,6 +173,27 @@ tr:hover td{background:#f7fbff}
 
 .sanc-form{background:#fff8f0;border:1px solid #fdebd0;border-radius:8px;padding:14px;margin-bottom:16px}
 
+/* WIDGETS TABLEAU DE BORD */
+.widget-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:start}
+@media(max-width:900px){.widget-grid{grid-template-columns:1fr}}
+.widget{background:white;border-radius:16px;box-shadow:0 6px 22px rgba(0,0,0,.08);margin-bottom:18px;overflow:hidden;border:1px solid #ececec}
+.widget-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(120deg,#8a0000,#c62828);color:white;font-size:13px;font-weight:700}
+.widget-body{padding:14px 16px}
+.widget-empty{color:#9aa5b1;font-size:12.5px;font-style:italic;padding:6px 0}
+.pense-bete{background:#fff8e1;border-left:4px solid #f9a825;border-radius:8px;padding:12px 14px;font-size:13px;color:#6d5300}
+.mini-feed{display:flex;flex-direction:column;gap:0}
+.mini-feed-item{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid #f2f2f2;font-size:12.5px}
+.mini-feed-item:last-child{border-bottom:none}
+.mini-feed-icon{font-size:15px;width:22px;text-align:center;flex-shrink:0}
+.mini-feed-txt strong{color:#333}
+.mini-feed-sub{color:#8a94a3;font-size:11px;margin-top:1px}
+.widget-stat-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px dashed #eee;font-size:12.5px}
+.widget-stat-row:last-child{border-bottom:none}
+.widget-stat-val{font-weight:700;color:#8a0000}
+.agenda-item{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #f2f2f2;font-size:12.5px}
+.agenda-item:last-child{border-bottom:none}
+.agenda-date{background:#8a0000;color:white;border-radius:8px;padding:6px 9px;font-weight:700;font-size:11px;text-align:center;flex-shrink:0;min-width:38px}
+
 /* MODAL EDT */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
@@ -276,10 +297,39 @@ tr:hover td{background:#f7fbff}
     <div class="stat-card stat-orange"><div class="stat-number" id="nb-ret">0</div><div class="stat-label">Retards ce mois</div></div>
     <div class="stat-card stat-green"><div class="stat-number" id="nb-moy">—</div><div class="stat-label">Moyenne de classe</div></div>
   </div>
-  <div class="card">
-    <div class="card-header"><span class="card-title" id="accueil-title">📌 Classe 6ème A — Élèves</span></div>
-    <div class="table-wrap"><table><thead><tr><th>Nom</th><th>Prénom</th></tr></thead>
-    <tbody id="accueil-eleves"></tbody></table></div>
+
+  <div class="widget-grid">
+    <div>
+      <div class="widget">
+        <div class="widget-head"><span>📌 Pense-bête</span></div>
+        <div class="widget-body">
+          <div class="pense-bete">N'oublie pas de saisir les notes du dernier contrôle et de valider l'appel de la matinée avant midi.</div>
+        </div>
+      </div>
+      <div class="widget">
+        <div class="widget-head"><span>🕒 Activité récente</span><span id="feed-count" class="card-badge" style="background:rgba(255,255,255,.25);color:white">0</span></div>
+        <div class="widget-body"><div class="mini-feed" id="dash-feed"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title" id="accueil-title">📌 Classe 6ème A — Élèves</span></div>
+        <div class="table-wrap"><table><thead><tr><th>Nom</th><th>Prénom</th></tr></thead>
+        <tbody id="accueil-eleves"></tbody></table></div>
+      </div>
+    </div>
+    <div>
+      <div class="widget">
+        <div class="widget-head"><span>📅 Agenda</span></div>
+        <div class="widget-body" id="dash-agenda"></div>
+      </div>
+      <div class="widget">
+        <div class="widget-head"><span>✉️ Messages</span></div>
+        <div class="widget-body" id="dash-messages"></div>
+      </div>
+      <div class="widget">
+        <div class="widget-head"><span>📊 Données de la classe</span></div>
+        <div class="widget-body" id="dash-stats"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -688,6 +738,49 @@ function renderAccueil(){
   }else{
     document.getElementById('nb-moy').textContent='—';
   }
+  renderDashboardWidgets();
+}
+
+function renderDashboardWidgets(){
+  const cl=currentClasse;
+  // Fil d'activité récente : combine absences, oublis, sanctions de la classe
+  const feed=[
+    ...absences.filter(a=>a.classe===cl).map(a=>({icon:a.type==='abs'?'❌':'⏰',label:a.type==='abs'?'Absence':'Retard',eleve:a.eleve,detail:a.motif,date:a.date})),
+    ...oublis.filter(o=>o.classe===cl).map(o=>({icon:'📚',label:'Oubli',eleve:o.eleve,detail:o.type,date:o.date})),
+    ...sanctions.filter(s=>s.classe===cl).map(s=>({icon:'⚠️',label:s.type,eleve:s.eleve,detail:s.motif,date:s.date}))
+  ].slice(-6).reverse();
+  const feedEl=document.getElementById('dash-feed');
+  document.getElementById('feed-count').textContent=feed.length;
+  feedEl.innerHTML = feed.length===0
+    ? '<div class="widget-empty">Aucune activité récente pour cette classe</div>'
+    : feed.map(f=>`<div class="mini-feed-item"><span class="mini-feed-icon">${f.icon}</span><div class="mini-feed-txt"><strong>${f.eleve}</strong> — ${f.label}<div class="mini-feed-sub">${f.detail} · ${f.date}</div></div></div>`).join('');
+
+  // Agenda (statique, à titre d'exemple)
+  const agendaEl=document.getElementById('dash-agenda');
+  const agendaItems=[
+    {j:'17',m:'JUIL',t:"Réunion pédagogique",s:"17h00 — Salle des professeurs"},
+    {j:'22',m:'JUIL',t:"Conseil de classe 6ème A",s:"16h30 — Salle B12"}
+  ];
+  agendaEl.innerHTML = agendaItems.map(a=>`<div class="agenda-item"><div class="agenda-date">${a.j}<br>${a.m}</div><div><strong style="font-size:12.5px">${a.t}</strong><div class="mini-feed-sub">${a.s}</div></div></div>`).join('');
+
+  // Messages non lus
+  const msgEl=document.getElementById('dash-messages');
+  const unread=messages.filter(m=>!m.lu);
+  msgEl.innerHTML = unread.length===0
+    ? '<div class="widget-empty">Tous les messages ont été lus</div>'
+    : unread.map(m=>`<div class="mini-feed-item"><span class="mini-feed-icon">✉️</span><div class="mini-feed-txt"><strong>${m.de}</strong><div class="mini-feed-sub">${m.objet}</div></div></div>`).join('');
+
+  // Stats classe
+  const eleves=CLASSES[cl];
+  const absCount=eleves.reduce((a,e,i)=>a+((appelData[cl][i]&&appelData[cl][i].absence>0)?1:0),0);
+  const retCount=eleves.reduce((a,e,i)=>a+((appelData[cl][i]&&appelData[cl][i].retard>0)?1:0),0);
+  const sanCount=sanctions.filter(s=>s.classe===cl).length;
+  document.getElementById('dash-stats').innerHTML=`
+    <div class="widget-stat-row"><span>Élèves inscrits</span><span class="widget-stat-val">${eleves.length}</span></div>
+    <div class="widget-stat-row"><span>Absences enregistrées</span><span class="widget-stat-val">${absCount}</span></div>
+    <div class="widget-stat-row"><span>Retards enregistrés</span><span class="widget-stat-val">${retCount}</span></div>
+    <div class="widget-stat-row"><span>Sanctions / observations</span><span class="widget-stat-val">${sanCount}</span></div>
+    <div class="widget-stat-row"><span>Notes saisies</span><span class="widget-stat-val">${cn.length}</span></div>`;
 }
 
 const APPEL_CATS = [

@@ -7,66 +7,85 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:#1a1a2e;min-height:100vh;display:flex;flex-direction:column}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f3f4f8;color:#1a1a2e;min-height:100vh;display:flex;flex-direction:column}
 
 /* LOGIN */
-#login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#1a2744 0%,#1a5276 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
+#login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#7f0000 0%,#c62828 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
 .login-box{background:white;border-radius:16px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
-.login-logo{background:#1a5276;color:white;display:inline-block;padding:10px 22px;border-radius:10px;font-weight:700;font-size:22px;letter-spacing:2px;margin-bottom:8px}
+.login-logo{background:#c62828;padding:12px 28px;font-size:24px;border-radius:12px;color:white;font-weight:bold;display:inline-block;letter-spacing:2px;margin-bottom:8px}
 .login-subtitle{color:#6c7a89;font-size:13px;margin-bottom:28px}
 .login-group{text-align:left;margin-bottom:16px}
 .login-group label{display:block;font-size:12px;font-weight:600;color:#6c7a89;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
 .login-group input{width:100%;border:1.5px solid #d5dbdf;border-radius:8px;padding:11px 14px;font-size:14px;outline:none;transition:border-color .2s}
-.login-group input:focus{border-color:#1a5276}
-.login-btn{width:100%;background:#1a5276;color:white;border:none;padding:13px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:background .2s}
-.login-btn:hover{background:#2e86c1}
+.login-group input:focus{border-color:#c62828}
+.login-btn{width:100%;background:#c62828;color:white;border:none;padding:13px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:background .2s}
+.login-btn:hover{background:#e53935}
 .login-error{color:#c0392b;font-size:13px;margin-top:10px;display:none}
 .login-footer{margin-top:20px;font-size:11px;color:#aab;}
 
-.header{background:#1a5276;color:white;padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+/* SÉLECTION DE MODE */
+.mode-box{background:white;border-radius:16px;padding:40px 36px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
+.mode-title{font-size:13px;color:#6c7a89;margin-bottom:24px;text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.mode-grid{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.mode-card{width:110px;border:2px solid #ececec;border-radius:14px;padding:18px 10px 14px;cursor:pointer;transition:all .2s;background:white}
+.mode-card:hover{border-color:#e53935;transform:translateY(-3px);box-shadow:0 8px 20px rgba(198,40,40,.15)}
+.mode-icon{font-size:30px;margin-bottom:8px}
+.mode-label{font-size:12px;font-weight:700;color:#7f0000}
+.back-mode{background:none;border:none;color:#6c7a89;font-size:12px;cursor:pointer;margin-top:14px}
+.back-mode:hover{color:#c62828}
+.role-tag{display:inline-block;background:#c62828;color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;letter-spacing:.5px;margin-bottom:10px}
+
+.header{background:#b71c1c;color:white;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 25px;position:sticky;top:0;z-index:100;box-shadow:0 4px 15px rgba(0,0,0,.25)}
 .header-left{display:flex;align-items:center;gap:14px}
-.logo{background:#2e86c1;padding:6px 12px;border-radius:6px;font-weight:700;font-size:15px;letter-spacing:1px}
+.logo{background:#e53935;padding:6px 12px;border-radius:6px;font-weight:700;font-size:15px;letter-spacing:1px}
 .header-info{font-size:13px;opacity:.85}
 .header-right{display:flex;align-items:center;gap:10px;font-size:13px}
-.prof-badge{background:#2e86c1;padding:4px 10px;border-radius:20px;font-size:12px}
+.prof-badge{background:#e53935;padding:4px 10px;border-radius:20px;font-size:12px}
 .notif-btn{background:none;border:none;color:white;cursor:pointer;font-size:18px;position:relative}
 .notif-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:#e74c3c;border-radius:50%}
 
-.app-body{display:flex;flex:1;height:calc(100vh - 52px)}
+.app-body{display:flex;flex:1;flex-direction:column;height:calc(100vh - 52px)}
 
-.sidebar{width:200px;background:#1a2744;color:white;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.topnav{background:#8a0000;display:flex;align-items:stretch;overflow-x:auto;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,.15)}
+.topnav .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 18px;cursor:pointer;font-size:11.5px;color:#f3c9c9;border-left:none;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
+.topnav .nav-item .nav-icon{font-size:17px;width:auto}
+.topnav .nav-item:hover{background:rgba(255,255,255,.08);color:white}
+.topnav .nav-item.active{background:rgba(255,255,255,.12);color:white;border-bottom-color:#ffd54f}
+.topnav .sidebar-section{display:none}
+
+.sidebar{width:230px;background:#9a0007;color:white;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
 .sidebar-section{padding:12px 8px 4px;font-size:10px;color:#7fb3d3;text-transform:uppercase;letter-spacing:1px;font-weight:600}
 .nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;font-size:13px;color:#b8cfe8;transition:all .2s;border-left:3px solid transparent}
 .nav-item:hover{background:rgba(255,255,255,.08);color:white}
-.nav-item.active{background:rgba(46,134,193,.3);color:white;border-left-color:#2e86c1}
+.nav-item.active{background:rgba(46,134,193,.3);color:white;border-left-color:#e53935}
 .nav-icon{font-size:16px;width:18px;text-align:center}
 
 /* Classe switcher */
 .classe-tabs{display:flex;gap:8px;margin-bottom:16px}
 .classe-tab{padding:8px 20px;border-radius:8px;border:2px solid #d5dbdf;background:white;cursor:pointer;font-size:13px;font-weight:600;color:#6c7a89;transition:all .2s}
-.classe-tab.active{border-color:#2e86c1;background:#2e86c1;color:white}
+.classe-tab.active{border-color:#e53935;background:#e53935;color:white}
 
 .main{flex:1;overflow-y:auto;padding:20px}
 .section{display:none}
 .section.active{display:block}
 
-.card{background:white;border-radius:10px;box-shadow:0 1px 6px rgba(0,0,0,.08);padding:20px;margin-bottom:16px}
+.card{background:white;border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(0,0,0,.12);margin-bottom:20px;border:1px solid #ececec}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.card-title{font-size:15px;font-weight:600;color:#1a2744}
-.card-badge{background:#eaf4fc;color:#1a5276;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.card-title{font-size:15px;font-weight:600;color:#7f0000}
+.card-badge{background:#eaf4fc;color:#c62828;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
 
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .stat-card{background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,.08)}
 .stat-number{font-size:28px;font-weight:700}
 .stat-label{font-size:11px;color:#6c7a89;margin-top:4px}
-.stat-blue .stat-number{color:#2e86c1}
+.stat-blue .stat-number{color:#e53935}
 .stat-red .stat-number{color:#e74c3c}
 .stat-orange .stat-number{color:#e67e22}
 .stat-green .stat-number{color:#27ae60}
 
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{background:#1a5276;color:white;padding:10px 12px;text-align:left;font-weight:500}
+th{background:#b71c1c;color:white;padding:10px 12px;text-align:left;font-weight:500}
 td{padding:10px 12px;border-bottom:1px solid #f0f3f7}
 tr:hover td{background:#f7fbff}
 .badge{padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;display:inline-block}
@@ -75,35 +94,49 @@ tr:hover td{background:#f7fbff}
 .badge-retard{background:#fef9e7;color:#b7770d}
 
 .appel-btns{display:flex;gap:6px}
+.appel-grid{border-collapse:collapse;font-size:12px;width:max-content;min-width:100%}
+.appel-grid th{background:#8a0000;color:white;border:1px solid #e5e5e5;padding:7px 4px;text-align:center;font-size:11.5px;font-weight:700;white-space:nowrap}
+.appel-grid th.eleve-col{text-align:left;padding-left:12px;min-width:170px;background:#fafafa}
+.appel-grid td{border:1px solid #eee;text-align:center;padding:0;height:30px}
+.appel-grid td.eleve-cell{text-align:left;padding-left:12px;font-weight:600;color:#8a0000;white-space:nowrap;cursor:default;background:#fff}
+.appel-grid tr:nth-child(even) td.eleve-cell{background:#fafbfc}
+.appel-cell{width:100%;height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s;font-size:13px;color:#333}
+.appel-cell:hover{background:#ffecec}
+.appel-cell.checked{background:#fdecea;color:#c62828;font-weight:700}
+.appel-count{font-size:10px;color:#e67e22;font-weight:700;position:absolute;margin-top:14px;margin-left:14px}
+.appel-cell-wrap{position:relative;width:100%;height:100%}
+.appel-footer{display:flex;align-items:center;gap:10px;padding:12px 20px;background:#f4f6f8;border-top:1px solid #eee;font-size:13px;color:#444}
 .btn-appel{border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;transition:all .15s}
 .btn-p{background:#d5f5e3;color:#1e8449}.btn-p:hover{background:#a9dfbf}
 .btn-a{background:#fde8e8;color:#c0392b}.btn-a:hover{background:#f5b7b1}
 .btn-r{background:#fef9e7;color:#b7770d}.btn-r:hover{background:#fdebd0}
 
 /* EDT éditable */
-.edt-grid{display:grid;grid-template-columns:60px repeat(5,1fr);gap:2px;font-size:12px}
-.edt-header{background:#1a5276;color:white;padding:8px;text-align:center;font-weight:500;border-radius:4px}
-.edt-time{background:#eef2f7;padding:8px 4px;text-align:center;color:#6c7a89;font-size:11px;display:flex;align-items:center;justify-content:center;border-radius:4px}
-.edt-slot{min-height:54px;border-radius:6px;padding:6px;cursor:pointer;transition:all .2s;position:relative}
-.edt-slot:hover{opacity:.85;transform:scale(1.02)}
-.edt-slot.vide{background:#f7f9fc;border:1px dashed #d5dbdf}
-.edt-slot.vide:hover{background:#eaf4fc;border-color:#2e86c1}
-.edt-slot.cours{color:white}
-.edt-slot .cours-nom{font-weight:600;font-size:12px}
-.edt-slot .cours-salle{font-size:10px;opacity:.85;margin-top:2px}
-.edt-slot .cours-classe{font-size:10px;opacity:.75;margin-top:1px}
-.edt-edit-hint{position:absolute;top:2px;right:4px;font-size:9px;opacity:.6}
-.mat-6a{background:#1a5276}
-.mat-6b{background:#6c3483}
-.mat-vide-hint{color:#9bb5cc;font-size:10px;text-align:center;padding-top:14px}
+.edt-grid{display:grid;grid-template-columns:60px repeat(5,1fr);gap:4px;font-size:12px}
+.edt-header{background:#8a0000;color:white;padding:9px;text-align:center;font-weight:600;border-radius:6px;letter-spacing:.3px}
+.edt-time{background:#f3f4f8;padding:8px 4px;text-align:center;color:#6c7a89;font-size:11px;display:flex;align-items:center;justify-content:center;border-radius:6px}
+.edt-time.lunch-row{border-top:3px solid #e91e63}
+.edt-slot{min-height:58px;border-radius:10px;padding:8px;cursor:pointer;transition:all .2s;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.edt-slot:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 4px 10px rgba(0,0,0,.15)}
+.edt-slot.vide{background:#f7f9fc;border:1.5px dashed #d5dbdf;box-shadow:none}
+.edt-slot.vide:hover{background:#fdecec;border-color:#e53935}
+.edt-slot.vide.lunch-row{border-top:3px solid #e91e63}
+.edt-slot.cours .cours-nom{font-weight:700;font-size:12.5px}
+.edt-slot.cours .cours-salle{font-size:10.5px;opacity:.8;margin-top:3px}
+.edt-slot.cours .cours-classe{font-size:10px;opacity:.7;margin-top:1px}
+.edt-edit-hint{position:absolute;top:5px;right:7px;font-size:10px;opacity:.55}
+.edt-check-hint{position:absolute;bottom:5px;right:7px;font-size:11px;opacity:.85}
+.mat-6a{background:#fff4cc;border-left:5px solid #f9a825;color:#7a5900}
+.mat-6b{background:#d4f3ea;border-left:5px solid #00897b;color:#00453a}
+.mat-vide-hint{color:#9bb5cc;font-size:10px;text-align:center;padding-top:16px}
 
 .form-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px}
 .form-group{display:flex;flex-direction:column;gap:4px}
 .form-group label{font-size:11px;color:#6c7a89;font-weight:500}
 .form-group input,.form-group select{border:1px solid #d5dbdf;border-radius:6px;padding:7px 10px;font-size:13px;outline:none;background:white}
-.form-group input:focus,.form-group select:focus{border-color:#2e86c1}
-.btn-primary{background:#1a5276;color:white;border:none;padding:8px 18px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:500}
-.btn-primary:hover{background:#2e86c1}
+.form-group input:focus,.form-group select:focus{border-color:#e53935}
+.btn-primary{background:#d32f2f;color:white;border:none;padding:10px 18px;border-radius:12px;font-weight:bold;font-size:13px;transition:.3s;cursor:pointer}
+.btn-primary:hover{background:#b71c1c;transform:translateY(-2px)}
 .btn-danger{background:#e74c3c;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px}
 
 .event-list{display:flex;flex-direction:column;gap:8px}
@@ -120,7 +153,7 @@ tr:hover td{background:#f7fbff}
 .msg-list{display:flex;flex-direction:column;gap:6px}
 .msg-item{padding:12px 16px;background:#f9fafb;border-radius:8px;cursor:pointer;transition:background .15s;border-left:3px solid transparent}
 .msg-item:hover{background:#eef2f7}
-.msg-item.unread{background:#eaf4fc;border-left-color:#2e86c1}
+.msg-item.unread{background:#eaf4fc;border-left-color:#e53935}
 .msg-top{display:flex;justify-content:space-between;align-items:center}
 .msg-from{font-weight:600;font-size:13px}
 .msg-date{font-size:11px;color:#6c7a89}
@@ -129,14 +162,14 @@ tr:hover td{background:#f7fbff}
 .msg-compose{width:100%;background:#f7fbff;border:1px solid #d5dbdf;border-radius:8px;padding:14px;margin-bottom:14px}
 .msg-compose textarea{width:100%;border:1px solid #d5dbdf;border-radius:6px;padding:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px;outline:none}
 
-.bulletin-header{background:#1a5276;color:white;border-radius:10px 10px 0 0;padding:16px 20px}
+.bulletin-header{background:#c62828;color:white;border-radius:10px 10px 0 0;padding:16px 20px}
 .bul-table{width:100%;border-collapse:collapse}
 .bul-table th{background:#eef2f7;padding:10px 14px;font-size:12px;color:#6c7a89;font-weight:500;text-align:left;border-bottom:1px solid #d5dbdf}
 .bul-table td{padding:10px 14px;font-size:13px;border-bottom:1px solid #f0f3f7}
-.moy-cell{font-weight:700;color:#1a5276}
+.moy-cell{font-weight:700;color:#c62828}
 .apprec{color:#6c7a89;font-style:italic;font-size:12px}
 .moy-generale{padding:16px 20px;background:#eef2f7;border-radius:0 0 10px 10px;display:flex;align-items:center;justify-content:space-between}
-.moy-gen-val{font-size:22px;font-weight:700;color:#1a5276}
+.moy-gen-val{font-size:22px;font-weight:700;color:#c62828}
 
 .sanc-form{background:#fff8f0;border:1px solid #fdebd0;border-radius:8px;padding:14px;margin-bottom:16px}
 
@@ -144,7 +177,7 @@ tr:hover td{background:#f7fbff}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{background:white;border-radius:12px;padding:24px;width:90%;max-width:420px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
-.modal-title{font-size:16px;font-weight:600;margin-bottom:16px;color:#1a2744}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:16px;color:#7f0000}
 .modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:#6c7a89}
 .edt-legend{display:flex;gap:12px;margin-top:12px;font-size:12px;flex-wrap:wrap}
 .legend-item{display:flex;align-items:center;gap:6px}
@@ -160,12 +193,36 @@ tr:hover td{background:#f7fbff}
 
 <!-- ÉCRAN DE CONNEXION -->
 <div id="login-screen">
-  <div class="login-box">
-    <div class="login-logo">EcoleNet</div>
-    <div class="login-subtitle">Espace Enseignant · Collège Jean Moulin</div>
+
+  <!-- Étape 1 : choix du mode -->
+  <div class="mode-box" id="mode-select">
+    <div class="login-logo">ECOLENET</div>
+    <div class="mode-title">Choisissez votre espace</div>
+    <div class="mode-grid">
+      <div class="mode-card" onclick="selectMode('admin')">
+        <div class="mode-icon">🧭</div>
+        <div class="mode-label">Mode<br>administratif</div>
+      </div>
+      <div class="mode-card" onclick="selectMode('prof')">
+        <div class="mode-icon">🖊️</div>
+        <div class="mode-label">Mode<br>enseignant</div>
+      </div>
+      <div class="mode-card" onclick="selectMode('vie')">
+        <div class="mode-icon">🗂️</div>
+        <div class="mode-label">Mode<br>vie scolaire</div>
+      </div>
+    </div>
+    <div class="login-footer" style="margin-top:24px">EcoleNet v2.4 — Accès réservé au personnel</div>
+  </div>
+
+  <!-- Étape 2 : identifiants -->
+  <div class="login-box" id="login-form" style="display:none">
+    <span class="role-tag" id="role-tag">MODE</span>
+    <div class="login-logo">ECOLENET</div>
+    <div class="login-subtitle" id="login-subtitle">Espace · Collège Jean Moulin</div>
     <div class="login-group">
       <label>Identifiant</label>
-      <input type="text" id="login-id" placeholder="ex: p.martin123" autocomplete="username">
+      <input type="text" id="login-id" placeholder="ex: j.martin01" autocomplete="username">
     </div>
     <div class="login-group">
       <label>Mot de passe</label>
@@ -173,7 +230,7 @@ tr:hover td{background:#f7fbff}
     </div>
     <button class="login-btn" onclick="tryLogin()">Se connecter</button>
     <div class="login-error" id="login-error">❌ Identifiant ou mot de passe incorrect.</div>
-    <div class="login-footer">EcoleNet v2.4 — Accès réservé au personnel</div>
+    <button class="back-mode" onclick="backToModeSelect()">← Changer d'espace</button>
   </div>
 </div>
 
@@ -181,29 +238,28 @@ tr:hover td{background:#f7fbff}
 
   <div class="header-left">
     <div class="logo">EcoleNet</div>
-    <div class="header-info">Collège Jean Moulin · Professeur de Français</div>
+    <div class="header-info" id="header-info">Collège Jean Moulin · Professeur de Français</div>
   </div>
   <div class="header-right">
-    <span class="prof-badge">👨‍🏫 M. Leroy — Français</span>
+    <span class="prof-badge" id="header-badge">👨‍🏫 M. Leroy — Français</span>
     <button class="notif-btn" onclick="navigate('messages')">🔔<span class="notif-dot"></span></button>
+    <button class="notif-btn" onclick="logout()" title="Changer d'espace">🚪</button>
   </div>
 </div>
 
 <div class="app-body">
 
-<div class="sidebar">
-  <div class="sidebar-section">Principal</div>
-  <div class="nav-item active" onclick="navigate('accueil')" id="nav-accueil"><span class="nav-icon">🏠</span> Accueil</div>
-  <div class="nav-item" onclick="navigate('appel')" id="nav-appel"><span class="nav-icon">📋</span> Faire l'appel</div>
-  <div class="nav-item" onclick="navigate('edt')" id="nav-edt"><span class="nav-icon">📅</span> Emploi du temps</div>
-  <div class="sidebar-section">Suivi élèves</div>
-  <div class="nav-item" onclick="navigate('notes')" id="nav-notes"><span class="nav-icon">📝</span> Notes</div>
-  <div class="nav-item" onclick="navigate('absences')" id="nav-absences"><span class="nav-icon">❌</span> Absences / Retards</div>
-  <div class="nav-item" onclick="navigate('oublis')" id="nav-oublis"><span class="nav-icon">📚</span> Oublis</div>
-  <div class="nav-item" onclick="navigate('sanctions')" id="nav-sanctions"><span class="nav-icon">⚠️</span> Sanctions</div>
-  <div class="sidebar-section">Communication</div>
-  <div class="nav-item" onclick="navigate('messages')" id="nav-messages"><span class="nav-icon">✉️</span> Messages</div>
-  <div class="nav-item" onclick="navigate('bulletins')" id="nav-bulletins"><span class="nav-icon">📊</span> Bulletins</div>
+<div class="topnav" id="main-nav">
+  <div class="nav-item active" onclick="navigate('accueil')" id="nav-accueil" data-roles="admin,prof,vie"><span class="nav-icon">🏠</span> Accueil</div>
+  <div class="nav-item" onclick="navigate('appel')" id="nav-appel" data-roles="admin,prof,vie"><span class="nav-icon">📋</span> Appel</div>
+  <div class="nav-item" onclick="navigate('edt')" id="nav-edt" data-roles="admin,prof"><span class="nav-icon">📅</span> Emploi du temps</div>
+  <div class="nav-item" onclick="navigate('notes')" id="nav-notes" data-roles="admin,prof"><span class="nav-icon">📝</span> Notes</div>
+  <div class="nav-item" onclick="navigate('absences')" id="nav-absences" data-roles="admin,prof,vie"><span class="nav-icon">❌</span> Absences</div>
+  <div class="nav-item" onclick="navigate('oublis')" id="nav-oublis" data-roles="admin,prof,vie"><span class="nav-icon">📚</span> Oublis</div>
+  <div class="nav-item" onclick="navigate('sanctions')" id="nav-sanctions" data-roles="admin,prof,vie"><span class="nav-icon">⚠️</span> Sanctions</div>
+  <div class="nav-item" onclick="navigate('messages')" id="nav-messages" data-roles="admin,prof,vie"><span class="nav-icon">✉️</span> Messages</div>
+  <div class="nav-item" onclick="navigate('bulletins')" id="nav-bulletins" data-roles="admin,prof"><span class="nav-icon">📊</span> Bulletins</div>
+  <div class="nav-item" onclick="navigate('utilisateurs')" id="nav-utilisateurs" data-roles="admin" style="display:none"><span class="nav-icon">👤</span> Utilisateurs</div>
 </div>
 
 <div class="main">
@@ -233,22 +289,25 @@ tr:hover td{background:#f7fbff}
     <button class="classe-tab active" onclick="switchClasseAppel('6A', this)">6ème A</button>
     <button class="classe-tab" onclick="switchClasseAppel('6B', this)">6ème B</button>
   </div>
-  <div class="card">
-    <div class="card-header">
+  <div class="card" style="padding:0;overflow:hidden">
+    <div class="card-header" style="padding:16px 20px 0">
       <span class="card-title" id="appel-title">📋 Appel — 6ème A</span>
       <div style="display:flex;gap:8px;align-items:center">
         <select id="cours-select" style="border:1px solid #d5dbdf;border-radius:6px;padding:6px 10px;font-size:12px">
           <option>08h00</option><option>09h00</option><option>10h00</option><option>11h00</option>
           <option>14h00</option><option>15h00</option><option>16h00</option>
         </select>
-        <button class="btn-primary" onclick="sauvegarderAppel()">💾 Valider l'appel</button>
       </div>
     </div>
-    <div class="table-wrap">
-      <table id="appel-table">
-        <thead><tr><th>Élève</th><th>Statut</th><th>Action</th><th>Retard (min)</th></tr></thead>
+    <div class="table-wrap" style="padding:0 20px">
+      <table class="appel-grid" id="appel-table">
+        <thead id="appel-head"></thead>
         <tbody id="appel-body"></tbody>
       </table>
+    </div>
+    <div class="appel-footer" id="appel-footer">
+      <span id="appel-status">☐ Appel non terminé</span>
+      <button class="btn-primary" style="margin-left:auto" onclick="toggleAppelTermine()">✅ Terminer l'appel</button>
     </div>
   </div>
 </div>
@@ -262,9 +321,10 @@ tr:hover td{background:#f7fbff}
     </div>
     <div class="edt-grid" id="edt-grid"></div>
     <div class="edt-legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#1a5276"></div> 6ème A</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#6c3483"></div> 6ème B</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f9a825"></div> 6ème A</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#00897b"></div> 6ème B</div>
       <div class="legend-item"><div class="legend-dot" style="background:#f0f0f0;border:1px dashed #aaa"></div> Libre</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e91e63"></div> Pause déjeuner</div>
     </div>
   </div>
 </div>
@@ -422,6 +482,29 @@ tr:hover td{background:#f7fbff}
     </div>
   </div>
   <div id="bulletin-display"></div>
+</div>
+
+<!-- UTILISATEURS (ADMIN) -->
+<div class="section" id="s-utilisateurs">
+  <div class="card">
+    <div class="card-header"><span class="card-title">👤 Comptes du personnel</span><span class="card-badge">3 comptes</span></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Nom</th><th>Rôle</th><th>Statut</th></tr></thead>
+      <tbody>
+        <tr><td>M. Leroy</td><td>Professeur de Français</td><td><span class="badge badge-present">Actif</span></td></tr>
+        <tr><td>Mme Petit</td><td>Vie scolaire</td><td><span class="badge badge-present">Actif</span></td></tr>
+        <tr><td>Administrateur</td><td>Administration</td><td><span class="badge badge-present">Actif</span></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">⚙️ Paramètres de l'établissement</span></div>
+    <div class="form-row">
+      <div class="form-group"><label>Nom de l'établissement</label><input type="text" value="Collège Jean Moulin" style="width:220px"></div>
+      <div class="form-group"><label>Année scolaire</label><input type="text" value="2026-2027" style="width:120px"></div>
+      <div class="form-group"><label>&nbsp;</label><button class="btn-primary" onclick="toast('✅ Paramètres enregistrés !')">💾 Enregistrer</button></div>
+    </div>
+  </div>
 </div>
 
 </div>
@@ -607,46 +690,85 @@ function renderAccueil(){
   }
 }
 
+const APPEL_CATS = [
+  {k:'absence',l:'Absence',c:'#c0392b'},{k:'retard',l:'Retard',c:'#e67e22'},{k:'infirmerie',l:'Infirmerie',c:'#d81b60'},
+  {k:'punition',l:'Punition',c:'#8e44ad'},{k:'exclusion',l:'Exclusion',c:'#6d1b1b'},{k:'dispense',l:'Dispense',c:'#1976d2'},
+  {k:'observations',l:'Observations',c:'#00897b'},{k:'encouragements',l:'Encouragements et valorisations',c:'#2e7d32'},
+  {k:'carnet',l:'Défauts de carnet/carte',c:'#6d4c41'},{k:'lecon',l:'Leçon non apprise',c:'#3949ab'},
+  {k:'materiel',l:'Oubli de matériel',c:'#f9a825'},{k:'travail',l:'Travail non fait',c:'#546e7a'}
+];
+let appelData = {'6A':{},'6B':{}};
+let appelTermine = {'6A':false,'6B':false};
+
+function getAppelRow(cl,i){
+  if(!appelData[cl][i]){
+    appelData[cl][i]={};
+    APPEL_CATS.forEach(c=>appelData[cl][i][c.k]=0);
+  }
+  return appelData[cl][i];
+}
+
 function buildAppel(){
-  const eleves=CLASSES[currentClasseAppel];
-  document.getElementById('appel-title').textContent=`📋 Appel — 6ème ${currentClasseAppel.replace('6','')}`;
+  const cl=currentClasseAppel;
+  const eleves=CLASSES[cl];
+  document.getElementById('appel-title').textContent=`📋 Appel — 6ème ${cl.replace('6','')}`;
+
+  const head=document.getElementById('appel-head');
+  head.innerHTML=`<tr><th class="eleve-col">${eleves.length} élèves</th>${APPEL_CATS.map(c=>`<th style="background:${c.c};color:white">${c.l}</th>`).join('')}</tr>`;
+
   const body=document.getElementById('appel-body');
   body.innerHTML='';
   eleves.forEach((e,i)=>{
-    if(!statuts[currentClasseAppel][i])statuts[currentClasseAppel][i]='present';
-    const s=statuts[currentClasseAppel][i];
-    body.innerHTML+=`<tr>
-      <td><strong>${e.nom} ${e.prenom}</strong></td>
-      <td><span class="badge badge-${s==='present'?'present':s==='absent'?'absent':'retard'}" id="badge-${currentClasseAppel}-${i}">${s==='present'?'Présent':s==='absent'?'Absent':'Retard'}</span></td>
-      <td><div class="appel-btns">
-        <button class="btn-appel btn-p" onclick="setStatut('${currentClasseAppel}',${i},'present')">✅ P</button>
-        <button class="btn-appel btn-a" onclick="setStatut('${currentClasseAppel}',${i},'absent')">❌ A</button>
-        <button class="btn-appel btn-r" onclick="setStatut('${currentClasseAppel}',${i},'retard')">⏰ R</button>
-      </div></td>
-      <td><input type="number" min="0" max="60" placeholder="min" style="width:60px;border:1px solid #d5dbdf;border-radius:5px;padding:4px 6px;font-size:12px" id="ret-${currentClasseAppel}-${i}"></td>
-    </tr>`;
+    const row=getAppelRow(cl,i);
+    const cells=APPEL_CATS.map(c=>{
+      const val=row[c.k];
+      const style=val>0?`style="background:${c.c}22;color:${c.c}"`:'';
+      return `<td><div class="appel-cell-wrap"><div class="appel-cell ${val>0?'checked':''}" ${style} onclick="toggleAppelCell('${cl}',${i},'${c.k}')" ondblclick="event.stopPropagation();resetAppelCell('${cl}',${i},'${c.k}')" title="Clic: +1 · Double-clic: réinitialiser">${val>0?'✔':''}</div>${val>0?`<span class="appel-count" style="color:${c.c}">${val}</span>`:''}</div></td>`;
+    }).join('');
+    body.innerHTML+=`<tr><td class="eleve-cell">${e.nom} ${e.prenom}</td>${cells}</tr>`;
   });
+  updateAppelStatus();
 }
 
-function setStatut(cl,i,s){
-  statuts[cl][i]=s;
-  const b=document.getElementById(`badge-${cl}-${i}`);
-  if(!b)return;
-  b.className='badge '+(s==='present'?'badge-present':s==='absent'?'badge-absent':'badge-retard');
-  b.textContent=s==='present'?'Présent':s==='absent'?'Absent':'Retard';
+function toggleAppelCell(cl,i,cat){
+  const row=getAppelRow(cl,i);
+  row[cat]=row[cat]+1;
+  if(row[cat]===1 && cat==='absence'){
+    const e=CLASSES[cl][i];
+    absences.push({eleve:e.nom+' '+e.prenom,classe:cl,type:'abs',cours:document.getElementById('cours-select').value,motif:'Via appel',date:new Date().toLocaleDateString('fr-FR')});
+    renderAbsences();
+  }
+  if(row[cat]===1 && cat==='retard'){
+    const e=CLASSES[cl][i];
+    absences.push({eleve:e.nom+' '+e.prenom,classe:cl,type:'ret',cours:document.getElementById('cours-select').value,motif:'Via appel',date:new Date().toLocaleDateString('fr-FR')});
+    renderAbsences();
+  }
+  buildAppel();
 }
 
-function sauvegarderAppel(){
+function resetAppelCell(cl,i,cat){
+  getAppelRow(cl,i)[cat]=0;
+  buildAppel();
+}
+
+function toggleAppelTermine(){
+  const cl=currentClasseAppel;
+  appelTermine[cl]=!appelTermine[cl];
+  updateAppelStatus();
+  const eleves=CLASSES[cl];
+  const absCount=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,i).absence>0?1:0),0);
+  document.getElementById('nb-abs').textContent=absCount;
+  toast(appelTermine[cl]?'✅ Appel terminé !':'Appel rouvert');
+}
+
+function updateAppelStatus(){
   const cl=currentClasseAppel;
   const eleves=CLASSES[cl];
-  let abs=0,ret=0;
-  eleves.forEach((e,i)=>{
-    if(statuts[cl][i]==='absent'){abs++;absences.push({eleve:e.nom+' '+e.prenom,classe:cl,type:'abs',cours:document.getElementById('cours-select').value,motif:'Via appel',date:new Date().toLocaleDateString('fr-FR')});}
-    if(statuts[cl][i]==='retard'){ret++;const min=document.getElementById(`ret-${cl}-${i}`)?.value||'?';absences.push({eleve:e.nom+' '+e.prenom,classe:cl,type:'ret',cours:document.getElementById('cours-select').value,motif:`${min} min de retard`,date:new Date().toLocaleDateString('fr-FR')});}
-  });
-  document.getElementById('nb-abs').textContent=abs;
-  toast(`✅ Appel validé — ${abs} absent(s), ${ret} retard(s)`);
-  renderAbsences();
+  const presents=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,i).absence>0?0:1),0);
+  const statusEl=document.getElementById('appel-status');
+  statusEl.textContent = appelTermine[cl]
+    ? `✅ Appel terminé — ${presents} élève(s) présent(s) dans la salle`
+    : `☐ Appel non terminé — ${presents} élève(s) présent(s) dans la salle`;
 }
 
 // EDT
@@ -654,18 +776,20 @@ function buildEDT(){
   const g=document.getElementById('edt-grid');
   g.innerHTML='<div class="edt-header"></div>'+JOURS.map(j=>`<div class="edt-header">${j}</div>`).join('');
   HEURES.forEach((h,hi)=>{
-    g.innerHTML+=`<div class="edt-time">${h}</div>`;
+    const isLunch = h==='12h00';
+    g.innerHTML+=`<div class="edt-time${isLunch?' lunch-row':''}">${h}</div>`;
     JOURS.forEach((_,ji)=>{
       const cl=EDT[hi][ji];
       if(cl){
         const colorClass=cl==='6A'?'mat-6a':'mat-6b';
-        g.innerHTML+=`<div class="edt-slot cours ${colorClass}" onclick="openEdtModal(${hi},${ji})">
+        g.innerHTML+=`<div class="edt-slot cours ${colorClass}${isLunch?' lunch-row':''}" onclick="openEdtModal(${hi},${ji})">
           <div class="cours-nom">6ème ${cl.replace('6','')}</div>
           <div class="cours-salle">Français — M. Leroy</div>
           <div class="edt-edit-hint">✏️</div>
+          <div class="edt-check-hint">✔️</div>
         </div>`;
       }else{
-        g.innerHTML+=`<div class="edt-slot vide" onclick="openEdtModal(${hi},${ji})"><div class="mat-vide-hint">+ Ajouter</div></div>`;
+        g.innerHTML+=`<div class="edt-slot vide${isLunch?' lunch-row':''}" onclick="openEdtModal(${hi},${ji})"><div class="mat-vide-hint">+ Ajouter</div></div>`;
       }
     });
   });
@@ -729,7 +853,7 @@ function renderAbsences(){
   const list=document.getElementById('abs-list');
   list.innerHTML=absences.length===0?'<p style="color:#6c7a89;padding:10px">Aucun événement enregistré</p>':'';
   absences.forEach(a=>{
-    list.innerHTML+=`<div class="event-item ${a.type}"><span class="event-icon">${a.type==='abs'?'❌':'⏰'}</span><div class="event-body"><div class="event-eleve">${a.eleve} <span style="font-size:11px;color:#2e86c1">[${a.classe}]</span> — ${a.type==='abs'?'Absence':'Retard'}</div><div class="event-detail">${a.cours} · ${a.motif}</div></div><div class="event-time">${a.date}</div></div>`;
+    list.innerHTML+=`<div class="event-item ${a.type}"><span class="event-icon">${a.type==='abs'?'❌':'⏰'}</span><div class="event-body"><div class="event-eleve">${a.eleve} <span style="font-size:11px;color:#e53935">[${a.classe}]</span> — ${a.type==='abs'?'Absence':'Retard'}</div><div class="event-detail">${a.cours} · ${a.motif}</div></div><div class="event-time">${a.date}</div></div>`;
   });
 }
 
@@ -748,7 +872,7 @@ function renderOublis(){
   const list=document.getElementById('oub-list');
   list.innerHTML=oublis.length===0?'<p style="color:#6c7a89;padding:10px">Aucun oubli signalé</p>':'';
   oublis.forEach(o=>{
-    list.innerHTML+=`<div class="event-item oub"><span class="event-icon">📚</span><div class="event-body"><div class="event-eleve">${o.eleve} <span style="font-size:11px;color:#2e86c1">[${o.classe}]</span></div><div class="event-detail">Oubli : ${o.type}</div></div><div class="event-time">${o.date}</div></div>`;
+    list.innerHTML+=`<div class="event-item oub"><span class="event-icon">📚</span><div class="event-body"><div class="event-eleve">${o.eleve} <span style="font-size:11px;color:#e53935">[${o.classe}]</span></div><div class="event-detail">Oubli : ${o.type}</div></div><div class="event-time">${o.date}</div></div>`;
   });
 }
 
@@ -769,7 +893,7 @@ function renderSanctions(){
   const list=document.getElementById('san-list');
   list.innerHTML=sanctions.length===0?'<p style="color:#6c7a89;padding:10px">Aucune sanction enregistrée</p>':'';
   sanctions.forEach(s=>{
-    list.innerHTML+=`<div class="event-item abs"><span class="event-icon">⚠️</span><div class="event-body"><div class="event-eleve">${s.eleve} <span style="font-size:11px;color:#2e86c1">[${s.classe}]</span> — ${s.type}</div><div class="event-detail">${s.motif}</div></div><div class="event-time">${s.date}</div></div>`;
+    list.innerHTML+=`<div class="event-item abs"><span class="event-icon">⚠️</span><div class="event-body"><div class="event-eleve">${s.eleve} <span style="font-size:11px;color:#e53935">[${s.classe}]</span> — ${s.type}</div><div class="event-detail">${s.motif}</div></div><div class="event-time">${s.date}</div></div>`;
   });
 }
 
@@ -856,18 +980,60 @@ function exporterPDF(){
   });
 }
 
-// LOGIN
+// LOGIN & RÔLES
+let currentRole = null;
+const ROLE_INFO = {
+  admin:{label:'MODE ADMINISTRATIF',subtitle:'Espace Administratif · Collège Jean Moulin',badge:'🧭 Administrateur',info:'Collège Jean Moulin · Administration'},
+  prof:{label:'MODE ENSEIGNANT',subtitle:'Espace Enseignant · Collège Jean Moulin',badge:'👨‍🏫 M. Leroy — Français',info:'Collège Jean Moulin · Professeur de Français'},
+  vie:{label:'MODE VIE SCOLAIRE',subtitle:'Espace Vie Scolaire · Collège Jean Moulin',badge:'🗂️ Mme Petit — Vie scolaire',info:'Collège Jean Moulin · Vie scolaire'}
+};
+
+function selectMode(role){
+  currentRole = role;
+  const info = ROLE_INFO[role];
+  document.getElementById('role-tag').textContent = info.label;
+  document.getElementById('login-subtitle').textContent = info.subtitle;
+  document.getElementById('mode-select').style.display='none';
+  document.getElementById('login-form').style.display='block';
+  document.getElementById('login-id').value='';
+  document.getElementById('login-pw').value='';
+}
+
+function backToModeSelect(){
+  document.getElementById('login-form').style.display='none';
+  document.getElementById('mode-select').style.display='block';
+}
+
 function tryLogin(){
   const id=document.getElementById('login-id').value.trim();
   const pw=document.getElementById('login-pw').value;
-  if(id==='t.leroy346' && pw==='Theoleroy2013'){
+  // Le même mot de passe donne accès aux 3 espaces, seul le mode choisi change l'interface
+  if(id.length>0 && pw==='Theoleroy2013'){
     document.getElementById('login-screen').style.display='none';
+    applyRole(currentRole);
   } else {
     const err=document.getElementById('login-error');
     err.style.display='block';
     document.getElementById('login-pw').value='';
     setTimeout(()=>err.style.display='none',3000);
   }
+}
+
+function applyRole(role){
+  const info = ROLE_INFO[role];
+  document.getElementById('header-info').textContent = info.info;
+  document.getElementById('header-badge').textContent = info.badge;
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    const roles=(n.dataset.roles||'').split(',');
+    n.style.display = roles.includes(role) ? 'flex' : 'none';
+  });
+  navigate('accueil');
+}
+
+function logout(){
+  document.getElementById('login-screen').style.display='flex';
+  backToModeSelect();
+  currentRole = null;
 }
 
 // INIT

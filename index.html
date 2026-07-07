@@ -6,20 +6,28 @@
 <title>Etudiant Super – Espace Enseignant</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
+:root{
+  --brand-dark:#122e4d;      /* bleu marine profond — remplace le bordeaux */
+  --brand:#1d5da8;           /* bleu collège principal */
+  --brand-light:#2f74c4;
+  --accent:#c9971f;          /* doré — touches d'accent */
+  --accent-light:#e0b552;
+  --accent-soft:#fbf1dc;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f3f4f8;color:#1a1a2e;min-height:100vh;display:flex;flex-direction:column}
 
 /* LOGIN */
-#login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#7f0000 0%,#c62828 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
+#login-screen{position:fixed;inset:0;background:linear-gradient(135deg,var(--brand-dark) 0%,var(--brand) 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
 .login-box{background:white;border-radius:16px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
 .login-logo{background:linear-gradient(135deg,#1976d2,#1565c0);padding:12px 28px;font-size:22px;border-radius:12px;color:white;font-weight:bold;display:inline-flex;align-items:center;gap:8px;letter-spacing:2px;margin-bottom:8px}
 .login-subtitle{color:#6c7a89;font-size:13px;margin-bottom:28px}
 .login-group{text-align:left;margin-bottom:16px}
 .login-group label{display:block;font-size:12px;font-weight:600;color:#6c7a89;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
 .login-group input{width:100%;border:1.5px solid #d5dbdf;border-radius:8px;padding:11px 14px;font-size:14px;outline:none;transition:border-color .2s}
-.login-group input:focus{border-color:#c62828}
-.login-btn{width:100%;background:#c62828;color:white;border:none;padding:13px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:background .2s}
-.login-btn:hover{background:#e53935}
+.login-group input:focus{border-color:var(--brand)}
+.login-btn{width:100%;background:var(--brand);color:white;border:none;padding:13px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:background .2s}
+.login-btn:hover{background:var(--accent)}
 .login-error{color:#c0392b;font-size:13px;margin-top:10px;display:none}
 .login-footer{margin-top:20px;font-size:11px;color:#aab;}
 
@@ -28,42 +36,42 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f3f4f8;color:#1a1a2e;mi
 .mode-title{font-size:13px;color:#6c7a89;margin-bottom:24px;text-transform:uppercase;letter-spacing:1px;font-weight:600}
 .mode-grid{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .mode-card{width:110px;border:2px solid #ececec;border-radius:14px;padding:18px 10px 14px;cursor:pointer;transition:all .2s;background:white}
-.mode-card:hover{border-color:#e53935;transform:translateY(-3px);box-shadow:0 8px 20px rgba(198,40,40,.15)}
+.mode-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 20px rgba(201,151,31,.18)}
 .mode-icon{font-size:30px;margin-bottom:8px}
-.mode-label{font-size:12px;font-weight:700;color:#7f0000}
+.mode-label{font-size:12px;font-weight:700;color:var(--brand-dark)}
 .back-mode{background:none;border:none;color:#6c7a89;font-size:12px;cursor:pointer;margin-top:14px}
-.back-mode:hover{color:#c62828}
-.role-tag{display:inline-block;background:#c62828;color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;letter-spacing:.5px;margin-bottom:10px}
+.back-mode:hover{color:var(--brand)}
+.role-tag{display:inline-block;background:var(--brand);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;letter-spacing:.5px;margin-bottom:10px}
 
-.header{background:#b71c1c;color:white;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 25px;position:sticky;top:0;z-index:100;box-shadow:0 4px 15px rgba(0,0,0,.25)}
+.header{background:var(--brand-dark);color:white;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 25px;position:sticky;top:0;z-index:100;box-shadow:0 4px 15px rgba(0,0,0,.25)}
 .header-left{display:flex;align-items:center;gap:14px}
 .logo{background:linear-gradient(135deg,#1976d2,#1565c0);padding:6px 12px;border-radius:6px;font-weight:700;font-size:15px;letter-spacing:1px;display:inline-flex;align-items:center;gap:6px}
 .header-info{font-size:13px;opacity:.85}
 .header-right{display:flex;align-items:center;gap:10px;font-size:13px}
-.prof-badge{background:#e53935;padding:4px 10px;border-radius:20px;font-size:12px}
+.prof-badge{background:var(--accent);padding:4px 10px;border-radius:20px;font-size:12px}
 .notif-btn{background:none;border:none;color:white;cursor:pointer;font-size:18px;position:relative}
 .notif-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:#e74c3c;border-radius:50%}
 
 .app-body{display:flex;flex:1;flex-direction:column;height:calc(100vh - 52px)}
 
-.topnav{background:#8a0000;display:flex;align-items:stretch;overflow-x:auto;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,.15)}
-.topnav .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 18px;cursor:pointer;font-size:11.5px;color:#f3c9c9;border-left:none;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
+.topnav{background:var(--brand-dark);display:flex;align-items:stretch;overflow-x:auto;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,.15)}
+.topnav .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:10px 18px;cursor:pointer;font-size:11.5px;color:#a9c2de;border-left:none;border-bottom:3px solid transparent;white-space:nowrap;transition:all .2s}
 .topnav .nav-item .nav-icon{font-size:17px;width:auto}
 .topnav .nav-item:hover{background:rgba(255,255,255,.08);color:white}
 .topnav .nav-item.active{background:rgba(255,255,255,.12);color:white;border-bottom-color:#ffd54f}
 .topnav .sidebar-section{display:none}
 
-.sidebar{width:230px;background:#9a0007;color:white;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.sidebar{width:230px;background:var(--brand-dark);color:white;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
 .sidebar-section{padding:12px 8px 4px;font-size:10px;color:#7fb3d3;text-transform:uppercase;letter-spacing:1px;font-weight:600}
 .nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;font-size:13px;color:#b8cfe8;transition:all .2s;border-left:3px solid transparent}
 .nav-item:hover{background:rgba(255,255,255,.08);color:white}
-.nav-item.active{background:rgba(46,134,193,.3);color:white;border-left-color:#e53935}
+.nav-item.active{background:rgba(46,134,193,.3);color:white;border-left-color:var(--accent)}
 .nav-icon{font-size:16px;width:18px;text-align:center}
 
 /* Classe switcher */
 .classe-tabs{display:flex;gap:8px;margin-bottom:16px}
 .classe-tab{padding:8px 20px;border-radius:8px;border:2px solid #d5dbdf;background:white;cursor:pointer;font-size:13px;font-weight:600;color:#6c7a89;transition:all .2s}
-.classe-tab.active{border-color:#e53935;background:#e53935;color:white}
+.classe-tab.active{border-color:var(--accent);background:var(--accent);color:white}
 
 .main{flex:1;overflow-y:auto;padding:20px}
 .section{display:none}
@@ -71,21 +79,21 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f3f4f8;color:#1a1a2e;mi
 
 .card{background:white;border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(0,0,0,.12);margin-bottom:20px;border:1px solid #ececec}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.card-title{font-size:15px;font-weight:600;color:#7f0000}
-.card-badge{background:#eaf4fc;color:#c62828;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.card-title{font-size:15px;font-weight:600;color:var(--brand-dark)}
+.card-badge{background:#eaf4fc;color:var(--brand);padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
 
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .stat-card{background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,.08)}
 .stat-number{font-size:28px;font-weight:700}
 .stat-label{font-size:11px;color:#6c7a89;margin-top:4px}
-.stat-blue .stat-number{color:#e53935}
+.stat-blue .stat-number{color:var(--accent)}
 .stat-red .stat-number{color:#e74c3c}
 .stat-orange .stat-number{color:#e67e22}
 .stat-green .stat-number{color:#27ae60}
 
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
-th{background:#b71c1c;color:white;padding:10px 12px;text-align:left;font-weight:500}
+th{background:var(--brand-dark);color:white;padding:10px 12px;text-align:left;font-weight:500}
 td{padding:10px 12px;border-bottom:1px solid #f0f3f7}
 tr:hover td{background:#f7fbff}
 .badge{padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;display:inline-block}
@@ -95,21 +103,21 @@ tr:hover td{background:#f7fbff}
 
 .appel-btns{display:flex;gap:6px}
 .appel-grid{border-collapse:collapse;font-size:12px;width:max-content;min-width:100%}
-.appel-grid th{background:#8a0000;color:white;border:1px solid #e5e5e5;padding:7px 4px;text-align:center;font-size:11.5px;font-weight:700;white-space:nowrap}
+.appel-grid th{background:var(--brand-dark);color:white;border:1px solid #e5e5e5;padding:7px 4px;text-align:center;font-size:11.5px;font-weight:700;white-space:nowrap}
 .appel-grid th.eleve-col{text-align:left;padding-left:12px;min-width:170px;background:#fafafa}
 .appel-grid td{border:1px solid #eee;text-align:center;padding:0;height:30px}
-.appel-grid td.eleve-cell{text-align:left;padding-left:12px;font-weight:600;color:#8a0000;white-space:nowrap;cursor:default;background:#fff}
+.appel-grid td.eleve-cell{text-align:left;padding-left:12px;font-weight:600;color:var(--brand-dark);white-space:nowrap;cursor:default;background:#fff}
 .appel-grid tr:nth-child(even) td.eleve-cell{background:#fafbfc}
 .appel-cell{width:100%;height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s;font-size:13px;color:#333}
 .appel-cell:hover{background:#ffecec}
-.appel-cell.checked{background:#fdecea;color:#c62828;font-weight:700}
+.appel-cell.checked{background:#fdecea;color:var(--brand);font-weight:700}
 .appel-count{font-size:10px;color:#e67e22;font-weight:700;position:absolute;margin-top:14px;margin-left:14px;cursor:pointer}
 .appel-count:hover{color:#c0392b;text-decoration:underline}
 .appel-cell-wrap{position:relative;width:100%;height:100%}
 .appel-cell-wrap2{display:flex;align-items:center;height:100%;width:100%}
 .appel-check{flex:0 0 34px;height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:#333;transition:background .15s}
 .appel-check:hover{background:#ffecec}
-.appel-check.checked{color:#c62828;font-weight:700}
+.appel-check.checked{color:var(--brand);font-weight:700}
 .appel-total{flex:1;height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;font-weight:700;color:#546e7a;border-left:1px solid #f0f0f0;transition:background .15s}
 .appel-total:hover{background:#f7f7f9;text-decoration:underline}
 .appel-footer{display:flex;align-items:center;gap:10px;padding:12px 20px;background:#f4f6f8;border-top:1px solid #eee;font-size:13px;color:#444}
@@ -118,27 +126,46 @@ tr:hover td{background:#f7fbff}
 .btn-a{background:#fde8e8;color:#c0392b}.btn-a:hover{background:#f5b7b1}
 .btn-r{background:#fef9e7;color:#b7770d}.btn-r:hover{background:#fdebd0}
 
-/* NOTES façon Pronote */
-.notes-table{border-collapse:collapse;font-size:12px;width:max-content;min-width:100%}
-.notes-table th{background:#8a0000;color:white;border:1px solid #e5e5e5;padding:6px 4px;text-align:center;font-size:11.5px;font-weight:700}
-.notes-table th.eleve-col{text-align:left;padding-left:12px;min-width:170px;background:#fafafa;color:#8a0000}
-.notes-table td{border:1px solid #eee;text-align:center;padding:0}
-.notes-table td.eleve-cell{text-align:left;padding:8px 0 8px 12px;font-weight:600;color:#8a0000;white-space:nowrap;background:#fff}
-.notes-table tr:nth-child(even) td{background:#fafbfc}
-.notes-table tr:nth-child(even) td.eleve-cell{background:#fafbfc}
-.note-cell{cursor:text;padding:4px 2px !important;vertical-align:middle}
-.note-cell input{width:100%;border:none;text-align:center;padding:4px 2px 0;font-size:13px;font-weight:600;background:transparent;outline:none}
-.note-avg{font-size:10px;color:#9aa5b1;line-height:1.2;pointer-events:none}
+/* NOTES — nouveau système : pastilles d'évaluations + liste de saisie */
+.eval-pill-list{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;padding-bottom:2px}
+.eval-pill{position:relative;min-width:150px;background:#f7f9fc;border:2px solid #e3e7ee;border-radius:12px;padding:10px 26px 10px 14px;cursor:pointer;transition:all .15s}
+.eval-pill:hover{border-color:var(--accent-light);background:#eef3fb}
+.eval-pill.active{border-color:var(--accent);background:var(--accent-soft)}
+.eval-pill-num{font-size:10px;color:#8a94a3;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+.eval-pill-title{font-size:13.5px;font-weight:700;color:var(--brand-dark);margin-top:2px}
+.eval-pill-meta{font-size:11px;color:#6c7a89;margin-top:3px}
+.eval-pill-del{position:absolute;top:6px;right:6px;background:none;border:none;color:#aab3bf;cursor:pointer;font-size:11px;padding:2px}
+.eval-pill-del:hover{color:#c0392b}
+.eval-entry-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:14px 16px;background:#f7f9fc;border-radius:10px;margin-bottom:12px}
+.eval-entry-head strong{color:var(--brand-dark)}
+.eval-entry-sub{color:#8a94a3;font-weight:400;font-size:12.5px}
+.eval-entry-avg{font-size:13px;color:#444}
+.eval-entry-list{display:flex;flex-direction:column;border:1px solid #ececec;border-radius:10px;overflow:hidden}
+.eval-entry-row{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid #f0f3f7}
+.eval-entry-row:last-child{border-bottom:none}
+.eval-entry-row:nth-child(even){background:#fafbfc}
+.eval-entry-name{font-weight:600;font-size:13.5px;color:var(--brand-dark)}
+.eval-entry-input-wrap{display:flex;align-items:center;gap:4px}
+.eval-entry-input{width:64px;text-align:center;border:1.5px solid #d5dbdf;border-radius:8px;padding:7px 4px;font-size:14px;font-weight:700;outline:none;color:#1a1a2e;transition:border-color .15s}
+.eval-entry-input:focus{border-color:var(--accent)}
+.eval-entry-input.above{color:#1e8449;border-color:#bfe3cf}
+.eval-entry-input.below{color:#a9744f;border-color:#ecd9c2}
+.eval-entry-input.abs{color:#8e44ad;border-color:#e3cdf0}
+.eval-entry-bareme{font-size:11px;color:#9aa5b1;min-width:26px}
+.notes-moy-table{width:100%;border-collapse:collapse;font-size:13px}
+.notes-moy-table th{background:#f0f3f7;color:#6c7a89;padding:9px 14px;text-align:left;font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.3px}
+.notes-moy-table td{padding:9px 14px;border-bottom:1px solid #f0f3f7}
+.notes-moy-table tr:nth-child(even) td{background:#fafbfc}
 
 /* EDT éditable */
 .edt-grid{display:grid;grid-template-columns:60px repeat(5,1fr);gap:4px;font-size:12px}
-.edt-header{background:#8a0000;color:white;padding:9px;text-align:center;font-weight:600;border-radius:6px;letter-spacing:.3px}
+.edt-header{background:var(--brand-dark);color:white;padding:9px;text-align:center;font-weight:600;border-radius:6px;letter-spacing:.3px}
 .edt-time{background:#f3f4f8;padding:8px 4px;text-align:center;color:#6c7a89;font-size:11px;display:flex;align-items:center;justify-content:center;border-radius:6px}
 .edt-time.lunch-row{border-top:3px solid #e91e63}
 .edt-slot{min-height:58px;border-radius:10px;padding:8px;cursor:pointer;transition:all .2s;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .edt-slot:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 4px 10px rgba(0,0,0,.15)}
 .edt-slot.vide{background:#f7f9fc;border:1.5px dashed #d5dbdf;box-shadow:none}
-.edt-slot.vide:hover{background:#fdecec;border-color:#e53935}
+.edt-slot.vide:hover{background:#fdecec;border-color:var(--accent)}
 .edt-slot.vide.lunch-row{border-top:3px solid #e91e63}
 .edt-slot.cours .cours-nom{font-weight:700;font-size:12.5px}
 .edt-slot.cours .cours-salle{font-size:10.5px;opacity:.8;margin-top:3px}
@@ -154,11 +181,11 @@ tr:hover td{background:#f7fbff}
 .form-group{display:flex;flex-direction:column;gap:4px}
 .form-group label{font-size:11px;color:#6c7a89;font-weight:500}
 .form-group input,.form-group select{border:1px solid #d5dbdf;border-radius:6px;padding:7px 10px;font-size:13px;outline:none;background:white}
-.form-group input:focus,.form-group select:focus{border-color:#e53935}
-.btn-primary{background:#d32f2f;color:white;border:none;padding:10px 18px;border-radius:12px;font-weight:bold;font-size:13px;transition:.3s;cursor:pointer}
-.btn-primary:hover{background:#b71c1c;transform:translateY(-2px)}
-.btn-secondary{background:white;color:#8a0000;border:2px solid #8a0000;padding:8px 16px;border-radius:12px;font-weight:bold;font-size:13px;transition:.3s;cursor:pointer}
-.btn-secondary:hover{background:#8a0000;color:white}
+.form-group input:focus,.form-group select:focus{border-color:var(--accent)}
+.btn-primary{background:var(--brand);color:white;border:none;padding:10px 18px;border-radius:12px;font-weight:bold;font-size:13px;transition:.3s;cursor:pointer}
+.btn-primary:hover{background:var(--brand-dark);transform:translateY(-2px)}
+.btn-secondary{background:white;color:var(--brand-dark);border:2px solid var(--brand-dark);padding:8px 16px;border-radius:12px;font-weight:bold;font-size:13px;transition:.3s;cursor:pointer}
+.btn-secondary:hover{background:var(--brand-dark);color:white}
 .btn-danger{background:#e74c3c;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px}
 
 .event-list{display:flex;flex-direction:column;gap:8px}
@@ -175,7 +202,7 @@ tr:hover td{background:#f7fbff}
 .msg-list{display:flex;flex-direction:column;gap:6px}
 .msg-item{padding:12px 16px;background:#f9fafb;border-radius:8px;cursor:pointer;transition:background .15s;border-left:3px solid transparent}
 .msg-item:hover{background:#eef2f7}
-.msg-item.unread{background:#eaf4fc;border-left-color:#e53935}
+.msg-item.unread{background:#eaf4fc;border-left-color:var(--accent)}
 .msg-top{display:flex;justify-content:space-between;align-items:center}
 .msg-from{font-weight:600;font-size:13px}
 .msg-date{font-size:11px;color:#6c7a89}
@@ -184,14 +211,14 @@ tr:hover td{background:#f7fbff}
 .msg-compose{width:100%;background:#f7fbff;border:1px solid #d5dbdf;border-radius:8px;padding:14px;margin-bottom:14px}
 .msg-compose textarea{width:100%;border:1px solid #d5dbdf;border-radius:6px;padding:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:80px;outline:none}
 
-.bulletin-header{background:#c62828;color:white;border-radius:10px 10px 0 0;padding:16px 20px}
+.bulletin-header{background:var(--brand);color:white;border-radius:10px 10px 0 0;padding:16px 20px}
 .bul-table{width:100%;border-collapse:collapse}
 .bul-table th{background:#eef2f7;padding:10px 14px;font-size:12px;color:#6c7a89;font-weight:500;text-align:left;border-bottom:1px solid #d5dbdf}
 .bul-table td{padding:10px 14px;font-size:13px;border-bottom:1px solid #f0f3f7}
-.moy-cell{font-weight:700;color:#c62828}
+.moy-cell{font-weight:700;color:var(--brand)}
 .apprec{color:#6c7a89;font-style:italic;font-size:12px}
 .moy-generale{padding:16px 20px;background:#eef2f7;border-radius:0 0 10px 10px;display:flex;align-items:center;justify-content:space-between}
-.moy-gen-val{font-size:22px;font-weight:700;color:#c62828}
+.moy-gen-val{font-size:22px;font-weight:700;color:var(--brand)}
 
 .sanc-form{background:#fff8f0;border:1px solid #fdebd0;border-radius:8px;padding:14px;margin-bottom:16px}
 
@@ -199,7 +226,7 @@ tr:hover td{background:#f7fbff}
 .widget-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:start}
 @media(max-width:900px){.widget-grid{grid-template-columns:1fr}}
 .widget{background:white;border-radius:16px;box-shadow:0 6px 22px rgba(0,0,0,.08);margin-bottom:18px;overflow:hidden;border:1px solid #ececec}
-.widget-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(120deg,#8a0000,#c62828);color:white;font-size:13px;font-weight:700}
+.widget-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(120deg,var(--brand-dark),var(--brand));color:white;font-size:13px;font-weight:700}
 .widget-body{padding:14px 16px}
 .widget-empty{color:#9aa5b1;font-size:12.5px;font-style:italic;padding:6px 0}
 .pense-bete{background:#fff8e1;border-left:4px solid #f9a825;border-radius:8px;padding:12px 14px;font-size:13px;color:#6d5300}
@@ -211,16 +238,16 @@ tr:hover td{background:#f7fbff}
 .mini-feed-sub{color:#8a94a3;font-size:11px;margin-top:1px}
 .widget-stat-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px dashed #eee;font-size:12.5px}
 .widget-stat-row:last-child{border-bottom:none}
-.widget-stat-val{font-weight:700;color:#8a0000}
+.widget-stat-val{font-weight:700;color:var(--brand-dark)}
 .agenda-item{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #f2f2f2;font-size:12.5px}
 .agenda-item:last-child{border-bottom:none}
-.agenda-date{background:#8a0000;color:white;border-radius:8px;padding:6px 9px;font-weight:700;font-size:11px;text-align:center;flex-shrink:0;min-width:38px}
+.agenda-date{background:var(--brand-dark);color:white;border-radius:8px;padding:6px 9px;font-weight:700;font-size:11px;text-align:center;flex-shrink:0;min-width:38px}
 
 /* MODAL EDT */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{background:white;border-radius:12px;padding:24px;width:90%;max-width:420px;box-shadow:0 10px 40px rgba(0,0,0,.2)}
-.modal-title{font-size:16px;font-weight:600;margin-bottom:16px;color:#7f0000}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:16px;color:var(--brand-dark)}
 .modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:#6c7a89}
 .edt-legend{display:flex;gap:12px;margin-top:12px;font-size:12px;flex-wrap:wrap}
 .legend-item{display:flex;align-items:center;gap:6px}
@@ -246,7 +273,7 @@ tr:hover td{background:#f7fbff}
 
 /* Bandeau cours en cours */
 .cours-en-cours{display:flex;align-items:center;gap:10px;background:linear-gradient(120deg,#fff8e1,#fff3cd);border:1px solid #ffe08a;border-radius:10px;padding:10px 16px;margin-bottom:16px;font-size:13px;color:#6d5300}
-.cours-en-cours .dot-live{width:9px;height:9px;border-radius:50%;background:#e53935;animation:pulse-live 1.4s infinite}
+.cours-en-cours .dot-live{width:9px;height:9px;border-radius:50%;background:var(--accent);animation:pulse-live 1.4s infinite}
 @keyframes pulse-live{0%{box-shadow:0 0 0 0 rgba(229,57,53,.6)}70%{box-shadow:0 0 0 8px rgba(229,57,53,0)}100%{box-shadow:0 0 0 0 rgba(229,57,53,0)}}
 </style>
 </head>
@@ -465,7 +492,12 @@ tr:hover td{background:#f7fbff}
         <button class="btn-danger" onclick="resetNotes()">🗑 Réinitialiser</button>
       </div>
     </div>
-    <div class="table-wrap"><div id="notes-grid-wrap"></div></div>
+    <div class="eval-pill-list" id="notes-evals-list"></div>
+    <div id="notes-entry-wrap"></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title" id="notes-moy-title">📊 Moyennes générales — 6ème A</span></div>
+    <div id="notes-moyennes-wrap"></div>
   </div>
 </div>
 
@@ -781,6 +813,7 @@ let statuts = {'6A':{},'6B':{}};
 // Grille de notes : colonnes libres (une par évaluation) + valeurs par élève
 let notesColumns = {'6A':[], '6B':[]}; // {id,titre,coef}
 let notesValues = {'6A':{}, '6B':{}};  // notesValues[cl][studentIndex][colId] = note (number) | 'Abs'
+let selectedEval = {'6A':null,'6B':null}; // évaluation actuellement affichée dans l'écran de saisie
 let colIdCounter = 1;
 let bulletinAppreciations = {}; // clé "cl-index" -> texte
 
@@ -1375,7 +1408,8 @@ function saveSlot(){
   closeEdtModal();buildEDT();saveState();toast('✅ Emploi du temps mis à jour !');
 }
 
-// NOTES — grille libre façon carnet de notes (une colonne = une évaluation)
+// NOTES — on choisit une évaluation dans une liste de pastilles, puis on saisit
+// les notes une par une dans une liste claire (plus simple et plus lisible qu'un grand tableau).
 function openEvalModal(){
   document.getElementById('eval-titre').value='';
   document.getElementById('eval-bareme').value='20';
@@ -1394,15 +1428,17 @@ function validerEvaluation(){
   const coef=parseFloat(document.getElementById('eval-coef').value)||1;
   const id='c'+(colIdCounter++);
   notesColumns[cl].push({id,titre,bareme,coef});
+  selectedEval[cl]=id;
   closeEvalModal();
   renderNotesGrid();
   saveState();
-  toast('✅ Évaluation créée ! Clique dans une case pour saisir les notes.');
+  toast('✅ Évaluation créée ! Saisis les notes ci-dessous.');
 }
 function supprimerColonne(cl,colId){
   if(!confirm('Supprimer cette évaluation et toutes les notes associées ?')) return;
   notesColumns[cl]=notesColumns[cl].filter(c=>c.id!==colId);
   Object.values(notesValues[cl]).forEach(row=>{ delete row[colId]; });
+  if(selectedEval[cl]===colId) selectedEval[cl]=null;
   renderNotesGrid();
   renderAccueil();
   saveState();
@@ -1432,6 +1468,7 @@ function resetNotes(){
   if(!confirm(`Réinitialiser toutes les évaluations et notes de la 6ème ${cl.replace('6','')} ?`)) return;
   notesColumns[cl]=[];
   notesValues[cl]={};
+  selectedEval[cl]=null;
   renderNotesGrid();
   renderAccueil();
   saveState();
@@ -1473,59 +1510,97 @@ function countNotesSaisies(cl){
   });
   return n;
 }
+
+// Nouveau système : on choisit une évaluation dans une liste de pastilles, puis on saisit
+// les notes une par une dans une liste claire (plus simple et plus lisible qu'un grand tableau).
 function renderNotesGrid(){
   const cl=currentClasseNotes;
   document.getElementById('notes-title').textContent=`📝 Notes — 6ème ${cl.replace('6','')}`;
-  const cols=notesColumns[cl];
-  const eleves=CLASSES[cl];
-  const wrap=document.getElementById('notes-grid-wrap');
+  document.getElementById('notes-moy-title').textContent=`📊 Moyennes générales — 6ème ${cl.replace('6','')}`;
+  renderEvalPills();
+  renderEvalEntry();
+  renderMoyennesTable();
+}
 
+function renderEvalPills(){
+  const cl=currentClasseNotes;
+  const cols=notesColumns[cl];
+  const wrap=document.getElementById('notes-evals-list');
   if(cols.length===0){
-    wrap.innerHTML='<div style="padding:24px;text-align:center;color:#9aa5b1;font-style:italic;font-size:13px">Aucune évaluation pour le moment — clique sur "➕ Faire une évaluation" ci-dessus 👆</div>';
+    wrap.innerHTML='<div class="widget-empty" style="padding:6px 2px">Aucune évaluation pour le moment — clique sur "➕ Faire une évaluation" ci-dessus 👆</div>';
     return;
   }
+  if(!selectedEval[cl] || !cols.find(c=>c.id===selectedEval[cl])){
+    selectedEval[cl]=cols[cols.length-1].id;
+  }
+  wrap.innerHTML = cols.map((c,ci)=>{
+    const avg=calcMoyenneColonne(cl,c.id);
+    const active = c.id===selectedEval[cl];
+    return `<div class="eval-pill ${active?'active':''}" onclick="selectEval('${cl}','${c.id}')">
+      <button class="eval-pill-del" onclick="event.stopPropagation();supprimerColonne('${cl}','${c.id}')" title="Supprimer">✕</button>
+      <div class="eval-pill-num">Éval. ${ci+1}</div>
+      <div class="eval-pill-title">${c.titre}</div>
+      <div class="eval-pill-meta">sur ${c.bareme||20} · coef ${c.coef}${avg!==null?' · moy '+avg.toFixed(1):''}</div>
+    </div>`;
+  }).join('');
+}
 
-  const colAverages={};
-  cols.forEach(c=>colAverages[c.id]=calcMoyenneColonne(cl,c.id));
+function selectEval(cl,id){
+  selectedEval[cl]=id;
+  renderNotesGrid();
+}
 
-  // En-tête façon Pronote : "N élèves" avec petite flèche de tri, puis Moyenne, puis une colonne numérotée par évaluation
-  let html='<table class="notes-table">';
-  html+=`<thead><tr><th class="eleve-col">${eleves.length} élèves <span style="opacity:.5;font-size:10px">▲</span></th><th style="min-width:78px">Moyenne</th>`;
-  cols.forEach((c,ci)=>{
-    html+=`<th style="min-width:78px;position:relative;padding-right:16px" title="${c.titre} — sur ${c.bareme||20} — coef ${c.coef}">
-      <div style="font-size:14px">${ci+1}</div>
-      <div style="font-weight:400;font-size:9.5px;opacity:.85">/${c.bareme||20} · coef ${c.coef}</div>
-      <button onclick="supprimerColonne('${cl}','${c.id}')" title="Supprimer cette évaluation" style="position:absolute;top:2px;right:2px;background:none;border:none;color:white;opacity:.75;cursor:pointer;font-size:11px">✕</button>
-    </th>`;
-  });
-  html+='</tr></thead><tbody>';
+function renderEvalEntry(){
+  const cl=currentClasseNotes;
+  const cols=notesColumns[cl];
+  const wrap=document.getElementById('notes-entry-wrap');
+  if(cols.length===0){ wrap.innerHTML=''; return; }
+  const col=cols.find(c=>c.id===selectedEval[cl]) || cols[cols.length-1];
+  const bareme=col.bareme||20;
+  const avg=calcMoyenneColonne(cl,col.id);
+  const eleves=CLASSES[cl];
+
+  let html=`<div class="eval-entry-head">
+    <div><strong>${col.titre}</strong><span class="eval-entry-sub"> — sur ${bareme} · coefficient ${col.coef}</span></div>
+    <div class="eval-entry-avg">Moyenne de la classe : <strong>${avg===null?'—':avg.toFixed(2)+'/'+bareme}</strong></div>
+  </div>
+  <div class="eval-entry-list">`;
 
   eleves.forEach((e,i)=>{
+    const v=(notesValues[cl][i]||{})[col.id];
+    const inputVal = v===undefined ? '' : v;
+    let cls='';
+    if(v==='Abs') cls='abs';
+    else if(typeof v==='number' && avg!==null && v<avg) cls='below';
+    else if(typeof v==='number' && avg!==null && v>=avg) cls='above';
+    html+=`<div class="eval-entry-row">
+      <div class="eval-entry-name">${e.nom} ${e.prenom}</div>
+      <div class="eval-entry-input-wrap">
+        <input type="text" class="eval-entry-input ${cls}" value="${inputVal}" placeholder="—" onchange="setNoteValue('${cl}',${i},'${col.id}',this.value)">
+        <span class="eval-entry-bareme">/${bareme}</span>
+      </div>
+    </div>`;
+  });
+  html+='</div>';
+  wrap.innerHTML=html;
+}
+
+function renderMoyennesTable(){
+  const cl=currentClasseNotes;
+  const eleves=CLASSES[cl];
+  const wrap=document.getElementById('notes-moyennes-wrap');
+  if(notesColumns[cl].length===0){
+    wrap.innerHTML='<div class="widget-empty">Pas encore d\'évaluation pour calculer une moyenne</div>';
+    return;
+  }
+  let html='<table class="notes-moy-table"><thead><tr><th>Élève</th><th style="width:120px">Moyenne générale</th></tr></thead><tbody>';
+  eleves.forEach((e,i)=>{
     const moy=calcMoyenneEleve(cl,i);
-    const moyColor = moy===null ? '#9aa5b1' : (moy>=10?'#1e8449':'#c0392b');
-    html+=`<tr><td class="eleve-cell">${e.nom} ${e.prenom}</td><td style="font-weight:700;color:${moyColor}">${moy===null?'—':moy.toFixed(2)}</td>`;
-    cols.forEach(c=>{
-      const v=(notesValues[cl][i]||{})[c.id];
-      const avg=colAverages[c.id];
-      const bareme=c.bareme||20;
-      let inputVal = v===undefined ? '' : v;
-      let valColor='#1a1a2e';
-      if(v==='Abs') valColor='#8e44ad';
-      else if(typeof v==='number' && avg!==null && v<avg) valColor='#a9744f';
-      const avgTxt = avg!==null ? `<div class="note-avg">(${avg.toFixed(2)})</div>` : '';
-      html+=`<td class="note-cell" onclick="focusNoteInput(this)">
-        <input type="text" value="${inputVal}" onchange="setNoteValue('${cl}',${i},'${c.id}',this.value)" placeholder="—" style="color:${valColor}">
-        ${avgTxt}
-      </td>`;
-    });
-    html+='</tr>';
+    const color = moy===null ? '#9aa5b1' : (moy>=10?'#1e8449':'#c0392b');
+    html+=`<tr><td>${e.nom} ${e.prenom}</td><td style="font-weight:700;color:${color}">${moy===null?'—':moy.toFixed(2)}</td></tr>`;
   });
   html+='</tbody></table>';
   wrap.innerHTML=html;
-}
-function focusNoteInput(td){
-  const input=td.querySelector('input');
-  if(input) input.focus();
 }
 
 // DEVOIRS
@@ -1784,6 +1859,13 @@ const ROLE_INFO = {
   vie:{label:'MODE VIE SCOLAIRE',subtitle:'Espace Vie Scolaire · Collège Flavy',badge:'🗂️ Mme Petit — Vie scolaire',info:'Collège Flavy · Vie scolaire'}
 };
 
+// Comptes du personnel. Toutes les données (notes, appel, EDT…) sont stockées une seule fois
+// et partagées entre les comptes : ce sont simplement les modes accessibles qui changent.
+const ACCOUNTS = {
+  'adm':        {password:'Theoleroy2013', roles:['admin','prof','vie']},
+  't.leroy346': {password:'Theoleroy2013', roles:['prof','vie']}
+};
+
 function selectMode(role){
   currentRole = role;
   const info = ROLE_INFO[role];
@@ -1803,12 +1885,14 @@ function backToModeSelect(){
 function tryLogin(){
   const id=document.getElementById('login-id').value.trim();
   const pw=document.getElementById('login-pw').value;
-  // Le même mot de passe donne accès aux 3 espaces, seul le mode choisi change l'interface
-  if(id.length>0 && pw==='Theoleroy2013'){
+  const compte=ACCOUNTS[id];
+  const err=document.getElementById('login-error');
+  const accesRefuse = compte && pw===compte.password && !compte.roles.includes(currentRole);
+  if(compte && pw===compte.password && compte.roles.includes(currentRole)){
     document.getElementById('login-screen').style.display='none';
     applyRole(currentRole);
   } else {
-    const err=document.getElementById('login-error');
+    err.textContent = accesRefuse ? '❌ Ce compte n\'a pas accès à cet espace.' : '❌ Identifiant ou mot de passe incorrect.';
     err.style.display='block';
     document.getElementById('login-pw').value='';
     setTimeout(()=>err.style.display='none',3000);

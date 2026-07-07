@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EcoleNet – Espace Enseignant</title>
+<title>Etudiant Super – Espace Enseignant</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -103,13 +103,26 @@ tr:hover td{background:#f7fbff}
 .appel-cell{width:100%;height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s;font-size:13px;color:#333}
 .appel-cell:hover{background:#ffecec}
 .appel-cell.checked{background:#fdecea;color:#c62828;font-weight:700}
-.appel-count{font-size:10px;color:#e67e22;font-weight:700;position:absolute;margin-top:14px;margin-left:14px}
+.appel-count{font-size:10px;color:#e67e22;font-weight:700;position:absolute;margin-top:14px;margin-left:14px;cursor:pointer}
+.appel-count:hover{color:#c0392b;text-decoration:underline}
 .appel-cell-wrap{position:relative;width:100%;height:100%}
 .appel-footer{display:flex;align-items:center;gap:10px;padding:12px 20px;background:#f4f6f8;border-top:1px solid #eee;font-size:13px;color:#444}
 .btn-appel{border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;transition:all .15s}
 .btn-p{background:#d5f5e3;color:#1e8449}.btn-p:hover{background:#a9dfbf}
 .btn-a{background:#fde8e8;color:#c0392b}.btn-a:hover{background:#f5b7b1}
 .btn-r{background:#fef9e7;color:#b7770d}.btn-r:hover{background:#fdebd0}
+
+/* NOTES façon Pronote */
+.notes-table{border-collapse:collapse;font-size:12px;width:max-content;min-width:100%}
+.notes-table th{background:#8a0000;color:white;border:1px solid #e5e5e5;padding:6px 4px;text-align:center;font-size:11.5px;font-weight:700}
+.notes-table th.eleve-col{text-align:left;padding-left:12px;min-width:170px;background:#fafafa;color:#8a0000}
+.notes-table td{border:1px solid #eee;text-align:center;padding:0}
+.notes-table td.eleve-cell{text-align:left;padding:8px 0 8px 12px;font-weight:600;color:#8a0000;white-space:nowrap;background:#fff}
+.notes-table tr:nth-child(even) td{background:#fafbfc}
+.notes-table tr:nth-child(even) td.eleve-cell{background:#fafbfc}
+.note-cell{cursor:text;padding:4px 2px !important;vertical-align:middle}
+.note-cell input{width:100%;border:none;text-align:center;padding:4px 2px 0;font-size:13px;font-weight:600;background:transparent;outline:none}
+.note-avg{font-size:10px;color:#9aa5b1;line-height:1.2;pointer-events:none}
 
 /* EDT éditable */
 .edt-grid{display:grid;grid-template-columns:60px repeat(5,1fr);gap:4px;font-size:12px}
@@ -124,6 +137,7 @@ tr:hover td{background:#f7fbff}
 .edt-slot.cours .cours-nom{font-weight:700;font-size:12.5px}
 .edt-slot.cours .cours-salle{font-size:10.5px;opacity:.8;margin-top:3px}
 .edt-slot.cours .cours-classe{font-size:10px;opacity:.7;margin-top:1px}
+.edt-slot.now{outline:3px solid #ffd54f;outline-offset:-3px}
 .edt-edit-hint{position:absolute;top:5px;right:7px;font-size:10px;opacity:.55}
 .edt-check-hint{position:absolute;bottom:5px;right:7px;font-size:11px;opacity:.85}
 .mat-6a{background:#fff4cc;border-left:5px solid #f9a825;color:#7a5900}
@@ -137,6 +151,8 @@ tr:hover td{background:#f7fbff}
 .form-group input:focus,.form-group select:focus{border-color:#e53935}
 .btn-primary{background:#d32f2f;color:white;border:none;padding:10px 18px;border-radius:12px;font-weight:bold;font-size:13px;transition:.3s;cursor:pointer}
 .btn-primary:hover{background:#b71c1c;transform:translateY(-2px)}
+.btn-secondary{background:white;color:#8a0000;border:2px solid #8a0000;padding:8px 16px;border-radius:12px;font-weight:bold;font-size:13px;transition:.3s;cursor:pointer}
+.btn-secondary:hover{background:#8a0000;color:white}
 .btn-danger{background:#e74c3c;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px}
 
 .event-list{display:flex;flex-direction:column;gap:8px}
@@ -216,6 +232,16 @@ tr:hover td{background:#f7fbff}
 .appel-overlay.show .appel-overlay-box{transform:scale(1)}
 .appel-overlay-num{font-size:52px;font-weight:800;color:#2e7d32}
 .appel-overlay-txt{font-size:15px;color:#333;margin-top:8px;font-weight:600}
+
+/* HORLOGE HEADER */
+.header-clock{font-size:12.5px;opacity:.9;display:flex;flex-direction:column;align-items:flex-end;line-height:1.25}
+.header-clock .hc-time{font-weight:700;font-size:14px}
+.header-clock .hc-date{opacity:.85;font-size:10.5px;text-transform:capitalize}
+
+/* Bandeau cours en cours */
+.cours-en-cours{display:flex;align-items:center;gap:10px;background:linear-gradient(120deg,#fff8e1,#fff3cd);border:1px solid #ffe08a;border-radius:10px;padding:10px 16px;margin-bottom:16px;font-size:13px;color:#6d5300}
+.cours-en-cours .dot-live{width:9px;height:9px;border-radius:50%;background:#e53935;animation:pulse-live 1.4s infinite}
+@keyframes pulse-live{0%{box-shadow:0 0 0 0 rgba(229,57,53,.6)}70%{box-shadow:0 0 0 8px rgba(229,57,53,0)}100%{box-shadow:0 0 0 0 rgba(229,57,53,0)}}
 </style>
 </head>
 <body>
@@ -225,7 +251,7 @@ tr:hover td{background:#f7fbff}
 
   <!-- Étape 1 : choix du mode -->
   <div class="mode-box" id="mode-select">
-    <div class="login-logo">🦋 ECOLENET</div>
+    <div class="login-logo">🦋 ETUDIANT SUPER</div>
     <div class="mode-title">Choisissez votre espace</div>
     <div class="mode-grid">
       <div class="mode-card" onclick="selectMode('admin')">
@@ -241,13 +267,13 @@ tr:hover td{background:#f7fbff}
         <div class="mode-label">Mode<br>vie scolaire</div>
       </div>
     </div>
-    <div class="login-footer" style="margin-top:24px">EcoleNet v2.4 — Accès réservé au personnel</div>
+    <div class="login-footer" style="margin-top:24px">Etudiant Super v2.4 — Accès réservé au personnel</div>
   </div>
 
   <!-- Étape 2 : identifiants -->
   <div class="login-box" id="login-form" style="display:none">
     <span class="role-tag" id="role-tag">MODE</span>
-    <div class="login-logo">🦋 ECOLENET</div>
+    <div class="login-logo">🦋 ETUDIANT SUPER</div>
     <div class="login-subtitle" id="login-subtitle">Espace · Collège Flavy</div>
     <div class="login-group">
       <label>Identifiant</label>
@@ -263,13 +289,13 @@ tr:hover td{background:#f7fbff}
   </div>
 </div>
 
-
-
+<div class="header">
   <div class="header-left">
-    <div class="logo">🦋 EcoleNet</div>
+    <div class="logo">🦋 Etudiant Super</div>
     <div class="header-info" id="header-info">Collège Flavy · Professeur de Français</div>
   </div>
   <div class="header-right">
+    <div class="header-clock" id="header-clock"><span class="hc-time">--:--</span><span class="hc-date">--</span></div>
     <span class="prof-badge" id="header-badge">👨‍🏫 M. Leroy — Français</span>
     <button class="notif-btn" onclick="navigate('messages')">🔔<span class="notif-dot"></span></button>
     <button class="notif-btn" onclick="logout()" title="Changer d'espace">🚪</button>
@@ -299,6 +325,7 @@ tr:hover td{background:#f7fbff}
     <button class="classe-tab active" onclick="switchClasse('6A', this)">6ème A</button>
     <button class="classe-tab" onclick="switchClasse('6B', this)">6ème B</button>
   </div>
+  <div id="dash-cours-en-cours"></div>
   <div class="stats-grid">
     <div class="stat-card stat-blue"><div class="stat-number" id="nb-eleves">13</div><div class="stat-label">Élèves</div></div>
     <div class="stat-card stat-red"><div class="stat-number" id="nb-abs">0</div><div class="stat-label">Absents aujourd'hui</div></div>
@@ -379,10 +406,11 @@ tr:hover td{background:#f7fbff}
     <div class="card-header" style="padding:16px 20px 0">
       <span class="card-title" id="appel-title">📋 Appel — 6ème A</span>
       <div style="display:flex;gap:8px;align-items:center">
-        <select id="cours-select" style="border:1px solid #d5dbdf;border-radius:6px;padding:6px 10px;font-size:12px">
+        <select id="cours-select" onchange="buildAppel()" style="border:1px solid #d5dbdf;border-radius:6px;padding:6px 10px;font-size:12px">
           <option>08h00</option><option>09h00</option><option>10h00</option><option>11h00</option>
           <option>14h00</option><option>15h00</option><option>16h00</option>
         </select>
+        <button class="btn-danger" onclick="viderAppelCourant()" title="Effacer toutes les coches de ce cours">🧹 Vider ce cours</button>
       </div>
     </div>
     <div class="table-wrap" style="padding:0 20px">
@@ -393,6 +421,7 @@ tr:hover td{background:#f7fbff}
     </div>
     <div class="appel-footer" id="appel-footer">
       <span id="appel-status">☐ Appel non terminé</span>
+      <span style="font-size:11px;color:#9aa5b1;font-style:italic">Astuce : clic = ajouter, clic sur le petit chiffre = retirer un, double-clic = tout effacer</span>
       <button class="btn-primary" style="margin-left:auto" onclick="toggleAppelTermine()">✅ Terminer l'appel</button>
     </div>
   </div>
@@ -411,6 +440,7 @@ tr:hover td{background:#f7fbff}
       <div class="legend-item"><div class="legend-dot" style="background:#00897b"></div> 6ème B</div>
       <div class="legend-item"><div class="legend-dot" style="background:#f0f0f0;border:1px dashed #aaa"></div> Libre</div>
       <div class="legend-item"><div class="legend-dot" style="background:#e91e63"></div> Pause déjeuner</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#fff;border:3px solid #ffd54f"></div> Cours en ce moment</div>
     </div>
   </div>
 </div>
@@ -425,13 +455,9 @@ tr:hover td{background:#f7fbff}
     <div class="card-header">
       <span class="card-title" id="notes-title">📝 Notes — 6ème A</span>
       <div style="display:flex;gap:8px">
+        <button class="btn-primary" onclick="openEvalModal()">➕ Faire une évaluation</button>
         <button class="btn-danger" onclick="resetNotes()">🗑 Réinitialiser</button>
       </div>
-    </div>
-    <div class="form-row" style="background:#f7f9fc;border-radius:10px;padding:12px;margin-bottom:16px">
-      <div class="form-group"><label>Titre de l'évaluation</label><input type="text" id="col-titre" placeholder="ex: Contrôle 1" style="width:180px"></div>
-      <div class="form-group"><label>Coefficient</label><input type="number" id="col-coef" min="0.5" step="0.5" value="1" style="width:70px"></div>
-      <div class="form-group"><label>&nbsp;</label><button class="btn-primary" onclick="ajouterColonne()">➕ Ajouter une évaluation</button></div>
     </div>
     <div class="table-wrap"><div id="notes-grid-wrap"></div></div>
   </div>
@@ -610,6 +636,26 @@ tr:hover td{background:#f7fbff}
   </div>
 </div>
 
+<!-- MODAL ÉVALUATION -->
+<div class="modal-overlay" id="eval-modal">
+  <div class="modal" style="max-width:360px">
+    <button class="modal-close" onclick="closeEvalModal()">✕</button>
+    <div class="modal-title">📝 Faire une évaluation</div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label>Titre</label>
+      <input type="text" id="eval-titre" placeholder="ex: Contrôle 1" style="width:100%;border:1px solid #d5dbdf;border-radius:8px;padding:9px 12px;font-size:13px;outline:none">
+    </div>
+    <div class="form-row" style="margin-bottom:0">
+      <div class="form-group"><label>Sur combien</label><input type="number" id="eval-bareme" min="1" step="1" value="20" style="width:90px"></div>
+      <div class="form-group"><label>Coefficient</label><input type="number" id="eval-coef" min="0.5" step="0.5" value="1" style="width:90px"></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+      <button class="btn-danger" onclick="closeEvalModal()">Annuler</button>
+      <button class="btn-primary" onclick="validerEvaluation()">✅ Créer</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL MOTIF (absence / retard) -->
 <div class="modal-overlay" id="motif-modal">
   <div class="modal" style="max-width:380px">
@@ -752,7 +798,7 @@ const MOTIFS = [
 ];
 
 // PERSISTANCE (le site garde tout en mémoire même après fermeture du navigateur)
-const STORAGE_KEY='ecolenet_data_v1';
+const STORAGE_KEY='etudiantsuper_data_v1';
 function saveState(){
   try{
     const state={notesColumns,notesValues,bulletinAppreciations,absences,devoirs,oublis,sanctions,messages,agendaItems,appelData,appelTermine,EDT,colIdCounter};
@@ -1010,10 +1056,13 @@ function renderDashboardWidgets(){
     ? '<div class="widget-empty">Tous les messages ont été lus</div>'
     : unread.map(m=>`<div class="mini-feed-item"><span class="mini-feed-icon">✉️</span><div class="mini-feed-txt"><strong>${m.de}</strong><div class="mini-feed-sub">${m.objet}</div></div></div>`).join('');
 
-  // Stats classe
+  // Stats classe (totaux cumulés depuis le début de l'année, façon vrai Pronote)
   const eleves=CLASSES[cl];
-  const absCount=eleves.reduce((a,e,i)=>a+((appelData[cl][i]&&appelData[cl][i].absence>0)?1:0),0);
-  const retCount=eleves.reduce((a,e,i)=>a+((appelData[cl][i]&&appelData[cl][i].retard>0)?1:0),0);
+  let absCount=0, retCount=0;
+  eleves.forEach((e,i)=>{
+    absCount+=getHistory(cl,i,'absence');
+    retCount+=getHistory(cl,i,'retard');
+  });
   const sanCount=sanctions.filter(s=>s.classe===cl).length;
   document.getElementById('dash-stats').innerHTML=`
     <div class="widget-stat-row"><span>Élèves inscrits</span><span class="widget-stat-val">${eleves.length}</span></div>
@@ -1021,6 +1070,29 @@ function renderDashboardWidgets(){
     <div class="widget-stat-row"><span>Retards enregistrés</span><span class="widget-stat-val">${retCount}</span></div>
     <div class="widget-stat-row"><span>Sanctions / observations</span><span class="widget-stat-val">${sanCount}</span></div>
     <div class="widget-stat-row"><span>Notes saisies</span><span class="widget-stat-val">${countNotesSaisies(cl)}</span></div>`;
+
+  renderCoursEnCoursWidget();
+}
+
+// Détecte le cours en ce moment à partir de l'EDT (façon "vrai Pronote")
+function getCoursActuelInfo(){
+  const now=new Date();
+  const jourIdx=now.getDay()-1; // Lundi=0
+  if(jourIdx<0||jourIdx>4) return null;
+  const heureActuelle=now.getHours();
+  let hi=-1;
+  HEURES.forEach((h,i)=>{ if(parseInt(h)===heureActuelle) hi=i; });
+  if(hi===-1) return null;
+  const cl=EDT[hi][jourIdx];
+  if(!cl) return null;
+  return {hi,ji:jourIdx,cl,heure:HEURES[hi]};
+}
+function renderCoursEnCoursWidget(){
+  const el=document.getElementById('dash-cours-en-cours');
+  if(!el) return;
+  const info=getCoursActuelInfo();
+  if(!info || info.cl!==currentClasse){ el.innerHTML=''; return; }
+  el.innerHTML=`<div class="cours-en-cours"><span class="dot-live"></span> Cours en ce moment avec la 6ème ${info.cl.replace('6','')} (${info.heure}) — <a href="#" onclick="navigate('appel');return false;" style="color:#8a0000;font-weight:700">faire l'appel →</a></div>`;
 }
 
 const APPEL_CATS = [
@@ -1030,21 +1102,44 @@ const APPEL_CATS = [
   {k:'carnet',l:'Défauts de carnet/carte',c:'#6d4c41'},{k:'lecon',l:'Leçon non apprise',c:'#3949ab'},
   {k:'materiel',l:'Oubli de matériel',c:'#f9a825'},{k:'travail',l:'Travail non fait',c:'#546e7a'}
 ];
+// appelData[classe][heure][eleveIndex][categorie] = 0 ou 1 → la coche DE CE COURS.
+// Elle se remet automatiquement à vide dès qu'on change de cours (nouveau créneau horaire).
 let appelData = {'6A':{},'6B':{}};
-let appelTermine = {'6A':false,'6B':false};
+// appelHistory[classe][eleveIndex][categorie] = total cumulé depuis le début de l'année (comme le vrai Pronote).
+// Ce total ne se réinitialise jamais tout seul : il ne fait qu'augmenter/diminuer quand on coche/décoche.
+let appelHistory = {'6A':{},'6B':{}};
+let appelTermine = {'6A':{},'6B':{}};
 
-function getAppelRow(cl,i){
-  if(!appelData[cl][i]){
-    appelData[cl][i]={};
-    APPEL_CATS.forEach(c=>appelData[cl][i][c.k]=0);
+function currentCoursHeure(){
+  const sel=document.getElementById('cours-select');
+  return sel ? sel.value : HEURES[0];
+}
+
+function getAppelRow(cl,heure,i){
+  if(!appelData[cl][heure]) appelData[cl][heure]={};
+  if(!appelData[cl][heure][i]){
+    appelData[cl][heure][i]={};
+    APPEL_CATS.forEach(c=>appelData[cl][heure][i][c.k]=0);
   }
-  return appelData[cl][i];
+  return appelData[cl][heure][i];
+}
+function getHistoryRow(cl,i){
+  if(!appelHistory[cl]) appelHistory[cl]={};
+  if(!appelHistory[cl][i]){
+    appelHistory[cl][i]={};
+    APPEL_CATS.forEach(c=>appelHistory[cl][i][c.k]=0);
+  }
+  return appelHistory[cl][i];
+}
+function getHistory(cl,i,cat){
+  return (appelHistory[cl] && appelHistory[cl][i] && appelHistory[cl][i][cat]) || 0;
 }
 
 function buildAppel(){
   const cl=currentClasseAppel;
+  const heure=currentCoursHeure();
   const eleves=CLASSES[cl];
-  document.getElementById('appel-title').textContent=`📋 Appel — 6ème ${cl.replace('6','')}`;
+  document.getElementById('appel-title').textContent=`📋 Appel — 6ème ${cl.replace('6','')} · ${heure}`;
 
   const head=document.getElementById('appel-head');
   head.innerHTML=`<tr><th class="eleve-col">${eleves.length} élèves</th>${APPEL_CATS.map(c=>`<th style="background:${c.c};color:white">${c.l}</th>`).join('')}</tr>`;
@@ -1052,11 +1147,15 @@ function buildAppel(){
   const body=document.getElementById('appel-body');
   body.innerHTML='';
   eleves.forEach((e,i)=>{
-    const row=getAppelRow(cl,i);
+    const row=getAppelRow(cl,heure,i);
     const cells=APPEL_CATS.map(c=>{
-      const val=row[c.k];
-      const style=val>0?`style="background:${c.c}22;color:${c.c}"`:'';
-      return `<td><div class="appel-cell-wrap"><div class="appel-cell ${val>0?'checked':''}" ${style} onclick="toggleAppelCell('${cl}',${i},'${c.k}')" ondblclick="event.stopPropagation();resetAppelCell('${cl}',${i},'${c.k}')" title="Clic: +1 · Double-clic: réinitialiser">${val>0?'✔':''}</div>${val>0?`<span class="appel-count" style="color:${c.c}">${val}</span>`:''}</div></td>`;
+      const checked=row[c.k]>0;
+      const total=getHistory(cl,i,c.k);
+      const style=checked?`style="background:${c.c}22;color:${c.c}"`:'';
+      return `<td><div class="appel-cell-wrap2">
+        <div class="appel-check ${checked?'checked':''}" ${style} onclick="toggleAppelCell('${cl}',${i},'${c.k}')" title="Cliquer pour cocher/décocher ce cours">${checked?'✔':''}</div>
+        <div class="appel-total" onclick="decrementAppelCell('${cl}',${i},'${c.k}')" title="Total cumulé depuis le début de l'année — clic pour retirer 1">${total>0?total:''}</div>
+      </div></td>`;
     }).join('');
     body.innerHTML+=`<tr><td class="eleve-cell">${e.nom} ${e.prenom}</td>${cells}</tr>`;
   });
@@ -1064,32 +1163,65 @@ function buildAppel(){
 }
 
 function toggleAppelCell(cl,i,cat){
-  // Absence et retard : on demande le motif avant d'enregistrer
-  if(cat==='absence' || cat==='retard'){ openMotifModal(cl,i,cat); return; }
-  // Exclusion : on ouvre la fiche complète à remplir
-  if(cat==='exclusion'){ openExclusionModal(cl,i); return; }
-  const row=getAppelRow(cl,i);
-  row[cat]=row[cat]+1;
+  const heure=currentCoursHeure();
+  const row=getAppelRow(cl,heure,i);
+  const dejaCoche=row[cat]>0;
+  // Absence et retard : on demande le motif avant d'enregistrer (seulement quand on coche)
+  if(!dejaCoche && (cat==='absence' || cat==='retard')){ openMotifModal(cl,i,cat); return; }
+  // Exclusion : on ouvre la fiche complète à remplir (seulement quand on coche)
+  if(!dejaCoche && cat==='exclusion'){ openExclusionModal(cl,i); return; }
+  if(dejaCoche){
+    // On décoche : le total cumulé redescend d'un cran
+    row[cat]=0;
+    const hist=getHistoryRow(cl,i);
+    hist[cat]=Math.max(0,hist[cat]-1);
+  }else{
+    row[cat]=1;
+    const hist=getHistoryRow(cl,i);
+    hist[cat]=hist[cat]+1;
+  }
   buildAppel();
+  renderDashboardWidgets();
   saveState();
 }
 
-function resetAppelCell(cl,i,cat){
-  getAppelRow(cl,i)[cat]=0;
+// Bouton demandé : cliquer sur le total pour retirer une occurrence (sans toucher à la coche de ce cours)
+function decrementAppelCell(cl,i,cat){
+  const hist=getHistoryRow(cl,i);
+  if(hist[cat]>0){
+    hist[cat]=hist[cat]-1;
+    buildAppel();
+    renderDashboardWidgets();
+    saveState();
+    toast('↩️ Une occurrence retirée du total','warn');
+  }
+}
+
+// Vide complètement l'appel (les coches) du cours actuellement sélectionné — le total cumulé n'est pas touché
+function viderAppelCourant(){
+  const cl=currentClasseAppel;
+  const heure=currentCoursHeure();
+  if(!confirm(`Effacer les coches de la 6ème ${cl.replace('6','')} pour ${heure} ? (le total cumulé de l'année n'est pas modifié)`)) return;
+  appelData[cl][heure]={};
+  if(appelTermine[cl]) appelTermine[cl][heure]=false;
   buildAppel();
   saveState();
+  toast('🧹 Coches de ce cours effacées','warn');
 }
 
 function toggleAppelTermine(){
   const cl=currentClasseAppel;
-  appelTermine[cl]=!appelTermine[cl];
+  const heure=currentCoursHeure();
+  if(!appelTermine[cl]) appelTermine[cl]={};
+  const etaitTermine=!!appelTermine[cl][heure];
+  appelTermine[cl][heure]=!etaitTermine;
   updateAppelStatus();
   const eleves=CLASSES[cl];
-  const absCount=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,i).absence>0?1:0),0);
+  const absCount=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,heure,i).absence>0?1:0),0);
   document.getElementById('nb-abs').textContent=absCount;
-  toast(appelTermine[cl]?'✅ Appel terminé !':'Appel rouvert');
-  if(appelTermine[cl]){
-    const presents=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,i).absence>0?0:1),0);
+  toast(appelTermine[cl][heure] ? '✅ Appel terminé pour ce cours ! Les coches se videront automatiquement au prochain cours.' : 'Appel rouvert');
+  if(appelTermine[cl][heure]){
+    const presents=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,heure,i).absence>0?0:1),0);
     showAppelOverlay(presents);
   }
   saveState();
@@ -1119,10 +1251,13 @@ function renderMotifList(){
 function selectMotif(motif){
   if(!motifModalCtx) return;
   const {cl,i,cat}=motifModalCtx;
-  const row=getAppelRow(cl,i);
-  row[cat]=row[cat]+1;
+  const heure=currentCoursHeure();
+  const row=getAppelRow(cl,heure,i);
+  row[cat]=1;
+  const hist=getHistoryRow(cl,i);
+  hist[cat]=hist[cat]+1;
   const e=CLASSES[cl][i];
-  absences.push({eleve:e.nom+' '+e.prenom,classe:cl,type:cat==='absence'?'abs':'ret',cours:document.getElementById('cours-select').value,motif,date:new Date().toLocaleDateString('fr-FR')});
+  absences.push({eleve:e.nom+' '+e.prenom,classe:cl,type:cat==='absence'?'abs':'ret',cours:heure,motif,date:new Date().toLocaleDateString('fr-FR')});
   closeMotifModal();
   buildAppel();
   renderDashboardWidgets();
@@ -1151,8 +1286,11 @@ function validerExclusion(){
   const {cl,i}=exclusionModalCtx;
   const motif=document.getElementById('exc-motif').value.trim();
   if(!motif){ toast('Écris un motif avant de valider !','error'); return; }
-  const row=getAppelRow(cl,i);
-  row.exclusion=row.exclusion+1;
+  const heure=currentCoursHeure();
+  const row=getAppelRow(cl,heure,i);
+  row.exclusion=1;
+  const hist=getHistoryRow(cl,i);
+  hist.exclusion=hist.exclusion+1;
   const e=CLASSES[cl][i];
   const details=document.getElementById('exc-details').value.trim();
   const accompagnateur=document.getElementById('exc-accompagnateur').value;
@@ -1181,33 +1319,37 @@ function showAppelOverlay(presents){
 
 function updateAppelStatus(){
   const cl=currentClasseAppel;
+  const heure=currentCoursHeure();
   const eleves=CLASSES[cl];
-  const presents=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,i).absence>0?0:1),0);
+  const presents=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,heure,i).absence>0?0:1),0);
+  const termine = !!(appelTermine[cl] && appelTermine[cl][heure]);
   const statusEl=document.getElementById('appel-status');
-  statusEl.textContent = appelTermine[cl]
-    ? `✅ Appel terminé — ${presents} élève(s) présent(s) dans la salle`
-    : `☐ Appel non terminé — ${presents} élève(s) présent(s) dans la salle`;
+  statusEl.textContent = termine
+    ? `✅ Appel terminé (${heure}) — ${presents} élève(s) présent(s) dans la salle`
+    : `☐ Appel non terminé (${heure}) — ${presents} élève(s) présent(s) dans la salle`;
 }
 
 // EDT
 function buildEDT(){
   const g=document.getElementById('edt-grid');
+  const info=getCoursActuelInfo();
   g.innerHTML='<div class="edt-header"></div>'+JOURS.map(j=>`<div class="edt-header">${j}</div>`).join('');
   HEURES.forEach((h,hi)=>{
     const isLunch = h==='12h00';
     g.innerHTML+=`<div class="edt-time${isLunch?' lunch-row':''}">${h}</div>`;
     JOURS.forEach((_,ji)=>{
       const cl=EDT[hi][ji];
+      const isNow = info && info.hi===hi && info.ji===ji;
       if(cl){
         const colorClass=cl==='6A'?'mat-6a':'mat-6b';
-        g.innerHTML+=`<div class="edt-slot cours ${colorClass}${isLunch?' lunch-row':''}" onclick="openEdtModal(${hi},${ji})">
+        g.innerHTML+=`<div class="edt-slot cours ${colorClass}${isLunch?' lunch-row':''}${isNow?' now':''}" onclick="openEdtModal(${hi},${ji})">
           <div class="cours-nom">6ème ${cl.replace('6','')}</div>
           <div class="cours-salle">Français — M. Leroy</div>
           <div class="edt-edit-hint">✏️</div>
           <div class="edt-check-hint">✔️</div>
         </div>`;
       }else{
-        g.innerHTML+=`<div class="edt-slot vide${isLunch?' lunch-row':''}" onclick="openEdtModal(${hi},${ji})"><div class="mat-vide-hint">+ Ajouter</div></div>`;
+        g.innerHTML+=`<div class="edt-slot vide${isLunch?' lunch-row':''}${isNow?' now':''}" onclick="openEdtModal(${hi},${ji})"><div class="mat-vide-hint">+ Ajouter</div></div>`;
       }
     });
   });
@@ -1227,18 +1369,28 @@ function saveSlot(){
 }
 
 // NOTES — grille libre façon carnet de notes (une colonne = une évaluation)
-function ajouterColonne(){
+function openEvalModal(){
+  document.getElementById('eval-titre').value='';
+  document.getElementById('eval-bareme').value='20';
+  document.getElementById('eval-coef').value='1';
+  document.getElementById('eval-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('eval-titre').focus(),50);
+}
+function closeEvalModal(){
+  document.getElementById('eval-modal').classList.remove('open');
+}
+function validerEvaluation(){
   const cl=currentClasseNotes;
-  const titreInput=document.getElementById('col-titre').value.trim();
+  const titreInput=document.getElementById('eval-titre').value.trim();
   const titre=titreInput || ('Éval. '+(notesColumns[cl].length+1));
-  const coef=parseFloat(document.getElementById('col-coef').value)||1;
+  const bareme=parseFloat(document.getElementById('eval-bareme').value)||20;
+  const coef=parseFloat(document.getElementById('eval-coef').value)||1;
   const id='c'+(colIdCounter++);
-  notesColumns[cl].push({id,titre,coef});
-  document.getElementById('col-titre').value='';
-  document.getElementById('col-coef').value='1';
+  notesColumns[cl].push({id,titre,bareme,coef});
+  closeEvalModal();
   renderNotesGrid();
   saveState();
-  toast('✅ Évaluation ajoutée !');
+  toast('✅ Évaluation créée ! Clique dans une case pour saisir les notes.');
 }
 function supprimerColonne(cl,colId){
   if(!confirm('Supprimer cette évaluation et toutes les notes associées ?')) return;
@@ -1252,6 +1404,8 @@ function supprimerColonne(cl,colId){
 function setNoteValue(cl,i,colId,raw){
   if(!notesValues[cl][i]) notesValues[cl][i]={};
   const v=raw.trim();
+  const col=notesColumns[cl].find(c=>c.id===colId);
+  const bareme=(col&&col.bareme)||20;
   if(v===''){
     delete notesValues[cl][i][colId];
   } else if(v.toLowerCase()==='abs'){
@@ -1259,7 +1413,7 @@ function setNoteValue(cl,i,colId,raw){
   } else {
     let n=parseFloat(v.replace(',','.'));
     if(isNaN(n)){ toast('Valeur invalide (note ou "Abs")','error'); renderNotesGrid(); return; }
-    n=Math.max(0,Math.min(20,n));
+    n=Math.max(0,Math.min(bareme,n));
     notesValues[cl][i][colId]=n;
   }
   renderNotesGrid();
@@ -1282,7 +1436,8 @@ function calcMoyenneEleve(cl,i){
   let totalPts=0, totalCoef=0;
   cols.forEach(c=>{
     const v=row[c.id];
-    if(typeof v==='number'){ totalPts+=v*c.coef; totalCoef+=c.coef; }
+    const bareme=c.bareme||20;
+    if(typeof v==='number'){ totalPts+=(v/bareme*20)*c.coef; totalCoef+=c.coef; }
   });
   return totalCoef>0 ? (totalPts/totalCoef) : null;
 }
@@ -1319,19 +1474,20 @@ function renderNotesGrid(){
   const wrap=document.getElementById('notes-grid-wrap');
 
   if(cols.length===0){
-    wrap.innerHTML='<div style="padding:24px;text-align:center;color:#9aa5b1;font-style:italic;font-size:13px">Aucune évaluation pour le moment — ajoute ta première évaluation ci-dessus 👆</div>';
+    wrap.innerHTML='<div style="padding:24px;text-align:center;color:#9aa5b1;font-style:italic;font-size:13px">Aucune évaluation pour le moment — clique sur "➕ Faire une évaluation" ci-dessus 👆</div>';
     return;
   }
 
   const colAverages={};
   cols.forEach(c=>colAverages[c.id]=calcMoyenneColonne(cl,c.id));
 
-  let html='<table class="appel-grid" style="width:max-content;min-width:100%">';
-  html+=`<thead><tr><th class="eleve-col">${eleves.length} élèves</th><th style="min-width:80px">Moyenne</th>`;
-  cols.forEach(c=>{
-    html+=`<th style="min-width:92px;position:relative;padding-right:16px">
-      <div>${c.titre}</div>
-      <div style="font-weight:400;font-size:10px;opacity:.85">coef ${c.coef}</div>
+  // En-tête façon Pronote : "N élèves" avec petite flèche de tri, puis Moyenne, puis une colonne numérotée par évaluation
+  let html='<table class="notes-table">';
+  html+=`<thead><tr><th class="eleve-col">${eleves.length} élèves <span style="opacity:.5;font-size:10px">▲</span></th><th style="min-width:78px">Moyenne</th>`;
+  cols.forEach((c,ci)=>{
+    html+=`<th style="min-width:78px;position:relative;padding-right:16px" title="${c.titre} — sur ${c.bareme||20} — coef ${c.coef}">
+      <div style="font-size:14px">${ci+1}</div>
+      <div style="font-weight:400;font-size:9.5px;opacity:.85">/${c.bareme||20} · coef ${c.coef}</div>
       <button onclick="supprimerColonne('${cl}','${c.id}')" title="Supprimer cette évaluation" style="position:absolute;top:2px;right:2px;background:none;border:none;color:white;opacity:.75;cursor:pointer;font-size:11px">✕</button>
     </th>`;
   });
@@ -1344,19 +1500,25 @@ function renderNotesGrid(){
     cols.forEach(c=>{
       const v=(notesValues[cl][i]||{})[c.id];
       const avg=colAverages[c.id];
+      const bareme=c.bareme||20;
       let inputVal = v===undefined ? '' : v;
-      let cellStyle='color:#1a1a2e;font-weight:600;';
-      if(typeof v==='number' && avg!==null && v<avg){
-        cellStyle='color:#a9744f;font-style:italic;font-weight:500;';
-      } else if(v==='Abs'){
-        cellStyle='color:#8e44ad;font-style:italic;font-weight:600;';
-      }
-      html+=`<td style="padding:2px"><input type="text" value="${inputVal}" onchange="setNoteValue('${cl}',${i},'${c.id}',this.value)" style="width:100%;border:none;text-align:center;padding:8px 2px;font-size:12.5px;background:transparent;outline:none;${cellStyle}" placeholder="—"></td>`;
+      let valColor='#1a1a2e';
+      if(v==='Abs') valColor='#8e44ad';
+      else if(typeof v==='number' && avg!==null && v<avg) valColor='#a9744f';
+      const avgTxt = avg!==null ? `<div class="note-avg">(${avg.toFixed(2)})</div>` : '';
+      html+=`<td class="note-cell" onclick="focusNoteInput(this)">
+        <input type="text" value="${inputVal}" onchange="setNoteValue('${cl}',${i},'${c.id}',this.value)" placeholder="—" style="color:${valColor}">
+        ${avgTxt}
+      </td>`;
     });
     html+='</tr>';
   });
   html+='</tbody></table>';
   wrap.innerHTML=html;
+}
+function focusNoteInput(td){
+  const input=td.querySelector('input');
+  if(input) input.focus();
 }
 
 // DEVOIRS
@@ -1584,7 +1746,7 @@ function exporterPDF(){
 
   const opt = {
     margin: 15,
-    filename: 'bulletin_ecolenet.pdf',
+    filename: 'bulletin_etudiant_super.pdf',
     image: { type:'jpeg', quality:0.98 },
     html2canvas: { scale:2, useCORS:true },
     jsPDF: { unit:'mm', format:'a4', orientation:'portrait' }
@@ -1595,6 +1757,17 @@ function exporterPDF(){
     toast('✅ PDF téléchargé !');
   });
 }
+
+// HORLOGE HEADER (façon vrai Pronote)
+function updateHeaderClock(){
+  const el=document.getElementById('header-clock');
+  if(!el) return;
+  const now=new Date();
+  const time=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  const date=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  el.innerHTML=`<span class="hc-time">${time}</span><span class="hc-date">${date}</span>`;
+}
+setInterval(updateHeaderClock,1000*20);
 
 // LOGIN & RÔLES
 let currentRole = null;
@@ -1665,6 +1838,7 @@ renderSanctions();
 renderMessages();
 renderNotesGrid();
 renderDevoirs();
+updateHeaderClock();
 </script>
 </body>
 </html>

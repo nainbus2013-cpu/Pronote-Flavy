@@ -12,7 +12,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f3f4f8;color:#1a1a2e;mi
 /* LOGIN */
 #login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#7f0000 0%,#c62828 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
 .login-box{background:white;border-radius:16px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
-.login-logo{background:#c62828;padding:12px 28px;font-size:24px;border-radius:12px;color:white;font-weight:bold;display:inline-block;letter-spacing:2px;margin-bottom:8px}
+.login-logo{background:linear-gradient(135deg,#1976d2,#1565c0);padding:12px 28px;font-size:22px;border-radius:12px;color:white;font-weight:bold;display:inline-flex;align-items:center;gap:8px;letter-spacing:2px;margin-bottom:8px}
 .login-subtitle{color:#6c7a89;font-size:13px;margin-bottom:28px}
 .login-group{text-align:left;margin-bottom:16px}
 .login-group label{display:block;font-size:12px;font-weight:600;color:#6c7a89;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
@@ -37,7 +37,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f3f4f8;color:#1a1a2e;mi
 
 .header{background:#b71c1c;color:white;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 25px;position:sticky;top:0;z-index:100;box-shadow:0 4px 15px rgba(0,0,0,.25)}
 .header-left{display:flex;align-items:center;gap:14px}
-.logo{background:#e53935;padding:6px 12px;border-radius:6px;font-weight:700;font-size:15px;letter-spacing:1px}
+.logo{background:linear-gradient(135deg,#1976d2,#1565c0);padding:6px 12px;border-radius:6px;font-weight:700;font-size:15px;letter-spacing:1px;display:inline-flex;align-items:center;gap:6px}
 .header-info{font-size:13px;opacity:.85}
 .header-right{display:flex;align-items:center;gap:10px;font-size:13px}
 .prof-badge{background:#e53935;padding:4px 10px;border-radius:20px;font-size:12px}
@@ -225,7 +225,7 @@ tr:hover td{background:#f7fbff}
 
   <!-- Étape 1 : choix du mode -->
   <div class="mode-box" id="mode-select">
-    <div class="login-logo">ECOLENET</div>
+    <div class="login-logo">🦋 ECOLENET</div>
     <div class="mode-title">Choisissez votre espace</div>
     <div class="mode-grid">
       <div class="mode-card" onclick="selectMode('admin')">
@@ -247,8 +247,8 @@ tr:hover td{background:#f7fbff}
   <!-- Étape 2 : identifiants -->
   <div class="login-box" id="login-form" style="display:none">
     <span class="role-tag" id="role-tag">MODE</span>
-    <div class="login-logo">ECOLENET</div>
-    <div class="login-subtitle" id="login-subtitle">Espace · Collège Jean Moulin</div>
+    <div class="login-logo">🦋 ECOLENET</div>
+    <div class="login-subtitle" id="login-subtitle">Espace · Collège Flavy</div>
     <div class="login-group">
       <label>Identifiant</label>
       <input type="text" id="login-id" placeholder="ex: j.martin01" autocomplete="username">
@@ -266,8 +266,8 @@ tr:hover td{background:#f7fbff}
 
 
   <div class="header-left">
-    <div class="logo">EcoleNet</div>
-    <div class="header-info" id="header-info">Collège Jean Moulin · Professeur de Français</div>
+    <div class="logo">🦋 EcoleNet</div>
+    <div class="header-info" id="header-info">Collège Flavy · Professeur de Français</div>
   </div>
   <div class="header-right">
     <span class="prof-badge" id="header-badge">👨‍🏫 M. Leroy — Français</span>
@@ -283,7 +283,7 @@ tr:hover td{background:#f7fbff}
   <div class="nav-item" onclick="navigate('appel')" id="nav-appel" data-roles="admin,prof,vie"><span class="nav-icon">📋</span> Appel</div>
   <div class="nav-item" onclick="navigate('edt')" id="nav-edt" data-roles="admin,prof"><span class="nav-icon">📅</span> Emploi du temps</div>
   <div class="nav-item" onclick="navigate('notes')" id="nav-notes" data-roles="admin,prof"><span class="nav-icon">📝</span> Notes</div>
-  <div class="nav-item" onclick="navigate('absences')" id="nav-absences" data-roles="admin,prof,vie"><span class="nav-icon">❌</span> Absences</div>
+  <div class="nav-item" onclick="navigate('devoirs')" id="nav-devoirs" data-roles="admin,prof,vie"><span class="nav-icon">📔</span> Devoirs</div>
   <div class="nav-item" onclick="navigate('oublis')" id="nav-oublis" data-roles="admin,prof,vie"><span class="nav-icon">📚</span> Oublis</div>
   <div class="nav-item" onclick="navigate('sanctions')" id="nav-sanctions" data-roles="admin,prof,vie"><span class="nav-icon">⚠️</span> Sanctions</div>
   <div class="nav-item" onclick="navigate('messages')" id="nav-messages" data-roles="admin,prof,vie"><span class="nav-icon">✉️</span> Messages</div>
@@ -422,51 +422,45 @@ tr:hover td{background:#f7fbff}
     <button class="classe-tab" onclick="switchClasseNotes('6B', this)">6ème B</button>
   </div>
   <div class="card">
-    <div class="card-header"><span class="card-title">➕ Ajouter une note</span></div>
-    <div class="form-row">
-      <div class="form-group"><label>Élève</label>
-        <select id="note-eleve"><option value="">-- Choisir --</option></select></div>
-      <div class="form-group"><label>Note (/20)</label>
-        <input type="number" id="note-val" min="0" max="20" step="0.5" style="width:80px"></div>
-      <div class="form-group"><label>Commentaire</label>
-        <input type="text" id="note-comment" placeholder="Optionnel" style="width:180px"></div>
-      <div class="form-group"><label>&nbsp;</label>
-        <button class="btn-primary" onclick="ajouterNote()">✅ Ajouter</button></div>
+    <div class="card-header">
+      <span class="card-title" id="notes-title">📝 Notes — 6ème A</span>
+      <div style="display:flex;gap:8px">
+        <button class="btn-danger" onclick="resetNotes()">🗑 Réinitialiser</button>
+      </div>
     </div>
-  </div>
-  <div class="card">
-    <div class="card-header"><span class="card-title">📝 Notes enregistrées</span><span class="card-badge" id="nb-notes-badge">0 note(s)</span></div>
-    <div class="table-wrap"><table>
-      <thead><tr><th>Élève</th><th>Classe</th><th>Note</th><th>Commentaire</th><th>Action</th></tr></thead>
-      <tbody id="notes-body"></tbody>
-    </table></div>
+    <div class="form-row" style="background:#f7f9fc;border-radius:10px;padding:12px;margin-bottom:16px">
+      <div class="form-group"><label>Titre de l'évaluation</label><input type="text" id="col-titre" placeholder="ex: Contrôle 1" style="width:180px"></div>
+      <div class="form-group"><label>Coefficient</label><input type="number" id="col-coef" min="0.5" step="0.5" value="1" style="width:70px"></div>
+      <div class="form-group"><label>&nbsp;</label><button class="btn-primary" onclick="ajouterColonne()">➕ Ajouter une évaluation</button></div>
+    </div>
+    <div class="table-wrap"><div id="notes-grid-wrap"></div></div>
   </div>
 </div>
 
-<!-- ABSENCES -->
-<div class="section" id="s-absences">
+<!-- DEVOIRS -->
+<div class="section" id="s-devoirs">
   <div class="classe-tabs">
-    <button class="classe-tab active" onclick="switchClasseAbs('6A', this)">6ème A</button>
-    <button class="classe-tab" onclick="switchClasseAbs('6B', this)">6ème B</button>
+    <button class="classe-tab active" onclick="switchClasseDevoirs('6A', this)">6ème A</button>
+    <button class="classe-tab" onclick="switchClasseDevoirs('6B', this)">6ème B</button>
   </div>
   <div class="card">
-    <div class="card-header"><span class="card-title">➕ Signaler une absence / retard</span></div>
+    <div class="card-header"><span class="card-title">➕ Donner un devoir</span></div>
     <div class="form-row">
-      <div class="form-group"><label>Élève</label>
-        <select id="abs-eleve"><option value="">-- Choisir --</option></select></div>
-      <div class="form-group"><label>Type</label>
-        <select id="abs-type"><option value="abs">Absence</option><option value="ret">Retard</option></select></div>
-      <div class="form-group"><label>Créneau</label>
-        <select id="abs-cours"><option>08h00</option><option>09h00</option><option>10h00</option><option>11h00</option><option>14h00</option><option>15h00</option><option>16h00</option></select></div>
-      <div class="form-group"><label>Motif</label>
-        <input type="text" id="abs-motif" placeholder="Motif (optionnel)" style="width:160px"></div>
+      <div class="form-group" style="flex:1"><label>Titre</label>
+        <input type="text" id="dev-titre" placeholder="ex: Exercices 4 et 5 p.32" style="width:100%"></div>
+      <div class="form-group"><label>Pour le</label>
+        <input type="date" id="dev-date" style="width:150px"></div>
       <div class="form-group"><label>&nbsp;</label>
-        <button class="btn-primary" onclick="ajouterAbsence()">✅ Enregistrer</button></div>
+        <button class="btn-primary" onclick="ajouterDevoir()">✅ Donner</button></div>
+    </div>
+    <div class="form-row" style="margin-top:-6px">
+      <div class="form-group" style="flex:1"><label>Description / consignes</label>
+        <textarea id="dev-desc" rows="2" placeholder="Optionnel" style="width:100%;border:1px solid #d5dbdf;border-radius:6px;padding:7px 10px;font-size:13px;font-family:inherit;resize:vertical;outline:none"></textarea></div>
     </div>
   </div>
   <div class="card">
-    <div class="card-header"><span class="card-title">📋 Historique</span></div>
-    <div class="event-list" id="abs-list"></div>
+    <div class="card-header"><span class="card-title" id="devoirs-title">📔 Devoirs donnés — 6ème A</span><span class="card-badge" id="nb-devoirs-badge">0 devoir(s)</span></div>
+    <div id="devoirs-list" class="event-list"></div>
   </div>
 </div>
 
@@ -557,7 +551,7 @@ tr:hover td{background:#f7fbff}
     <button class="classe-tab" onclick="switchClasseBul('6B', this)">6ème B</button>
   </div>
   <div class="card">
-    <div class="card-header"><span class="card-title">📊 Générer un bulletin</span></div>
+    <div class="card-header"><span class="card-title">📊 Générer un bulletin</span><button class="btn-danger" onclick="resetBulletinAffiche()">🗑 Réinitialiser l'affichage</button></div>
     <div class="form-row">
       <div class="form-group"><label>Élève</label>
         <select id="bul-eleve"><option value="">-- Choisir --</option></select></div>
@@ -586,7 +580,7 @@ tr:hover td{background:#f7fbff}
   <div class="card">
     <div class="card-header"><span class="card-title">⚙️ Paramètres de l'établissement</span></div>
     <div class="form-row">
-      <div class="form-group"><label>Nom de l'établissement</label><input type="text" value="Collège Jean Moulin" style="width:220px"></div>
+      <div class="form-group"><label>Nom de l'établissement</label><input type="text" value="Collège Flavy" style="width:220px"></div>
       <div class="form-group"><label>Année scolaire</label><input type="text" value="2026-2027" style="width:120px"></div>
       <div class="form-group"><label>&nbsp;</label><button class="btn-primary" onclick="toast('✅ Paramètres enregistrés !')">💾 Enregistrer</button></div>
     </div>
@@ -612,6 +606,52 @@ tr:hover td{background:#f7fbff}
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
       <button class="btn-danger" onclick="clearSlot()">🗑 Vider</button>
       <button class="btn-primary" onclick="saveSlot()">💾 Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL MOTIF (absence / retard) -->
+<div class="modal-overlay" id="motif-modal">
+  <div class="modal" style="max-width:380px">
+    <button class="modal-close" onclick="closeMotifModal()">✕</button>
+    <div class="modal-title" id="motif-modal-title">Sélectionner un motif</div>
+    <input type="text" id="motif-search" placeholder="🔎 Rechercher un motif…" style="width:100%;border:1px solid #d5dbdf;border-radius:8px;padding:9px 12px;font-size:13px;margin-bottom:10px;outline:none" oninput="renderMotifList()">
+    <div id="motif-list" style="max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:2px"></div>
+  </div>
+</div>
+
+<!-- MODAL EXCLUSION -->
+<div class="modal-overlay" id="exclusion-modal">
+  <div class="modal" style="max-width:440px">
+    <button class="modal-close" onclick="closeExclusionModal()">✕</button>
+    <div class="modal-title" id="exclusion-modal-title">Créer une exclusion</div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label>Motif</label>
+      <input type="text" id="exc-motif" placeholder="Écrire le motif de l'exclusion…" style="width:100%;border:1px solid #d5dbdf;border-radius:8px;padding:9px 12px;font-size:13px;outline:none">
+    </div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label>Détails</label>
+      <textarea id="exc-details" rows="3" style="width:100%;border:1px solid #d5dbdf;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;resize:vertical;outline:none" placeholder="Circonstances de l'exclusion…"></textarea>
+    </div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label>Accompagnateur</label>
+      <select id="exc-accompagnateur">
+        <option>&lt;Aucun&gt;</option>
+        <option>Vie scolaire</option>
+        <option>CPE</option>
+        <option>Un(e) délégué(e)</option>
+      </select>
+    </div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label>Travail à faire</label>
+      <textarea id="exc-travail" rows="2" style="width:100%;border:1px solid #d5dbdf;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;resize:vertical;outline:none" placeholder="Travail donné pendant l'exclusion…"></textarea>
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#444;margin-bottom:16px">
+      <input type="checkbox" id="exc-publier"> Publier dans le carnet de correspondance sur l'Espace Parents
+    </label>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn-danger" onclick="closeExclusionModal()">Annuler</button>
+      <button class="btn-primary" onclick="validerExclusion()">✅ Valider</button>
     </div>
   </div>
 </div>
@@ -680,22 +720,65 @@ let EDT = [
 let currentClasse = '6A';
 let currentClasseAppel = '6A';
 let currentClasseNotes = '6A';
-let currentClasseAbs = '6A';
+let currentClasseDevoirs = '6A';
 let currentClasseOubli = '6A';
 let currentClasseSan = '6A';
 let currentClasseBul = '6A';
 
 let statuts = {'6A':{},'6B':{}};
-let notes = [];
-let absences = [];
+// Grille de notes : colonnes libres (une par évaluation) + valeurs par élève
+let notesColumns = {'6A':[], '6B':[]}; // {id,titre,coef}
+let notesValues = {'6A':{}, '6B':{}};  // notesValues[cl][studentIndex][colId] = note (number) | 'Abs'
+let colIdCounter = 1;
+let bulletinAppreciations = {}; // clé "cl-index" -> texte
+
+let absences = []; // journal des absences/retards (alimenté depuis l'appel, avec motif)
+let devoirs = []; // devoirs donnés par classe
 let oublis = [];
-let sanctions = [];
+let sanctions = []; // journal des sanctions + exclusions (alimenté depuis l'appel)
 let messages = [
   {de:'Direction',objet:'Réunion pédagogique vendredi',preview:'Rappel : réunion pédagogique vendredi 17h…',date:'Auj.',lu:false},
   {de:'Collègues',objet:'Conseil de classe',preview:'Le conseil de classe du trimestre 1 aura lieu…',date:'Lun.',lu:true},
 ];
 
 let edtEditHi = null, edtEditJi = null;
+let motifModalCtx = null;
+let exclusionModalCtx = null;
+
+const MOTIFS = [
+  'Motif non encore connu','Convocation administrative','Divers','Exclusion temporaire',
+  'Infirmerie','Maladie avec certificat','Maladie sans certificat','Problème de transport',
+  'Raison familiale','Rendez-vous médical','Sortie scolaire / absence prévue'
+];
+
+// PERSISTANCE (le site garde tout en mémoire même après fermeture du navigateur)
+const STORAGE_KEY='ecolenet_data_v1';
+function saveState(){
+  try{
+    const state={notesColumns,notesValues,bulletinAppreciations,absences,devoirs,oublis,sanctions,messages,agendaItems,appelData,appelTermine,EDT,colIdCounter};
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }catch(e){ console.error('Erreur de sauvegarde',e); }
+}
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    const s=JSON.parse(raw);
+    if(s.notesColumns) notesColumns=s.notesColumns;
+    if(s.notesValues) notesValues=s.notesValues;
+    if(s.bulletinAppreciations) bulletinAppreciations=s.bulletinAppreciations;
+    if(s.absences) absences=s.absences;
+    if(s.devoirs) devoirs=s.devoirs;
+    if(s.oublis) oublis=s.oublis;
+    if(s.sanctions) sanctions=s.sanctions;
+    if(s.messages) messages=s.messages;
+    if(s.agendaItems) agendaItems=s.agendaItems;
+    if(s.appelData) appelData=s.appelData;
+    if(s.appelTermine) appelTermine=s.appelTermine;
+    if(s.EDT) EDT=s.EDT;
+    if(s.colIdCounter) colIdCounter=s.colIdCounter;
+  }catch(e){ console.error('Erreur de chargement',e); }
+}
 
 function toast(msg,type=''){
   const t=document.getElementById('toast');
@@ -716,6 +799,7 @@ function navigate(id){
     if(id==='appel') buildAppel();
     if(id==='edt') buildEDT();
     if(id==='accueil') renderDashboardWidgets();
+    if(id==='devoirs') renderDevoirs();
   }catch(e){ console.error('Erreur navigate('+id+')', e); }
 }
 
@@ -736,13 +820,7 @@ function switchClasseNotes(cl,btn){
   currentClasseNotes=cl;
   btn.closest('.classe-tabs').querySelectorAll('.classe-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  populateSelect('note-eleve',cl);
-}
-function switchClasseAbs(cl,btn){
-  currentClasseAbs=cl;
-  btn.closest('.classe-tabs').querySelectorAll('.classe-tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  populateSelect('abs-eleve',cl);
+  renderNotesGrid();
 }
 function switchClasseOubli(cl,btn){
   currentClasseOubli=cl;
@@ -781,14 +859,9 @@ function renderAccueil(){
   document.getElementById('accueil-title').textContent=`📌 Classe 6ème ${currentClasse.replace('6','')} — Élèves`;
   const tbody=document.getElementById('accueil-eleves');
   tbody.innerHTML=eleves.map(e=>`<tr><td>${e.nom}</td><td>${e.prenom}</td></tr>`).join('');
-  // stats notes pour cette classe
-  const cn=notes.filter(n=>n.classe===currentClasse);
-  if(cn.length){
-    const m=(cn.reduce((a,n)=>a+n.val,0)/cn.length).toFixed(1);
-    document.getElementById('nb-moy').textContent=m;
-  }else{
-    document.getElementById('nb-moy').textContent='—';
-  }
+  // stats notes pour cette classe (à partir de la grille de notes)
+  const moyClasse=calcMoyenneClasse(currentClasse);
+  document.getElementById('nb-moy').textContent = moyClasse===null ? '—' : moyClasse.toFixed(1);
   renderDashboardWidgets();
 }
 
@@ -814,40 +887,74 @@ function ajouterAgenda(){
   document.getElementById('ag-detail').value='';
   document.getElementById('agenda-form').style.display='none';
   renderDashboardWidgets();
+  saveState();
   toast('✅ Événement ajouté à l\'agenda !');
 }
 function supprimerAgenda(i){
   agendaItems.splice(i,1);
   renderDashboardWidgets();
+  saveState();
   toast('Événement supprimé','warn');
 }
 
-// SONNERIE
-let bellAudioCtx=null, bellOscillators=[], bellTimerInterval=null;
+// SONNERIE — vraie cloche classique (façon collège), synthétisée avec des harmoniques inharmoniques et un long déclin
+let bellAudioCtx=null, bellActiveNodes=[], bellTimerInterval=null;
+
+function ringOneBell(ctx,startTime,baseFreq,volume){
+  // Une cloche réelle = plusieurs partiels légèrement désaccordés (inharmoniques) + long déclin exponentiel
+  const partials = [
+    {ratio:1.00, gain:1.00},
+    {ratio:1.99, gain:0.55},
+    {ratio:2.41, gain:0.35},
+    {ratio:3.08, gain:0.28},
+    {ratio:4.52, gain:0.18},
+    {ratio:5.35, gain:0.10}
+  ];
+  const master=ctx.createGain();
+  master.gain.value=volume;
+  master.connect(ctx.destination);
+  bellActiveNodes.push(master);
+
+  partials.forEach(p=>{
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.type='sine';
+    osc.frequency.value=baseFreq*p.ratio;
+    const dur = 2.6 + (1/p.ratio)*0.8; // les harmoniques hautes s'éteignent un peu plus vite
+    gain.gain.setValueAtTime(0,startTime);
+    gain.gain.linearRampToValueAtTime(p.gain,startTime+0.008);
+    gain.gain.exponentialRampToValueAtTime(0.0001,startTime+dur);
+    osc.connect(gain).connect(master);
+    osc.start(startTime);
+    osc.stop(startTime+dur+0.05);
+    bellActiveNodes.push(osc);
+  });
+  // léger "coup" percussif au début (le battant qui frappe le bronze)
+  const clic=ctx.createOscillator();
+  const clicGain=ctx.createGain();
+  clic.type='triangle';
+  clic.frequency.value=baseFreq*6;
+  clicGain.gain.setValueAtTime(0.18*volume,startTime);
+  clicGain.gain.exponentialRampToValueAtTime(0.0001,startTime+0.09);
+  clic.connect(clicGain).connect(ctx.destination);
+  clic.start(startTime);
+  clic.stop(startTime+0.1);
+  bellActiveNodes.push(clic);
+}
+
 function playBell(){
   stopBell();
   bellAudioCtx = bellAudioCtx || new (window.AudioContext||window.webkitAudioContext)();
   const ctx=bellAudioCtx;
   const now=ctx.currentTime;
-  // Sonnerie classique à 2 tons (façon collège)
-  [0,0.6,1.2,1.8].forEach((t,i)=>{
-    const osc=ctx.createOscillator();
-    const gain=ctx.createGain();
-    osc.type='sine';
-    osc.frequency.value = i%2===0 ? 880 : 660;
-    gain.gain.setValueAtTime(0,now+t);
-    gain.gain.linearRampToValueAtTime(0.3,now+t+0.05);
-    gain.gain.linearRampToValueAtTime(0,now+t+0.5);
-    osc.connect(gain).connect(ctx.destination);
-    osc.start(now+t);
-    osc.stop(now+t+0.55);
-    bellOscillators.push(osc);
-  });
+  // Sonnerie classique "Collège Flavy" : une série de coups de cloche façon collège à l'ancienne
+  const frappes=[0,0.85,1.7,2.55];
+  frappes.forEach(t=>ringOneBell(ctx, now+t, 523.25, 0.5)); // Do5, timbre de cloche chaude
   toast('🔔 Sonnerie en cours…');
 }
 function stopBell(){
-  bellOscillators.forEach(o=>{try{o.stop();}catch(e){}});
-  bellOscillators=[];
+  bellActiveNodes.forEach(n=>{try{n.stop&&n.stop();}catch(e){}try{n.disconnect&&n.disconnect();}catch(e){}});
+  bellActiveNodes=[];
 }
 function startBellTimer(){
   stopBellTimer();
@@ -913,7 +1020,7 @@ function renderDashboardWidgets(){
     <div class="widget-stat-row"><span>Absences enregistrées</span><span class="widget-stat-val">${absCount}</span></div>
     <div class="widget-stat-row"><span>Retards enregistrés</span><span class="widget-stat-val">${retCount}</span></div>
     <div class="widget-stat-row"><span>Sanctions / observations</span><span class="widget-stat-val">${sanCount}</span></div>
-    <div class="widget-stat-row"><span>Notes saisies</span><span class="widget-stat-val">${cn.length}</span></div>`;
+    <div class="widget-stat-row"><span>Notes saisies</span><span class="widget-stat-val">${countNotesSaisies(cl)}</span></div>`;
 }
 
 const APPEL_CATS = [
@@ -957,24 +1064,20 @@ function buildAppel(){
 }
 
 function toggleAppelCell(cl,i,cat){
+  // Absence et retard : on demande le motif avant d'enregistrer
+  if(cat==='absence' || cat==='retard'){ openMotifModal(cl,i,cat); return; }
+  // Exclusion : on ouvre la fiche complète à remplir
+  if(cat==='exclusion'){ openExclusionModal(cl,i); return; }
   const row=getAppelRow(cl,i);
   row[cat]=row[cat]+1;
-  if(row[cat]===1 && cat==='absence'){
-    const e=CLASSES[cl][i];
-    absences.push({eleve:e.nom+' '+e.prenom,classe:cl,type:'abs',cours:document.getElementById('cours-select').value,motif:'Via appel',date:new Date().toLocaleDateString('fr-FR')});
-    renderAbsences();
-  }
-  if(row[cat]===1 && cat==='retard'){
-    const e=CLASSES[cl][i];
-    absences.push({eleve:e.nom+' '+e.prenom,classe:cl,type:'ret',cours:document.getElementById('cours-select').value,motif:'Via appel',date:new Date().toLocaleDateString('fr-FR')});
-    renderAbsences();
-  }
   buildAppel();
+  saveState();
 }
 
 function resetAppelCell(cl,i,cat){
   getAppelRow(cl,i)[cat]=0;
   buildAppel();
+  saveState();
 }
 
 function toggleAppelTermine(){
@@ -989,6 +1092,83 @@ function toggleAppelTermine(){
     const presents=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,i).absence>0?0:1),0);
     showAppelOverlay(presents);
   }
+  saveState();
+}
+
+// MOTIF (absence / retard) — fenêtre avec recherche, façon Pronote
+function openMotifModal(cl,i,cat){
+  motifModalCtx={cl,i,cat};
+  const e=CLASSES[cl][i];
+  document.getElementById('motif-modal-title').textContent = `${e.nom} ${e.prenom} — Motif ${cat==='absence'?"de l'absence":'du retard'}`;
+  document.getElementById('motif-search').value='';
+  renderMotifList();
+  document.getElementById('motif-modal').classList.add('open');
+}
+function closeMotifModal(){
+  document.getElementById('motif-modal').classList.remove('open');
+  motifModalCtx=null;
+}
+function renderMotifList(){
+  const q=document.getElementById('motif-search').value.toLowerCase();
+  const filtered=MOTIFS.filter(m=>m.toLowerCase().includes(q));
+  const list=document.getElementById('motif-list');
+  list.innerHTML = filtered.length
+    ? filtered.map(m=>`<div onclick="selectMotif(${JSON.stringify(m).replace(/"/g,'&quot;')})" style="padding:10px 12px;border-radius:8px;cursor:pointer;font-size:13px;border-left:3px solid #1976d2;transition:background .15s" onmouseover="this.style.background='#f0f6fc'" onmouseout="this.style.background='transparent'">${m}</div>`).join('')
+    : '<div style="padding:10px;color:#9aa5b1;font-size:13px">Aucun motif trouvé</div>';
+}
+function selectMotif(motif){
+  if(!motifModalCtx) return;
+  const {cl,i,cat}=motifModalCtx;
+  const row=getAppelRow(cl,i);
+  row[cat]=row[cat]+1;
+  const e=CLASSES[cl][i];
+  absences.push({eleve:e.nom+' '+e.prenom,classe:cl,type:cat==='absence'?'abs':'ret',cours:document.getElementById('cours-select').value,motif,date:new Date().toLocaleDateString('fr-FR')});
+  closeMotifModal();
+  buildAppel();
+  renderDashboardWidgets();
+  saveState();
+  toast(cat==='absence' ? '✅ Absence enregistrée !' : '✅ Retard enregistré !');
+}
+
+// EXCLUSION — fiche complète façon Pronote
+function openExclusionModal(cl,i){
+  exclusionModalCtx={cl,i};
+  const e=CLASSES[cl][i];
+  document.getElementById('exclusion-modal-title').textContent=`${e.nom} ${e.prenom} — Créer une exclusion`;
+  document.getElementById('exc-motif').value='';
+  document.getElementById('exc-details').value='';
+  document.getElementById('exc-travail').value='';
+  document.getElementById('exc-accompagnateur').value='<Aucun>';
+  document.getElementById('exc-publier').checked=false;
+  document.getElementById('exclusion-modal').classList.add('open');
+}
+function closeExclusionModal(){
+  document.getElementById('exclusion-modal').classList.remove('open');
+  exclusionModalCtx=null;
+}
+function validerExclusion(){
+  if(!exclusionModalCtx) return;
+  const {cl,i}=exclusionModalCtx;
+  const motif=document.getElementById('exc-motif').value.trim();
+  if(!motif){ toast('Écris un motif avant de valider !','error'); return; }
+  const row=getAppelRow(cl,i);
+  row.exclusion=row.exclusion+1;
+  const e=CLASSES[cl][i];
+  const details=document.getElementById('exc-details').value.trim();
+  const accompagnateur=document.getElementById('exc-accompagnateur').value;
+  const travail=document.getElementById('exc-travail').value.trim();
+  const publier=document.getElementById('exc-publier').checked;
+  let detail = details || 'Sans détails';
+  if(travail) detail += ' · Travail donné : '+travail;
+  if(accompagnateur && accompagnateur!=='<Aucun>') detail += ' · Accompagné par : '+accompagnateur;
+  if(publier) detail += ' · Publié sur l\'Espace Parents';
+  sanctions.push({eleve:e.nom+' '+e.prenom,classe:cl,type:'Exclusion',motif:motif+' — '+detail,date:new Date().toLocaleDateString('fr-FR')});
+  closeExclusionModal();
+  buildAppel();
+  renderSanctions();
+  renderDashboardWidgets();
+  saveState();
+  toast('✅ Exclusion enregistrée !');
 }
 
 function showAppelOverlay(presents){
@@ -1040,58 +1220,188 @@ function openEdtModal(hi,ji){
   document.getElementById('edt-modal').classList.add('open');
 }
 function closeEdtModal(){document.getElementById('edt-modal').classList.remove('open');}
-function clearSlot(){EDT[edtEditHi][edtEditJi]='';closeEdtModal();buildEDT();toast('Créneau vidé');}
+function clearSlot(){EDT[edtEditHi][edtEditJi]='';closeEdtModal();buildEDT();saveState();toast('Créneau vidé');}
 function saveSlot(){
   EDT[edtEditHi][edtEditJi]=document.getElementById('modal-classe').value;
-  closeEdtModal();buildEDT();toast('✅ Emploi du temps mis à jour !');
+  closeEdtModal();buildEDT();saveState();toast('✅ Emploi du temps mis à jour !');
 }
 
-// NOTES
-function ajouterNote(){
-  const i=document.getElementById('note-eleve').value;
-  const val=parseFloat(document.getElementById('note-val').value);
-  const com=document.getElementById('note-comment').value;
+// NOTES — grille libre façon carnet de notes (une colonne = une évaluation)
+function ajouterColonne(){
   const cl=currentClasseNotes;
-  if(i===''||isNaN(val)){toast('Remplis tous les champs !','error');return;}
-  if(val<0||val>20){toast('Note entre 0 et 20','error');return;}
-  const e=CLASSES[cl][i];
-  notes.push({eleve:e.nom+' '+e.prenom,classe:cl,val,com,date:new Date().toLocaleDateString('fr-FR')});
-  renderNotes();
-  document.getElementById('note-val').value='';
-  document.getElementById('note-comment').value='';
-  toast('✅ Note ajoutée !');
+  const titreInput=document.getElementById('col-titre').value.trim();
+  const titre=titreInput || ('Éval. '+(notesColumns[cl].length+1));
+  const coef=parseFloat(document.getElementById('col-coef').value)||1;
+  const id='c'+(colIdCounter++);
+  notesColumns[cl].push({id,titre,coef});
+  document.getElementById('col-titre').value='';
+  document.getElementById('col-coef').value='1';
+  renderNotesGrid();
+  saveState();
+  toast('✅ Évaluation ajoutée !');
+}
+function supprimerColonne(cl,colId){
+  if(!confirm('Supprimer cette évaluation et toutes les notes associées ?')) return;
+  notesColumns[cl]=notesColumns[cl].filter(c=>c.id!==colId);
+  Object.values(notesValues[cl]).forEach(row=>{ delete row[colId]; });
+  renderNotesGrid();
   renderAccueil();
+  saveState();
+  toast('Évaluation supprimée','warn');
 }
-
-function renderNotes(){
-  const body=document.getElementById('notes-body');
-  body.innerHTML=notes.length===0?'<tr><td colspan="5" style="text-align:center;color:#6c7a89;padding:20px">Aucune note enregistrée</td></tr>':'';
-  notes.forEach((n,i)=>{
-    const col=n.val>=10?'#27ae60':n.val>=8?'#e67e22':'#e74c3c';
-    body.innerHTML+=`<tr><td>${n.eleve}</td><td>${n.classe}</td><td><strong style="color:${col}">${n.val}/20</strong></td><td>${n.com||'—'}</td><td><button class="btn-danger" onclick="suppNote(${i})">🗑</button></td></tr>`;
+function setNoteValue(cl,i,colId,raw){
+  if(!notesValues[cl][i]) notesValues[cl][i]={};
+  const v=raw.trim();
+  if(v===''){
+    delete notesValues[cl][i][colId];
+  } else if(v.toLowerCase()==='abs'){
+    notesValues[cl][i][colId]='Abs';
+  } else {
+    let n=parseFloat(v.replace(',','.'));
+    if(isNaN(n)){ toast('Valeur invalide (note ou "Abs")','error'); renderNotesGrid(); return; }
+    n=Math.max(0,Math.min(20,n));
+    notesValues[cl][i][colId]=n;
+  }
+  renderNotesGrid();
+  renderAccueil();
+  saveState();
+}
+function resetNotes(){
+  const cl=currentClasseNotes;
+  if(!confirm(`Réinitialiser toutes les évaluations et notes de la 6ème ${cl.replace('6','')} ?`)) return;
+  notesColumns[cl]=[];
+  notesValues[cl]={};
+  renderNotesGrid();
+  renderAccueil();
+  saveState();
+  toast('Notes réinitialisées','warn');
+}
+function calcMoyenneEleve(cl,i){
+  const cols=notesColumns[cl];
+  const row=notesValues[cl][i]||{};
+  let totalPts=0, totalCoef=0;
+  cols.forEach(c=>{
+    const v=row[c.id];
+    if(typeof v==='number'){ totalPts+=v*c.coef; totalCoef+=c.coef; }
   });
-  document.getElementById('nb-notes-badge').textContent=notes.length+' note(s)';
+  return totalCoef>0 ? (totalPts/totalCoef) : null;
 }
-function suppNote(i){notes.splice(i,1);renderNotes();toast('Note supprimée','warn');}
+function calcMoyenneColonne(cl,colId){
+  const eleves=CLASSES[cl];
+  let sum=0,count=0;
+  eleves.forEach((e,i)=>{
+    const v=(notesValues[cl][i]||{})[colId];
+    if(typeof v==='number'){ sum+=v; count++; }
+  });
+  return count>0 ? sum/count : null;
+}
+function calcMoyenneClasse(cl){
+  const eleves=CLASSES[cl];
+  let sum=0,count=0;
+  eleves.forEach((e,i)=>{
+    const m=calcMoyenneEleve(cl,i);
+    if(m!==null){ sum+=m; count++; }
+  });
+  return count>0 ? (sum/count) : null;
+}
+function countNotesSaisies(cl){
+  let n=0;
+  Object.values(notesValues[cl]||{}).forEach(row=>{
+    Object.values(row).forEach(()=>{ n++; });
+  });
+  return n;
+}
+function renderNotesGrid(){
+  const cl=currentClasseNotes;
+  document.getElementById('notes-title').textContent=`📝 Notes — 6ème ${cl.replace('6','')}`;
+  const cols=notesColumns[cl];
+  const eleves=CLASSES[cl];
+  const wrap=document.getElementById('notes-grid-wrap');
 
-// ABSENCES
-function ajouterAbsence(){
-  const i=document.getElementById('abs-eleve').value;
-  const type=document.getElementById('abs-type').value;
-  const cours=document.getElementById('abs-cours').value;
-  const motif=document.getElementById('abs-motif').value||'Non précisé';
-  const cl=currentClasseAbs;
-  if(i===''){toast('Choisis un élève !','error');return;}
-  const e=CLASSES[cl][i];
-  absences.push({eleve:e.nom+' '+e.prenom,classe:cl,type,cours,motif,date:new Date().toLocaleDateString('fr-FR')});
-  renderAbsences();
-  toast(type==='abs'?'✅ Absence enregistrée !':'✅ Retard enregistré !');
+  if(cols.length===0){
+    wrap.innerHTML='<div style="padding:24px;text-align:center;color:#9aa5b1;font-style:italic;font-size:13px">Aucune évaluation pour le moment — ajoute ta première évaluation ci-dessus 👆</div>';
+    return;
+  }
+
+  const colAverages={};
+  cols.forEach(c=>colAverages[c.id]=calcMoyenneColonne(cl,c.id));
+
+  let html='<table class="appel-grid" style="width:max-content;min-width:100%">';
+  html+=`<thead><tr><th class="eleve-col">${eleves.length} élèves</th><th style="min-width:80px">Moyenne</th>`;
+  cols.forEach(c=>{
+    html+=`<th style="min-width:92px;position:relative;padding-right:16px">
+      <div>${c.titre}</div>
+      <div style="font-weight:400;font-size:10px;opacity:.85">coef ${c.coef}</div>
+      <button onclick="supprimerColonne('${cl}','${c.id}')" title="Supprimer cette évaluation" style="position:absolute;top:2px;right:2px;background:none;border:none;color:white;opacity:.75;cursor:pointer;font-size:11px">✕</button>
+    </th>`;
+  });
+  html+='</tr></thead><tbody>';
+
+  eleves.forEach((e,i)=>{
+    const moy=calcMoyenneEleve(cl,i);
+    const moyColor = moy===null ? '#9aa5b1' : (moy>=10?'#1e8449':'#c0392b');
+    html+=`<tr><td class="eleve-cell">${e.nom} ${e.prenom}</td><td style="font-weight:700;color:${moyColor}">${moy===null?'—':moy.toFixed(2)}</td>`;
+    cols.forEach(c=>{
+      const v=(notesValues[cl][i]||{})[c.id];
+      const avg=colAverages[c.id];
+      let inputVal = v===undefined ? '' : v;
+      let cellStyle='color:#1a1a2e;font-weight:600;';
+      if(typeof v==='number' && avg!==null && v<avg){
+        cellStyle='color:#a9744f;font-style:italic;font-weight:500;';
+      } else if(v==='Abs'){
+        cellStyle='color:#8e44ad;font-style:italic;font-weight:600;';
+      }
+      html+=`<td style="padding:2px"><input type="text" value="${inputVal}" onchange="setNoteValue('${cl}',${i},'${c.id}',this.value)" style="width:100%;border:none;text-align:center;padding:8px 2px;font-size:12.5px;background:transparent;outline:none;${cellStyle}" placeholder="—"></td>`;
+    });
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+  wrap.innerHTML=html;
 }
-function renderAbsences(){
-  const list=document.getElementById('abs-list');
-  list.innerHTML=absences.length===0?'<p style="color:#6c7a89;padding:10px">Aucun événement enregistré</p>':'';
-  absences.forEach(a=>{
-    list.innerHTML+=`<div class="event-item ${a.type}"><span class="event-icon">${a.type==='abs'?'❌':'⏰'}</span><div class="event-body"><div class="event-eleve">${a.eleve} <span style="font-size:11px;color:#e53935">[${a.classe}]</span> — ${a.type==='abs'?'Absence':'Retard'}</div><div class="event-detail">${a.cours} · ${a.motif}</div></div><div class="event-time">${a.date}</div></div>`;
+
+// DEVOIRS
+function switchClasseDevoirs(cl,btn){
+  currentClasseDevoirs=cl;
+  btn.closest('.classe-tabs').querySelectorAll('.classe-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDevoirs();
+}
+function ajouterDevoir(){
+  const titre=document.getElementById('dev-titre').value.trim();
+  const dateRendu=document.getElementById('dev-date').value;
+  const desc=document.getElementById('dev-desc').value.trim();
+  const cl=currentClasseDevoirs;
+  if(!titre){toast('Donne au moins un titre au devoir !','error');return;}
+  devoirs.push({titre,desc,classe:cl,dateRendu,dateDonne:new Date().toLocaleDateString('fr-FR')});
+  document.getElementById('dev-titre').value='';
+  document.getElementById('dev-date').value='';
+  document.getElementById('dev-desc').value='';
+  renderDevoirs();
+  saveState();
+  toast('✅ Devoir donné !');
+}
+function supprimerDevoir(i){
+  devoirs.splice(i,1);
+  renderDevoirs();
+  saveState();
+  toast('Devoir supprimé','warn');
+}
+function renderDevoirs(){
+  const cl=currentClasseDevoirs;
+  document.getElementById('devoirs-title').textContent=`📔 Devoirs donnés — 6ème ${cl.replace('6','')}`;
+  const list=document.getElementById('devoirs-list');
+  const clDevoirs=devoirs.map((d,i)=>({...d,idx:i})).filter(d=>d.classe===cl);
+  document.getElementById('nb-devoirs-badge').textContent=clDevoirs.length+' devoir(s)';
+  list.innerHTML = clDevoirs.length===0 ? '<p style="color:#6c7a89;padding:10px">Aucun devoir donné pour le moment</p>' : '';
+  clDevoirs.forEach(d=>{
+    let echeance='—';
+    if(d.dateRendu){
+      const dd=new Date(d.dateRendu);
+      echeance = dd.toLocaleDateString('fr-FR');
+      const today=new Date(); today.setHours(0,0,0,0);
+      if(dd<today) echeance += ' <span style="color:#c0392b;font-weight:600">(en retard)</span>';
+    }
+    list.innerHTML += `<div class="event-item oub"><span class="event-icon">📔</span><div class="event-body"><div class="event-eleve">${d.titre}</div><div class="event-detail">${d.desc?d.desc+' · ':''}À rendre pour le ${echeance}</div></div><div class="event-time" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">Donné le ${d.dateDonne}<button class="btn-danger" style="padding:3px 8px" onclick="supprimerDevoir(${d.idx})">🗑</button></div></div>`;
   });
 }
 
@@ -1104,6 +1414,7 @@ function ajouterOubli(){
   const e=CLASSES[cl][i];
   oublis.push({eleve:e.nom+' '+e.prenom,classe:cl,type,date:new Date().toLocaleDateString('fr-FR')});
   renderOublis();
+  saveState();
   toast('✅ Oubli signalé !');
 }
 function renderOublis(){
@@ -1125,6 +1436,7 @@ function ajouterSanction(){
   sanctions.push({eleve:e.nom+' '+e.prenom,classe:cl,type,motif,date:new Date().toLocaleDateString('fr-FR')});
   renderSanctions();
   document.getElementById('san-motif').value='';
+  saveState();
   toast('✅ Sanction enregistrée !');
 }
 function renderSanctions(){
@@ -1148,7 +1460,7 @@ function renderMessages(){
     </div>`;
   });
 }
-function lireMsg(i){messages[i].lu=true;renderMessages();}
+function lireMsg(i){messages[i].lu=true;renderMessages();saveState();}
 function envoyerMessage(){
   const dest=document.getElementById('msg-dest').value;
   const objet=document.getElementById('msg-objet').value;
@@ -1159,50 +1471,116 @@ function envoyerMessage(){
   document.getElementById('msg-objet').value='';
   document.getElementById('msg-body').value='';
   document.getElementById('compose-area').style.display='none';
+  saveState();
   toast('✅ Message envoyé !');
 }
 
 // BULLETINS
+function resetBulletinAffiche(){
+  document.getElementById('bulletin-display').innerHTML='';
+}
+function sauverAppreciation(key,val){
+  bulletinAppreciations[key]=val;
+  saveState();
+}
 function genererBulletin(){
   const i=document.getElementById('bul-eleve').value;
   const trim=document.getElementById('bul-trim').value;
   const cl=currentClasseBul;
   if(i===''){toast('Choisis un élève !','error');return;}
-  const e=CLASSES[cl][i];
-  // notes de cet élève
-  const enNotes=notes.filter(n=>n.eleve===e.nom+' '+e.prenom&&n.classe===cl);
-  const moy=enNotes.length?(enNotes.reduce((a,n)=>a+n.val,0)/enNotes.length).toFixed(1):'—';
+  const idx=parseInt(i);
+  const e=CLASSES[cl][idx];
+  const cols=notesColumns[cl];
+  const row=notesValues[cl][idx]||{};
+  const moy=calcMoyenneEleve(cl,idx);
+  const moyClasse=calcMoyenneClasse(cl);
+
+  // Classement dans la classe
+  const classement=CLASSES[cl].map((e2,i2)=>({i:i2,m:calcMoyenneEleve(cl,i2)})).filter(x=>x.m!==null).sort((a,b)=>b.m-a.m);
+  const rang=classement.findIndex(x=>x.i===idx)+1;
+  const rangTxt=rang>0 ? `${rang}${rang===1?'er':'ème'} / ${classement.length}` : '—';
+
+  // Évolution : moyenne de la 1ère moitié des évaluations vs la 2ème moitié
+  const notesNum=cols.map(c=>row[c.id]).filter(v=>typeof v==='number');
+  let evolution=null;
+  if(notesNum.length>=2){
+    const mid=Math.ceil(notesNum.length/2);
+    const premiere=notesNum.slice(0,mid), seconde=notesNum.slice(mid);
+    if(seconde.length>0){
+      const avgP=premiere.reduce((a,b)=>a+b,0)/premiere.length;
+      const avgS=seconde.reduce((a,b)=>a+b,0)/seconde.length;
+      evolution=avgS-avgP;
+    }
+  }
+  const evoTxt = evolution===null ? 'Pas assez de données' : (evolution>0.3 ? `↑ En progression (+${evolution.toFixed(1)} pts)` : evolution<-0.3 ? `↓ En baisse (${evolution.toFixed(1)} pts)` : '→ Stable');
+  const evoColor = evolution===null ? '#9aa5b1' : (evolution>0.3 ? '#1e8449' : evolution<-0.3 ? '#c0392b' : '#e67e22');
+
+  const apprKey=cl+'-'+idx;
+  const apprValue=bulletinAppreciations[apprKey]||'';
+
+  const rowsHtml = cols.length ? cols.map(c=>{
+    const v=row[c.id];
+    const vTxt = v===undefined ? '—' : (v==='Abs' ? 'Abs' : v.toFixed(2).replace('.',',')+'/20');
+    const color = typeof v==='number' ? (v>=10?'#1e8449':'#c0392b') : '#6c7a89';
+    return `<tr><td>${c.titre}</td><td>coef ${c.coef}</td><td class="moy-cell" style="color:${color}">${vTxt}</td></tr>`;
+  }).join('') : '<tr><td colspan="3" style="text-align:center;color:#9aa5b1">Aucune évaluation saisie</td></tr>';
+
+  // Mini graphique en barres (SVG) des notes numériques
+  let chartHtml='';
+  const numericCols=cols.filter(c=>typeof row[c.id]==='number');
+  if(numericCols.length>0){
+    const barW=34, gap=16, chartH=90;
+    const width=numericCols.length*(barW+gap);
+    const bars=numericCols.map((c,ci)=>{
+      const v=row[c.id];
+      const h=Math.max(4,(v/20)*chartH);
+      const x=ci*(barW+gap);
+      const color=v>=10?'#1e8449':'#c0392b';
+      return `<rect x="${x}" y="${chartH-h}" width="${barW}" height="${h}" rx="5" fill="${color}"/>
+        <text x="${x+barW/2}" y="${chartH-h-6}" font-size="10" text-anchor="middle" fill="#333">${v.toFixed(1)}</text>
+        <text x="${x+barW/2}" y="${chartH+14}" font-size="9" text-anchor="middle" fill="#6c7a89">${c.titre.length>9?c.titre.substring(0,8)+'…':c.titre}</text>`;
+    }).join('');
+    chartHtml=`<div style="padding:4px 20px 8px">
+      <label style="font-size:11px;color:#6c7a89;font-weight:600;text-transform:uppercase">Vue d'ensemble des évaluations</label>
+      <div style="margin-top:8px;overflow-x:auto"><svg width="${width}" height="${chartH+26}" viewBox="0 0 ${width} ${chartH+26}">${bars}</svg></div>
+    </div>`;
+  }
+
   const disp=document.getElementById('bulletin-display');
   disp.innerHTML=`
     <div class="bulletin-header">
       <strong>Bulletin scolaire — ${e.nom} ${e.prenom}</strong><br>
-      <small>${trim} · Classe 6ème ${cl.replace('6','')} · Collège Jean Moulin</small>
+      <small>${trim} · Classe 6ème ${cl.replace('6','')} · Collège Flavy</small>
     </div>
     <table class="bul-table">
-      <thead><tr><th>Matière</th><th>Professeur</th><th>Nombre de notes</th><th>Moyenne</th></tr></thead>
-      <tbody>
-        <tr>
-          <td>Cours principal</td>
-          <td>M. Leroy</td>
-          <td>${enNotes.length}</td>
-          <td class="moy-cell" style="color:${moy!=='—'&&parseFloat(moy)>=10?'#1e8449':'#c0392b'}">${moy}/20</td>
-        </tr>
-      </tbody>
+      <thead><tr><th>Évaluation</th><th>Coefficient</th><th>Note</th></tr></thead>
+      <tbody>${rowsHtml}</tbody>
     </table>
+    <div style="padding:16px 20px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+      <div class="stat-card" style="box-shadow:none;border:1px solid #ececec"><div class="stat-number" style="font-size:20px;color:${moy!==null&&moy>=10?'#1e8449':'#c0392b'}">${moy===null?'—':moy.toFixed(2)}</div><div class="stat-label">Moyenne élève</div></div>
+      <div class="stat-card" style="box-shadow:none;border:1px solid #ececec"><div class="stat-number" style="font-size:20px;color:#1976d2">${rangTxt}</div><div class="stat-label">Rang dans la classe</div></div>
+      <div class="stat-card" style="box-shadow:none;border:1px solid #ececec"><div class="stat-number" style="font-size:13.5px;color:${evoColor}">${evoTxt}</div><div class="stat-label">Évolution</div></div>
+    </div>
+    ${chartHtml}
+    <div style="padding:8px 20px 16px">
+      <label style="font-size:11px;color:#6c7a89;font-weight:600;text-transform:uppercase">Appréciation générale</label>
+      <textarea id="bul-appreciation" rows="3" style="width:100%;border:1px solid #d5dbdf;border-radius:8px;padding:10px;font-size:13px;font-family:inherit;margin-top:6px;resize:vertical;outline:none" placeholder="Écrire une appréciation…" oninput="sauverAppreciation('${apprKey}',this.value)">${apprValue}</textarea>
+    </div>
     <div class="moy-generale">
-      <div><strong>Moyenne générale</strong></div>
-      <div class="moy-gen-val" style="color:${moy!=='—'&&parseFloat(moy)>=10?'#1e8449':'#c0392b'}">${moy}/20</div>
+      <div><strong>Moyenne de la classe : ${moyClasse===null?'—':moyClasse.toFixed(2)}/20</strong></div>
+      <div class="moy-gen-val">${moy===null?'—':moy.toFixed(2)}/20</div>
+    </div>
+    <div style="margin-top:12px;text-align:right;display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn-danger" onclick="resetBulletinAffiche()">🗑 Réinitialiser l'affichage</button>
+      <button class="btn-primary" onclick="exporterPDF()">📄 Télécharger en PDF</button>
     </div>`;
-  disp.innerHTML += `<div style="margin-top:12px;text-align:right">
-    <button class="btn-primary" onclick="exporterPDF()">📄 Télécharger en PDF</button>
-  </div>`;
   toast('📄 Bulletin généré !');
 }
 
 function exporterPDF(){
   const el = document.getElementById('bulletin-display');
-  const bouton = el.querySelector('button');
-  if(bouton) bouton.style.display='none';
+  const boutons = el.querySelectorAll('button');
+  boutons.forEach(b=>b.style.display='none');
 
   const opt = {
     margin: 15,
@@ -1213,7 +1591,7 @@ function exporterPDF(){
   };
 
   html2pdf().set(opt).from(el).save().then(()=>{
-    if(bouton) bouton.style.display='';
+    boutons.forEach(b=>b.style.display='');
     toast('✅ PDF téléchargé !');
   });
 }
@@ -1221,9 +1599,9 @@ function exporterPDF(){
 // LOGIN & RÔLES
 let currentRole = null;
 const ROLE_INFO = {
-  admin:{label:'MODE ADMINISTRATIF',subtitle:'Espace Administratif · Collège Jean Moulin',badge:'🧭 Administrateur',info:'Collège Jean Moulin · Administration'},
-  prof:{label:'MODE ENSEIGNANT',subtitle:'Espace Enseignant · Collège Jean Moulin',badge:'👨‍🏫 M. Leroy — Français',info:'Collège Jean Moulin · Professeur de Français'},
-  vie:{label:'MODE VIE SCOLAIRE',subtitle:'Espace Vie Scolaire · Collège Jean Moulin',badge:'🗂️ Mme Petit — Vie scolaire',info:'Collège Jean Moulin · Vie scolaire'}
+  admin:{label:'MODE ADMINISTRATIF',subtitle:'Espace Administratif · Collège Flavy',badge:'🧭 Administrateur',info:'Collège Flavy · Administration'},
+  prof:{label:'MODE ENSEIGNANT',subtitle:'Espace Enseignant · Collège Flavy',badge:'👨‍🏫 M. Leroy — Français',info:'Collège Flavy · Professeur de Français'},
+  vie:{label:'MODE VIE SCOLAIRE',subtitle:'Espace Vie Scolaire · Collège Flavy',badge:'🗂️ Mme Petit — Vie scolaire',info:'Collège Flavy · Vie scolaire'}
 };
 
 function selectMode(role){
@@ -1275,19 +1653,18 @@ function logout(){
 }
 
 // INIT
-populateSelect('note-eleve','6A');
-populateSelect('abs-eleve','6A');
+loadState(); // récupère tout ce qui a été enregistré la dernière fois (notes, appel, EDT, messages…)
 populateSelect('oub-eleve','6A');
 populateSelect('san-eleve','6A');
 populateBulSelect('6A');
 renderAccueil();
 buildAppel();
 buildEDT();
-renderAbsences();
 renderOublis();
 renderSanctions();
 renderMessages();
-renderNotes();
+renderNotesGrid();
+renderDevoirs();
 </script>
 </body>
 </html>

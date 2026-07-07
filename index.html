@@ -106,6 +106,12 @@ tr:hover td{background:#f7fbff}
 .appel-count{font-size:10px;color:#e67e22;font-weight:700;position:absolute;margin-top:14px;margin-left:14px;cursor:pointer}
 .appel-count:hover{color:#c0392b;text-decoration:underline}
 .appel-cell-wrap{position:relative;width:100%;height:100%}
+.appel-cell-wrap2{display:flex;align-items:center;height:100%;width:100%}
+.appel-check{flex:0 0 34px;height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:#333;transition:background .15s}
+.appel-check:hover{background:#ffecec}
+.appel-check.checked{color:#c62828;font-weight:700}
+.appel-total{flex:1;height:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;font-weight:700;color:#546e7a;border-left:1px solid #f0f0f0;transition:background .15s}
+.appel-total:hover{background:#f7f7f9;text-decoration:underline}
 .appel-footer{display:flex;align-items:center;gap:10px;padding:12px 20px;background:#f4f6f8;border-top:1px solid #eee;font-size:13px;color:#444}
 .btn-appel{border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;transition:all .15s}
 .btn-p{background:#d5f5e3;color:#1e8449}.btn-p:hover{background:#a9dfbf}
@@ -421,7 +427,7 @@ tr:hover td{background:#f7fbff}
     </div>
     <div class="appel-footer" id="appel-footer">
       <span id="appel-status">☐ Appel non terminé</span>
-      <span style="font-size:11px;color:#9aa5b1;font-style:italic">Astuce : clic = ajouter, clic sur le petit chiffre = retirer un, double-clic = tout effacer</span>
+      <span style="font-size:11px;color:#9aa5b1;font-style:italic">Astuce : cliquer sur la coche = ajouter/retirer pour ce cours · cliquer sur le chiffre = retirer 1 au total cumulé de l'année</span>
       <button class="btn-primary" style="margin-left:auto" onclick="toggleAppelTermine()">✅ Terminer l'appel</button>
     </div>
   </div>
@@ -801,7 +807,7 @@ const MOTIFS = [
 const STORAGE_KEY='etudiantsuper_data_v1';
 function saveState(){
   try{
-    const state={notesColumns,notesValues,bulletinAppreciations,absences,devoirs,oublis,sanctions,messages,agendaItems,appelData,appelTermine,EDT,colIdCounter};
+    const state={notesColumns,notesValues,bulletinAppreciations,absences,devoirs,oublis,sanctions,messages,agendaItems,appelData,appelHistory,appelTermine,EDT,colIdCounter};
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }catch(e){ console.error('Erreur de sauvegarde',e); }
 }
@@ -820,6 +826,7 @@ function loadState(){
     if(s.messages) messages=s.messages;
     if(s.agendaItems) agendaItems=s.agendaItems;
     if(s.appelData) appelData=s.appelData;
+    if(s.appelHistory) appelHistory=s.appelHistory;
     if(s.appelTermine) appelTermine=s.appelTermine;
     if(s.EDT) EDT=s.EDT;
     if(s.colIdCounter) colIdCounter=s.colIdCounter;

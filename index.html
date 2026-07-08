@@ -17,27 +17,30 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f3f4f8;color:#1a1a2e;min-height:100vh;display:flex;flex-direction:column}
 #login-screen{position:fixed;inset:0;background:linear-gradient(135deg,var(--brand-dark) 0%,var(--brand) 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
-.login-box{background:white;border-radius:16px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
-.login-logo{background:linear-gradient(135deg,var(--brand-light),var(--brand-dark));padding:12px 28px;font-size:22px;border-radius:12px;color:white;font-weight:bold;display:inline-flex;align-items:center;gap:8px;letter-spacing:2px;margin-bottom:8px}
-.login-subtitle{color:#6c7a89;font-size:13px;margin-bottom:28px}
-.login-group{text-align:left;margin-bottom:16px}
-.login-group label{display:block;font-size:12px;font-weight:600;color:#6c7a89;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
-.login-group input{width:100%;border:1.5px solid #d5dbdf;border-radius:8px;padding:11px 14px;font-size:14px;outline:none;transition:border-color .2s}
-.login-group input:focus{border-color:var(--brand)}
-.login-btn{width:100%;background:var(--brand);color:white;border:none;padding:13px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px;transition:background .2s}
+.login-panel{background:white;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.4);display:flex;overflow:hidden;max-width:560px;width:100%}
+.login-modes-rail{display:flex;flex-direction:column;gap:8px;background:#f4f6f8;padding:18px 14px;width:130px;flex-shrink:0}
+.login-mode-btn{border:2px solid #e3e7ee;border-radius:12px;background:white;padding:12px 8px;text-align:center;cursor:pointer;transition:all .2s}
+.login-mode-btn:hover{border-color:var(--accent-light)}
+.login-mode-btn.active{border-color:var(--brand);background:var(--brand);color:white}
+.lmb-icon{font-size:24px;margin-bottom:4px}
+.lmb-label{font-size:11px;font-weight:700;line-height:1.25}
+.login-form-panel{flex:1;padding:28px 30px;text-align:left}
+.login-flag-row{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.flag-mini{display:flex;width:26px;height:18px;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px #ddd;flex-shrink:0}
+.flag-mini span{flex:1;height:100%}
+.flag-mini span:nth-child(1){background:#002395}
+.flag-mini span:nth-child(2){background:#fff}
+.flag-mini span:nth-child(3){background:#ed2939}
+.login-school-name strong{display:block;font-size:9.5px;letter-spacing:.5px;color:#6c7a89}
+.login-school-name div{font-size:14px;font-weight:800;color:var(--brand-dark);letter-spacing:.3px}
+.login-group{text-align:left;margin-bottom:14px}
+.login-group label{display:block;font-size:11px;font-weight:600;color:#6c7a89;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.login-group input,.login-group select{width:100%;border:1.5px solid #d5dbdf;border-radius:8px;padding:10px 12px;font-size:13.5px;outline:none;transition:border-color .2s;background:white}
+.login-group input:focus,.login-group select:focus{border-color:var(--brand)}
+.login-btn{width:100%;background:var(--brand);color:white;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;transition:background .2s}
 .login-btn:hover{background:var(--accent)}
-.login-error{color:#c0392b;font-size:13px;margin-top:10px;display:none}
-.login-footer{margin-top:20px;font-size:11px;color:#aab;}
-.mode-box{background:white;border-radius:16px;padding:40px 36px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.4);text-align:center}
-.mode-title{font-size:13px;color:#6c7a89;margin-bottom:24px;text-transform:uppercase;letter-spacing:1px;font-weight:600}
-.mode-grid{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.mode-card{width:110px;border:2px solid #ececec;border-radius:14px;padding:18px 10px 14px;cursor:pointer;transition:all .2s;background:white}
-.mode-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 20px rgba(201,151,31,.18)}
-.mode-icon{font-size:30px;margin-bottom:8px}
-.mode-label{font-size:12px;font-weight:700;color:var(--brand-dark)}
-.back-mode{background:none;border:none;color:#6c7a89;font-size:12px;cursor:pointer;margin-top:14px}
-.back-mode:hover{color:var(--brand)}
-.role-tag{display:inline-block;background:var(--brand);color:white;font-size:10px;font-weight:700;padding:3px 10px;border-radius:10px;letter-spacing:.5px;margin-bottom:10px}
+.login-error{color:#c0392b;font-size:12.5px;margin-top:10px;display:none}
+.login-footer{margin-top:16px;font-size:10.5px;color:#aab}
 .header{background:var(--brand-dark);color:white;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 25px;position:sticky;top:0;z-index:100;box-shadow:0 4px 15px rgba(0,0,0,.25)}
 .header-left{display:flex;align-items:center;gap:14px}
 .logo{background:linear-gradient(135deg,var(--brand-light),var(--brand-dark));padding:6px 12px;border-radius:6px;font-weight:700;font-size:15px;letter-spacing:1px;display:inline-flex;align-items:center;gap:6px}
@@ -109,35 +112,26 @@ tr:hover td{background:#f7fbff}
 .btn-p{background:#d5f5e3;color:#1e8449}.btn-p:hover{background:#a9dfbf}
 .btn-a{background:#fde8e8;color:#c0392b}.btn-a:hover{background:#f5b7b1}
 .btn-r{background:#fef9e7;color:#b7770d}.btn-r:hover{background:#fdebd0}
-.eval-pill-list{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;padding-bottom:2px}
-.eval-pill{position:relative;min-width:150px;background:#f7f9fc;border:2px solid #e3e7ee;border-radius:12px;padding:10px 26px 10px 14px;cursor:pointer;transition:all .15s}
-.eval-pill:hover{border-color:var(--accent-light);background:#eef3fb}
-.eval-pill.active{border-color:var(--accent);background:var(--accent-soft)}
-.eval-pill-num{font-size:10px;color:#8a94a3;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
-.eval-pill-title{font-size:13.5px;font-weight:700;color:var(--brand-dark);margin-top:2px}
-.eval-pill-meta{font-size:11px;color:#6c7a89;margin-top:3px}
-.eval-pill-del{position:absolute;top:6px;right:6px;background:none;border:none;color:#aab3bf;cursor:pointer;font-size:11px;padding:2px}
-.eval-pill-del:hover{color:#c0392b}
-.eval-entry-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:14px 16px;background:#f7f9fc;border-radius:10px;margin-bottom:12px}
-.eval-entry-head strong{color:var(--brand-dark)}
-.eval-entry-sub{color:#8a94a3;font-weight:400;font-size:12.5px}
-.eval-entry-avg{font-size:13px;color:#444}
-.eval-entry-list{display:flex;flex-direction:column;border:1px solid #ececec;border-radius:10px;overflow:hidden}
-.eval-entry-row{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;border-bottom:1px solid #f0f3f7}
-.eval-entry-row:last-child{border-bottom:none}
-.eval-entry-row:nth-child(even){background:#fafbfc}
-.eval-entry-name{font-weight:600;font-size:13.5px;color:var(--brand-dark)}
-.eval-entry-input-wrap{display:flex;align-items:center;gap:4px}
-.eval-entry-input{width:64px;text-align:center;border:1.5px solid #d5dbdf;border-radius:8px;padding:7px 4px;font-size:14px;font-weight:700;outline:none;color:#1a1a2e;transition:border-color .15s}
-.eval-entry-input:focus{border-color:var(--accent)}
-.eval-entry-input.above{color:#1e8449;border-color:#bfe3cf}
-.eval-entry-input.below{color:#a9744f;border-color:#ecd9c2}
-.eval-entry-input.abs{color:#8e44ad;border-color:#e3cdf0}
-.eval-entry-bareme{font-size:11px;color:#9aa5b1;min-width:26px}
-.notes-moy-table{width:100%;border-collapse:collapse;font-size:13px}
-.notes-moy-table th{background:#f0f3f7;color:#6c7a89;padding:9px 14px;text-align:left;font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.3px}
-.notes-moy-table td{padding:9px 14px;border-bottom:1px solid #f0f3f7}
-.notes-moy-table tr:nth-child(even) td{background:#fafbfc}
+.notes-grid-table{border-collapse:collapse;font-size:12.5px;width:max-content;min-width:100%}
+.btn-devoir-pill{background:var(--brand);color:white;border:none;padding:9px 18px;border-radius:20px;font-weight:700;font-size:13px;cursor:pointer;transition:.2s;margin-right:8px}
+.btn-devoir-pill:hover{background:var(--brand-dark)}
+.notes-grid-table th,.notes-grid-table td{border:1px solid #eef0f3;text-align:center;padding:6px 10px;white-space:nowrap}
+.notes-grid-table th.ng-eleve-col,.notes-grid-table td.ng-eleve-col{text-align:left;position:sticky;left:0;background:#fff;z-index:2;min-width:170px}
+.notes-grid-table thead th{background:#fafbfc;font-weight:600}
+.ng-row-date th{color:var(--brand-dark);font-size:11.5px;font-weight:700}
+.ng-row-type th{padding:4px 8px}
+.ng-type-pill{display:inline-block;border:1.5px solid var(--accent);color:var(--accent);border-radius:10px;padding:1px 10px;font-size:10.5px;font-weight:700}
+.ng-row-coef th{color:#9aa5b1;font-size:11px;font-weight:600}
+.ng-col-del{position:absolute;top:2px;right:4px;background:none;border:none;color:#bbb;cursor:pointer;font-size:10px}
+.ng-col-del:hover{color:#c0392b}
+.notes-grid-table th{position:relative}
+.notes-grid-table tr.ng-moy-row th{background:#f0f6fc}
+.ng-moyenne-col{font-weight:700;background:#fafbfc}
+.ng-cell-input{width:52px;text-align:center;border:1px solid transparent;border-radius:6px;padding:5px 2px;font-size:12.5px;font-weight:600;outline:none;background:transparent;color:#1a1a2e}
+.ng-cell-input:hover,.ng-cell-input:focus{border-color:var(--accent);background:#fff}
+.ng-cell-input.below{color:#a9744f}
+.ng-cell-input.abs{color:#c0392b;font-style:italic}
+.ng-cell-input.nrdu{color:#8e44ad;font-style:italic}
 .edt-grid{display:grid;grid-template-columns:60px repeat(5,1fr);gap:4px;font-size:12px}
 .edt-header{background:var(--brand-dark);color:white;padding:9px;text-align:center;font-weight:600;border-radius:6px;letter-spacing:.3px}
 .edt-time{background:#f3f4f8;padding:8px 4px;text-align:center;color:#6c7a89;font-size:11px;display:flex;align-items:center;justify-content:center;border-radius:6px}
@@ -256,40 +250,42 @@ tr:hover td{background:#f7fbff}
 </head>
 <body>
 <div id="login-screen">
-  <div class="mode-box" id="mode-select">
-    <div class="login-logo">🦋 ETUDIANT SUPER</div>
-    <div class="mode-title">Choisissez votre espace</div>
-    <div class="mode-grid">
-      <div class="mode-card" onclick="selectMode('admin')">
-        <div class="mode-icon">🧭</div>
-        <div class="mode-label">Mode<br>administratif</div>
+  <div class="login-panel">
+    <div class="login-modes-rail" id="login-modes-rail">
+      <div class="login-mode-btn" data-role="admin" onclick="selectModeV2('admin')">
+        <div class="lmb-icon">🧭</div><div class="lmb-label">Mode<br>administratif</div>
       </div>
-      <div class="mode-card" onclick="selectMode('prof')">
-        <div class="mode-icon">🖊️</div>
-        <div class="mode-label">Mode<br>enseignant</div>
+      <div class="login-mode-btn" data-role="prof" onclick="selectModeV2('prof')">
+        <div class="lmb-icon">🖊️</div><div class="lmb-label">Mode<br>enseignant</div>
       </div>
-      <div class="mode-card" onclick="selectMode('vie')">
-        <div class="mode-icon">🗂️</div>
-        <div class="mode-label">Mode<br>vie scolaire</div>
+      <div class="login-mode-btn" data-role="vie" onclick="selectModeV2('vie')">
+        <div class="lmb-icon">🗂️</div><div class="lmb-label">Mode<br>vie scolaire</div>
       </div>
     </div>
-    <div class="login-footer" style="margin-top:24px">Etudiant Super v2.4 — Accès réservé au personnel</div>
-  </div>
-  <div class="login-box" id="login-form" style="display:none">
-    <span class="role-tag" id="role-tag">MODE</span>
-    <div class="login-logo">🦋 ETUDIANT SUPER</div>
-    <div class="login-subtitle" id="login-subtitle">Espace · Collège Flavy</div>
-    <div class="login-group">
-      <label>Identifiant</label>
-      <input type="text" id="login-id" placeholder="ex: j.martin01" autocomplete="username">
+    <div class="login-form-panel">
+      <div class="login-flag-row">
+        <div class="flag-mini"><span></span><span></span><span></span></div>
+        <div class="login-school-name">
+          <strong>RÉPUBLIQUE FRANÇAISE</strong>
+          <div id="login-school-title">COLLÈGE FLAVY</div>
+        </div>
+      </div>
+      <div class="login-group">
+        <label>Année scolaire</label>
+        <select id="login-annee"></select>
+      </div>
+      <div class="login-group">
+        <label>Identifiant</label>
+        <input type="text" id="login-id" placeholder="Votre identifiant" autocomplete="username">
+      </div>
+      <div class="login-group">
+        <label>Mot de passe</label>
+        <input type="password" id="login-pw" placeholder="Votre mot de passe" autocomplete="current-password" onkeydown="if(event.key==='Enter')tryLogin()">
+      </div>
+      <button class="login-btn" onclick="tryLogin()">Se connecter</button>
+      <div class="login-error" id="login-error">❌ Identifiant ou mot de passe incorrect.</div>
+      <div class="login-footer">Etudiant Super v2.4 — Accès réservé au personnel</div>
     </div>
-    <div class="login-group">
-      <label>Mot de passe</label>
-      <input type="password" id="login-pw" placeholder="••••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')tryLogin()">
-    </div>
-    <button class="login-btn" onclick="tryLogin()">Se connecter</button>
-    <div class="login-error" id="login-error">❌ Identifiant ou mot de passe incorrect.</div>
-    <button class="back-mode" onclick="backToModeSelect()">← Changer d'espace</button>
   </div>
 </div>
 <div class="header">
@@ -442,20 +438,14 @@ tr:hover td{background:#f7fbff}
     <button class="classe-tab active" onclick="switchClasseNotes('6A', this)">6ème A</button>
     <button class="classe-tab" onclick="switchClasseNotes('6B', this)">6ème B</button>
   </div>
-  <div class="card">
-    <div class="card-header">
-      <span class="card-title" id="notes-title">📝 Notes — 6ème A</span>
-      <div style="display:flex;gap:8px">
-        <button class="btn-primary" onclick="openEvalModal()">➕ Faire une évaluation</button>
-        <button class="btn-danger" onclick="resetNotes()">🗑 Réinitialiser</button>
-      </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div class="card-header" style="padding:16px 20px">
+      <button class="btn-devoir-pill" onclick="openEvalModal()">➕ Créer un devoir</button>
+      <button class="btn-danger" onclick="resetNotes()">🗑 Réinitialiser</button>
     </div>
-    <div class="eval-pill-list" id="notes-evals-list"></div>
-    <div id="notes-entry-wrap"></div>
-  </div>
-  <div class="card">
-    <div class="card-header"><span class="card-title" id="notes-moy-title">📊 Moyennes générales — 6ème A</span></div>
-    <div id="notes-moyennes-wrap"></div>
+    <div class="table-wrap" style="padding:0 0 4px">
+      <div id="notes-grid-wrap"></div>
+    </div>
   </div>
 </div>
 <div class="section" id="s-devoirs">
@@ -619,12 +609,21 @@ tr:hover td{background:#f7fbff}
 <div class="modal-overlay" id="eval-modal">
   <div class="modal" style="max-width:360px">
     <button class="modal-close" onclick="closeEvalModal()">✕</button>
-    <div class="modal-title">📝 Faire une évaluation</div>
+    <div class="modal-title">📝 Créer un devoir</div>
     <div class="form-group" style="margin-bottom:12px">
-      <label>Titre</label>
+      <label>Titre (optionnel)</label>
       <input type="text" id="eval-titre" placeholder="ex: Contrôle 1" style="width:100%;border:1px solid #d5dbdf;border-radius:8px;padding:9px 12px;font-size:13px;outline:none">
     </div>
     <div class="form-row" style="margin-bottom:0">
+      <div class="form-group"><label>Type</label>
+        <select id="eval-type" style="border:1px solid #d5dbdf;border-radius:8px;padding:9px 8px;font-size:13px">
+          <option value="Écrit">Écrit</option>
+          <option value="Oral">Oral</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Date</label><input type="date" id="eval-date" style="width:130px"></div>
+    </div>
+    <div class="form-row" style="margin-bottom:0;margin-top:10px">
       <div class="form-group"><label>Sur combien</label><input type="number" id="eval-bareme" min="1" step="1" value="20" style="width:90px"></div>
       <div class="form-group"><label>Coefficient</label><input type="number" id="eval-coef" min="0.5" step="0.5" value="1" style="width:90px"></div>
     </div>
@@ -676,6 +675,17 @@ tr:hover td{background:#f7fbff}
     </div>
   </div>
 </div>
+<!-- MODAL CONFIRMATION (remplace window.confirm, bloqué dans certains aperçus) -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal" style="max-width:360px">
+    <div class="modal-title" id="confirm-modal-msg">Confirmer ?</div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+      <button class="btn-secondary" onclick="closeConfirmModal()">Annuler</button>
+      <button class="btn-danger" onclick="confirmModalYes()">✅ Confirmer</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <div class="appel-overlay" id="appel-overlay">
   <div class="appel-overlay-box">
@@ -789,11 +799,39 @@ function loadState(){
     if(s.colIdCounter) colIdCounter=s.colIdCounter;
   }catch(e){ console.error('Erreur de chargement',e); }
 }
+// Année scolaire calculée automatiquement (de septembre à août)
+function setAnneeScolaire(){
+  const sel=document.getElementById('login-annee');
+  if(!sel) return;
+  const now=new Date();
+  const y=now.getFullYear();
+  const debut = now.getMonth()>=8 ? y : y-1; // getMonth()>=8 → septembre ou après
+  sel.innerHTML=`<option>${debut}-${debut+1} (en cours)</option>`;
+}
+
 function toast(msg,type=''){
   const t=document.getElementById('toast');
   t.textContent=msg;t.className='toast '+(type||'');
   t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// Confirmation maison : window.confirm() est bloqué/silencieux dans certains aperçus (iframe sandboxée),
+// ce qui fait que les boutons "supprimer/réinitialiser" semblent ne rien faire. On utilise donc une vraie modale.
+let confirmModalCallback=null;
+function askConfirm(message, onYes){
+  document.getElementById('confirm-modal-msg').textContent=message;
+  confirmModalCallback=onYes;
+  document.getElementById('confirm-modal').classList.add('open');
+}
+function closeConfirmModal(){
+  document.getElementById('confirm-modal').classList.remove('open');
+  confirmModalCallback=null;
+}
+function confirmModalYes(){
+  const cb=confirmModalCallback;
+  closeConfirmModal();
+  if(cb) cb();
 }
 function navigate(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -1163,12 +1201,13 @@ function decrementAppelCell(cl,i,cat){
 function viderAppelCourant(){
   const cl=currentClasseAppel;
   const heure=currentCoursHeure();
-  if(!confirm(`Effacer les coches de la 6ème ${cl.replace('6','')} pour ${heure} ? (le total cumulé de l'année n'est pas modifié)`)) return;
-  appelData[cl][heure]={};
-  if(appelTermine[cl]) appelTermine[cl][heure]=false;
-  buildAppel();
-  saveState();
-  toast('🧹 Coches de ce cours effacées','warn');
+  askConfirm(`Effacer les coches de la 6ème ${cl.replace('6','')} pour ${heure} ? (le total cumulé de l'année n'est pas modifié)`, ()=>{
+    appelData[cl][heure]={};
+    if(appelTermine[cl]) appelTermine[cl][heure]=false;
+    buildAppel();
+    saveState();
+    toast('🧹 Coches de ce cours effacées','warn');
+  });
 }
 function toggleAppelTermine(){
   const cl=currentClasseAppel;
@@ -1321,6 +1360,8 @@ function saveSlot(){
 }
 function openEvalModal(){
   document.getElementById('eval-titre').value='';
+  document.getElementById('eval-type').value='Écrit';
+  document.getElementById('eval-date').value='';
   document.getElementById('eval-bareme').value='20';
   document.getElementById('eval-coef').value='1';
   document.getElementById('eval-modal').classList.add('open');
@@ -1329,29 +1370,35 @@ function openEvalModal(){
 function closeEvalModal(){
   document.getElementById('eval-modal').classList.remove('open');
 }
+function formatDateCourte(iso){
+  if(!iso) return '';
+  const [y,m,d]=iso.split('-');
+  return `${d}/${m}`;
+}
 function validerEvaluation(){
   const cl=currentClasseNotes;
   const titreInput=document.getElementById('eval-titre').value.trim();
-  const titre=titreInput || ('Éval. '+(notesColumns[cl].length+1));
+  const type=document.getElementById('eval-type').value;
+  const date=document.getElementById('eval-date').value;
+  const titre=titreInput || (type+(date?' du '+formatDateCourte(date):''));
   const bareme=parseFloat(document.getElementById('eval-bareme').value)||20;
   const coef=parseFloat(document.getElementById('eval-coef').value)||1;
   const id='c'+(colIdCounter++);
-  notesColumns[cl].push({id,titre,bareme,coef});
-  selectedEval[cl]=id;
+  notesColumns[cl].push({id,titre,type,date,bareme,coef});
   closeEvalModal();
   renderNotesGrid();
   saveState();
-  toast('✅ Évaluation créée ! Saisis les notes ci-dessous.');
+  toast('✅ Devoir créé ! Saisis les notes dans la grille.');
 }
 function supprimerColonne(cl,colId){
-  if(!confirm('Supprimer cette évaluation et toutes les notes associées ?')) return;
-  notesColumns[cl]=notesColumns[cl].filter(c=>c.id!==colId);
-  Object.values(notesValues[cl]).forEach(row=>{ delete row[colId]; });
-  if(selectedEval[cl]===colId) selectedEval[cl]=null;
-  renderNotesGrid();
-  renderAccueil();
-  saveState();
-  toast('Évaluation supprimée','warn');
+  askConfirm('Supprimer ce devoir et toutes les notes associées ?', ()=>{
+    notesColumns[cl]=notesColumns[cl].filter(c=>c.id!==colId);
+    Object.values(notesValues[cl]).forEach(row=>{ delete row[colId]; });
+    renderNotesGrid();
+    renderAccueil();
+    saveState();
+    toast('Devoir supprimé','warn');
+  });
 }
 function setNoteValue(cl,i,colId,raw){
   if(!notesValues[cl][i]) notesValues[cl][i]={};
@@ -1362,9 +1409,11 @@ function setNoteValue(cl,i,colId,raw){
     delete notesValues[cl][i][colId];
   } else if(v.toLowerCase()==='abs'){
     notesValues[cl][i][colId]='Abs';
+  } else if(v.toLowerCase()==='nrdu' || v.toLowerCase()==='n.rdu'){
+    notesValues[cl][i][colId]='N.Rdu';
   } else {
     let n=parseFloat(v.replace(',','.'));
-    if(isNaN(n)){ toast('Valeur invalide (note ou "Abs")','error'); renderNotesGrid(); return; }
+    if(isNaN(n)){ toast('Valeur invalide (note, "Abs" ou "N.Rdu")','error'); renderNotesGrid(); return; }
     n=Math.max(0,Math.min(bareme,n));
     notesValues[cl][i][colId]=n;
   }
@@ -1374,14 +1423,14 @@ function setNoteValue(cl,i,colId,raw){
 }
 function resetNotes(){
   const cl=currentClasseNotes;
-  if(!confirm(`Réinitialiser toutes les évaluations et notes de la 6ème ${cl.replace('6','')} ?`)) return;
-  notesColumns[cl]=[];
-  notesValues[cl]={};
-  selectedEval[cl]=null;
-  renderNotesGrid();
-  renderAccueil();
-  saveState();
-  toast('Notes réinitialisées','warn');
+  askConfirm(`Réinitialiser tous les devoirs et notes de la 6ème ${cl.replace('6','')} ?`, ()=>{
+    notesColumns[cl]=[];
+    notesValues[cl]={};
+    renderNotesGrid();
+    renderAccueil();
+    saveState();
+    toast('Notes réinitialisées','warn');
+  });
 }
 function calcMoyenneEleve(cl,i){
   const cols=notesColumns[cl];
@@ -1419,85 +1468,50 @@ function countNotesSaisies(cl){
   });
   return n;
 }
+
+// Grille façon vrai Pronote : élèves en lignes, devoirs en colonnes, moyenne à gauche,
+// avec date / type (Oral · Écrit) / coefficient en en-tête de chaque colonne.
 function renderNotesGrid(){
   const cl=currentClasseNotes;
-  document.getElementById('notes-title').textContent=`📝 Notes — 6ème ${cl.replace('6','')}`;
-  document.getElementById('notes-moy-title').textContent=`📊 Moyennes générales — 6ème ${cl.replace('6','')}`;
-  renderEvalPills();
-  renderEvalEntry();
-  renderMoyennesTable();
-}
-function renderEvalPills(){
-  const cl=currentClasseNotes;
   const cols=notesColumns[cl];
-  const wrap=document.getElementById('notes-evals-list');
+  const eleves=CLASSES[cl];
+  const wrap=document.getElementById('notes-grid-wrap');
+
   if(cols.length===0){
-    wrap.innerHTML='<div class="widget-empty" style="padding:6px 2px">Aucune évaluation pour le moment — clique sur "➕ Faire une évaluation" ci-dessus 👆</div>';
+    wrap.innerHTML='<div class="widget-empty" style="padding:24px;text-align:center">Aucun devoir pour le moment — clique sur "➕ Créer un devoir" ci-dessus 👆</div>';
     return;
   }
-  if(!selectedEval[cl] || !cols.find(c=>c.id===selectedEval[cl])){
-    selectedEval[cl]=cols[cols.length-1].id;
-  }
-  wrap.innerHTML = cols.map((c,ci)=>{
-    const avg=calcMoyenneColonne(cl,c.id);
-    const active = c.id===selectedEval[cl];
-    return `<div class="eval-pill ${active?'active':''}" onclick="selectEval('${cl}','${c.id}')">
-      <button class="eval-pill-del" onclick="event.stopPropagation();supprimerColonne('${cl}','${c.id}')" title="Supprimer">✕</button>
-      <div class="eval-pill-num">Éval. ${ci+1}</div>
-      <div class="eval-pill-title">${c.titre}</div>
-      <div class="eval-pill-meta">sur ${c.bareme||20} · coef ${c.coef}${avg!==null?' · moy '+avg.toFixed(1):''}</div>
-    </div>`;
-  }).join('');
-}
-function selectEval(cl,id){
-  selectedEval[cl]=id;
-  renderNotesGrid();
-}
-function renderEvalEntry(){
-  const cl=currentClasseNotes;
-  const cols=notesColumns[cl];
-  const wrap=document.getElementById('notes-entry-wrap');
-  if(cols.length===0){ wrap.innerHTML=''; return; }
-  const col=cols.find(c=>c.id===selectedEval[cl]) || cols[cols.length-1];
-  const bareme=col.bareme||20;
-  const avg=calcMoyenneColonne(cl,col.id);
-  const eleves=CLASSES[cl];
-  let html=`<div class="eval-entry-head">
-    <div><strong>${col.titre}</strong><span class="eval-entry-sub"> — sur ${bareme} · coefficient ${col.coef}</span></div>
-    <div class="eval-entry-avg">Moyenne de la classe : <strong>${avg===null?'—':avg.toFixed(2)+'/'+bareme}</strong></div>
-  </div>
-  <div class="eval-entry-list">`;
-  eleves.forEach((e,i)=>{
-    const v=(notesValues[cl][i]||{})[col.id];
-    const inputVal = v===undefined ? '' : v;
-    let cls='';
-    if(v==='Abs') cls='abs';
-    else if(typeof v==='number' && avg!==null && v<avg) cls='below';
-    else if(typeof v==='number' && avg!==null && v>=avg) cls='above';
-    html+=`<div class="eval-entry-row">
-      <div class="eval-entry-name">${e.nom} ${e.prenom}</div>
-      <div class="eval-entry-input-wrap">
-        <input type="text" class="eval-entry-input ${cls}" value="${inputVal}" placeholder="—" onchange="setNoteValue('${cl}',${i},'${col.id}',this.value)">
-        <span class="eval-entry-bareme">/${bareme}</span>
-      </div>
-    </div>`;
+
+  const colAvgs={};
+  cols.forEach(c=>colAvgs[c.id]=calcMoyenneColonne(cl,c.id));
+
+  let html='<table class="notes-grid-table">';
+  html+='<thead>';
+  html+=`<tr class="ng-row-date"><th class="ng-eleve-col" rowspan="4">${eleves.length} élèves</th><th rowspan="4" class="ng-moyenne-col">Moyenne</th>`;
+  cols.forEach(c=>{
+    html+=`<th>${c.date?formatDateCourte(c.date):c.titre}<button class="ng-col-del" onclick="supprimerColonne('${cl}','${c.id}')" title="Supprimer">✕</button></th>`;
   });
-  html+='</div>';
-  wrap.innerHTML=html;
-}
-function renderMoyennesTable(){
-  const cl=currentClasseNotes;
-  const eleves=CLASSES[cl];
-  const wrap=document.getElementById('notes-moyennes-wrap');
-  if(notesColumns[cl].length===0){
-    wrap.innerHTML='<div class="widget-empty">Pas encore d\'évaluation pour calculer une moyenne</div>';
-    return;
-  }
-  let html='<table class="notes-moy-table"><thead><tr><th>Élève</th><th style="width:120px">Moyenne générale</th></tr></thead><tbody>';
+  html+='</tr><tr class="ng-row-type">';
+  cols.forEach(c=>{ html+=`<th><span class="ng-type-pill">${c.type||'Écrit'}</span></th>`; });
+  html+='</tr><tr class="ng-row-coef">';
+  cols.forEach(c=>{ html+=`<th>coef ${c.coef} · /${c.bareme||20}</th>`; });
+  html+='</tr></thead><tbody>';
+
   eleves.forEach((e,i)=>{
     const moy=calcMoyenneEleve(cl,i);
-    const color = moy===null ? '#9aa5b1' : (moy>=10?'#1e8449':'#c0392b');
-    html+=`<tr><td>${e.nom} ${e.prenom}</td><td style="font-weight:700;color:${color}">${moy===null?'—':moy.toFixed(2)}</td></tr>`;
+    const moyColor = moy===null ? '#9aa5b1' : (moy>=10?'#1e8449':'#c0392b');
+    html+=`<tr><td class="ng-eleve-col">${e.nom} ${e.prenom}</td><td class="ng-moyenne-col" style="color:${moyColor}">${moy===null?'—':moy.toFixed(2)}</td>`;
+    cols.forEach(c=>{
+      const v=(notesValues[cl][i]||{})[c.id];
+      const avg=colAvgs[c.id];
+      let cls='';
+      if(v==='Abs') cls='abs';
+      else if(v==='N.Rdu') cls='nrdu';
+      else if(typeof v==='number' && avg!==null && v<avg) cls='below';
+      const inputVal = v===undefined ? '' : v;
+      html+=`<td><input type="text" class="ng-cell-input ${cls}" value="${inputVal}" placeholder="—" onchange="setNoteValue('${cl}',${i},'${c.id}',this.value)"></td>`;
+    });
+    html+='</tr>';
   });
   html+='</tbody></table>';
   wrap.innerHTML=html;
@@ -1756,21 +1770,19 @@ const ACCOUNTS = {
   'adm':        {password:'Theoleroy2013', roles:['admin','prof','vie']},
   't.leroy346': {password:'Theoleroy2013', roles:['prof','vie']}
 };
-function selectMode(role){
+function selectModeV2(role){
   currentRole = role;
-  const info = ROLE_INFO[role];
-  document.getElementById('role-tag').textContent = info.label;
-  document.getElementById('login-subtitle').textContent = info.subtitle;
-  document.getElementById('mode-select').style.display='none';
-  document.getElementById('login-form').style.display='block';
-  document.getElementById('login-id').value='';
-  document.getElementById('login-pw').value='';
-}
-function backToModeSelect(){
-  document.getElementById('login-form').style.display='none';
-  document.getElementById('mode-select').style.display='block';
+  document.querySelectorAll('.login-mode-btn').forEach(b=>b.classList.toggle('active', b.dataset.role===role));
+  document.getElementById('login-error').style.display='none';
 }
 function tryLogin(){
+  if(!currentRole){
+    const err=document.getElementById('login-error');
+    err.textContent='❌ Choisis un mode (administratif, enseignant, vie scolaire) avant de te connecter.';
+    err.style.display='block';
+    setTimeout(()=>err.style.display='none',3000);
+    return;
+  }
   const id=document.getElementById('login-id').value.trim();
   const pw=document.getElementById('login-pw').value;
   const compte=ACCOUNTS[id];
@@ -1798,10 +1810,14 @@ function applyRole(role){
 }
 function logout(){
   document.getElementById('login-screen').style.display='flex';
-  backToModeSelect();
+  document.querySelectorAll('.login-mode-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('login-id').value='';
+  document.getElementById('login-pw').value='';
+  document.getElementById('login-error').style.display='none';
   currentRole = null;
 }
 loadState();
+setAnneeScolaire();
 populateSelect('oub-eleve','6A');
 populateSelect('san-eleve','6A');
 populateBulSelect('6A');

@@ -138,15 +138,22 @@ tr:hover td{background:#f7fbff}
 .edt-time.lunch-row{border-top:3px solid #e91e63}
 .edt-slot{min-height:58px;border-radius:10px;padding:8px;cursor:pointer;transition:all .2s;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .edt-slot:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 4px 10px rgba(0,0,0,.15)}
-.edt-slot.vide{background:#f7f9fc;border:1.5px dashed #d5dbdf;box-shadow:none}
-.edt-slot.vide:hover{background:#fdecec;border-color:var(--accent)}
-.edt-slot.vide.lunch-row{border-top:3px solid #e91e63}
+.edt-slot.vide{background:transparent;border:none;box-shadow:none;min-height:38px;display:flex;align-items:center}
+.edt-slot.vide::after{content:'';display:block;width:100%;height:1px;background:#e2e5ea}
+.edt-slot.vide:hover::after{background:var(--accent)}
+.edt-slot.vide .mat-vide-hint{display:none}
+.edt-slot.vide:hover .mat-vide-hint{display:block;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(251,241,220,.9);border-radius:6px}
+.edt-slot.vide.lunch-row::after{background:#e91e63;height:2px}
 .edt-slot.cours .cours-nom{font-weight:700;font-size:12.5px}
 .edt-slot.cours .cours-salle{font-size:10.5px;opacity:.8;margin-top:3px}
 .edt-slot.cours .cours-classe{font-size:10px;opacity:.7;margin-top:1px}
 .edt-slot.now{outline:3px solid #ffd54f;outline-offset:-3px}
-.edt-edit-hint{position:absolute;top:5px;right:7px;font-size:10px;opacity:.55}
-.edt-check-hint{position:absolute;bottom:5px;right:7px;font-size:11px;opacity:.85}
+.edt-edit-hint{position:absolute;top:5px;left:7px;font-size:10px;opacity:.55}
+.edt-check-hint{position:absolute;top:5px;right:7px;font-size:13px}
+.edt-cahier-icon{position:absolute;bottom:5px;left:7px;font-size:12px;cursor:pointer;opacity:.65;transition:.15s}
+.edt-cahier-icon:hover{opacity:1;transform:scale(1.15)}
+.edt-cahier-icon.has-devoir{opacity:1;filter:drop-shadow(0 0 2px rgba(0,0,0,.25))}
+.edt-cahier-badge{position:absolute;top:-6px;right:-8px;background:#c0392b;color:white;border-radius:50%;font-size:8px;width:13px;height:13px;display:flex;align-items:center;justify-content:center;font-weight:700}
 .mat-6a{background:#fff4cc;border-left:5px solid #f9a825;color:#7a5900}
 .mat-6b{background:#d4f3ea;border-left:5px solid #00897b;color:#00453a}
 .mat-vide-hint{color:#9bb5cc;font-size:10px;text-align:center;padding-top:16px}
@@ -458,8 +465,8 @@ tr:hover td{background:#f7fbff}
     <div class="form-row">
       <div class="form-group" style="flex:1"><label>Titre</label>
         <input type="text" id="dev-titre" placeholder="ex: Exercices 4 et 5 p.32" style="width:100%"></div>
-      <div class="form-group"><label>Pour le</label>
-        <input type="date" id="dev-date" style="width:150px"></div>
+      <div class="form-group"><label>Pour quel cours</label>
+        <select id="dev-creneau" style="width:170px"></select></div>
       <div class="form-group"><label>&nbsp;</label>
         <button class="btn-primary" onclick="ajouterDevoir()">✅ Donner</button></div>
     </div>
@@ -683,6 +690,15 @@ tr:hover td{background:#f7fbff}
       <button class="btn-secondary" onclick="closeConfirmModal()">Annuler</button>
       <button class="btn-danger" onclick="confirmModalYes()">✅ Confirmer</button>
     </div>
+  </div>
+</div>
+
+<!-- MODAL DEVOIR (cahier de texte sur l'EDT) -->
+<div class="modal-overlay" id="devoir-slot-modal">
+  <div class="modal" style="max-width:380px">
+    <button class="modal-close" onclick="closeDevoirSlotModal()">✕</button>
+    <div class="modal-title" id="devoir-slot-title">📔 Devoir</div>
+    <div id="devoir-slot-body" style="font-size:13px;color:#333;line-height:1.5"></div>
   </div>
 </div>
 
@@ -1334,17 +1350,35 @@ function buildEDT(){
       const isNow = info && info.hi===hi && info.ji===ji;
       if(cl){
         const colorClass=cl==='6A'?'mat-6a':'mat-6b';
+        const nb=devoirsPourCreneau(cl,hi,ji).length;
         g.innerHTML+=`<div class="edt-slot cours ${colorClass}${isLunch?' lunch-row':''}${isNow?' now':''}" onclick="openEdtModal(${hi},${ji})">
           <div class="cours-nom">6ème ${cl.replace('6','')}</div>
           <div class="cours-salle">Français — M. Leroy</div>
           <div class="edt-edit-hint">✏️</div>
           <div class="edt-check-hint">✔️</div>
+          ${nb>0?`<div class="edt-cahier-icon has-devoir" onclick="event.stopPropagation();showDevoirSlotModal(${hi},${ji})" title="Voir le(s) devoir(s) de ce cours">📔<span class="edt-cahier-badge">${nb}</span></div>`:''}
         </div>`;
       }else{
         g.innerHTML+=`<div class="edt-slot vide${isLunch?' lunch-row':''}${isNow?' now':''}" onclick="openEdtModal(${hi},${ji})"><div class="mat-vide-hint">+ Ajouter</div></div>`;
       }
     });
   });
+}
+function devoirsPourCreneau(cl,hi,ji){
+  return devoirs.filter(d=>d.classe===cl && d.hi===hi && d.ji===ji);
+}
+function showDevoirSlotModal(hi,ji){
+  const cl=EDT[hi][ji];
+  const liste=devoirsPourCreneau(cl,hi,ji);
+  document.getElementById('devoir-slot-title').textContent=`📔 6ème ${cl.replace('6','')} · ${JOURS[ji]} ${HEURES[hi]}`;
+  const body=document.getElementById('devoir-slot-body');
+  body.innerHTML = liste.length===0
+    ? '<p style="color:#9aa5b1;font-style:italic">Aucun devoir donné pour ce cours.</p>'
+    : liste.map(d=>`<div style="margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #f0f3f7"><strong>${d.titre}</strong>${d.desc?'<div style="margin-top:4px;color:#6c7a89">'+d.desc+'</div>':''}<div style="margin-top:4px;font-size:11px;color:#9aa5b1">Donné le ${d.dateDonne}</div></div>`).join('');
+  document.getElementById('devoir-slot-modal').classList.add('open');
+}
+function closeDevoirSlotModal(){
+  document.getElementById('devoir-slot-modal').classList.remove('open');
 }
 function openEdtModal(hi,ji){
   edtEditHi=hi; edtEditJi=ji;
@@ -1520,25 +1554,41 @@ function switchClasseDevoirs(cl,btn){
   currentClasseDevoirs=cl;
   btn.closest('.classe-tabs').querySelectorAll('.classe-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
+  populateDevoirCreneaux(cl);
   renderDevoirs();
+}
+// Liste tous les créneaux de l'EDT où cette classe a cours, pour choisir "pour quel cours" donner le devoir
+function populateDevoirCreneaux(cl){
+  const sel=document.getElementById('dev-creneau');
+  if(!sel) return;
+  let opts='';
+  HEURES.forEach((h,hi)=>{
+    JOURS.forEach((j,ji)=>{
+      if(EDT[hi][ji]===cl) opts+=`<option value="${hi}-${ji}">${j} ${h}</option>`;
+    });
+  });
+  sel.innerHTML = opts || '<option value="">Aucun cours programmé pour cette classe</option>';
 }
 function ajouterDevoir(){
   const titre=document.getElementById('dev-titre').value.trim();
-  const dateRendu=document.getElementById('dev-date').value;
+  const creneau=document.getElementById('dev-creneau').value;
   const desc=document.getElementById('dev-desc').value.trim();
   const cl=currentClasseDevoirs;
   if(!titre){toast('Donne au moins un titre au devoir !','error');return;}
-  devoirs.push({titre,desc,classe:cl,dateRendu,dateDonne:new Date().toLocaleDateString('fr-FR')});
+  if(!creneau){toast('Choisis pour quel cours !','error');return;}
+  const [hi,ji]=creneau.split('-').map(Number);
+  devoirs.push({titre,desc,classe:cl,hi,ji,dateDonne:new Date().toLocaleDateString('fr-FR')});
   document.getElementById('dev-titre').value='';
-  document.getElementById('dev-date').value='';
   document.getElementById('dev-desc').value='';
   renderDevoirs();
+  buildEDT();
   saveState();
-  toast('✅ Devoir donné !');
+  toast('✅ Devoir donné ! Il apparaît sur le petit cahier de l\'emploi du temps.');
 }
 function supprimerDevoir(i){
   devoirs.splice(i,1);
   renderDevoirs();
+  buildEDT();
   saveState();
   toast('Devoir supprimé','warn');
 }
@@ -1550,14 +1600,8 @@ function renderDevoirs(){
   document.getElementById('nb-devoirs-badge').textContent=clDevoirs.length+' devoir(s)';
   list.innerHTML = clDevoirs.length===0 ? '<p style="color:#6c7a89;padding:10px">Aucun devoir donné pour le moment</p>' : '';
   clDevoirs.forEach(d=>{
-    let echeance='—';
-    if(d.dateRendu){
-      const dd=new Date(d.dateRendu);
-      echeance = dd.toLocaleDateString('fr-FR');
-      const today=new Date(); today.setHours(0,0,0,0);
-      if(dd<today) echeance += ' <span style="color:#c0392b;font-weight:600">(en retard)</span>';
-    }
-    list.innerHTML += `<div class="event-item oub"><span class="event-icon">📔</span><div class="event-body"><div class="event-eleve">${d.titre}</div><div class="event-detail">${d.desc?d.desc+' · ':''}À rendre pour le ${echeance}</div></div><div class="event-time" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">Donné le ${d.dateDonne}<button class="btn-danger" style="padding:3px 8px" onclick="supprimerDevoir(${d.idx})">🗑</button></div></div>`;
+    const creneauTxt = (d.hi!==undefined && d.ji!==undefined) ? `${JOURS[d.ji]} ${HEURES[d.hi]}` : '—';
+    list.innerHTML += `<div class="event-item oub"><span class="event-icon">📔</span><div class="event-body"><div class="event-eleve">${d.titre}</div><div class="event-detail">${d.desc?d.desc+' · ':''}Cours du ${creneauTxt}</div></div><div class="event-time" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">Donné le ${d.dateDonne}<button class="btn-danger" style="padding:3px 8px" onclick="supprimerDevoir(${d.idx})">🗑</button></div></div>`;
   });
 }
 function ajouterOubli(){
@@ -1821,6 +1865,7 @@ setAnneeScolaire();
 populateSelect('oub-eleve','6A');
 populateSelect('san-eleve','6A');
 populateBulSelect('6A');
+populateDevoirCreneaux('6A');
 renderAccueil();
 currentAppelHi = premierCreneauAvecCours(currentJourAppel);
 if(EDT[currentAppelHi][currentJourAppel]) currentClasseAppel = EDT[currentAppelHi][currentJourAppel];

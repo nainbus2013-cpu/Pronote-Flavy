@@ -253,6 +253,17 @@ tr:hover td{background:#f7fbff}
 .appel-slot-classe{font-weight:700;font-size:12px;margin-top:1px}
 .appel-slot-empty{height:16px;border-bottom:1px dashed #e2e5ea;margin:5px 4px 10px}
 .appel-slot-done{position:absolute;top:4px;right:5px;font-size:10px}
+
+/* Sélecteur de créneau pour "Donner un devoir" : bouton + popup cliquable au lieu d'un <select> */
+.dev-creneau-wrap{position:relative}
+.dev-creneau-btn{border:1px solid #d5dbdf;border-radius:6px;padding:7px 12px;font-size:13px;background:white;cursor:pointer;min-width:190px;user-select:none;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.dev-creneau-btn:hover{border-color:var(--accent)}
+.dev-creneau-btn .dcb-arrow{font-size:10px;color:#9aa5b1}
+.dev-creneau-popup{display:none;position:absolute;top:calc(100% + 4px);left:0;background:white;border:1px solid #d5dbdf;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding:6px;z-index:60;min-width:220px;max-height:280px;overflow-y:auto}
+.dev-creneau-popup.open{display:block}
+.dev-creneau-opt{padding:9px 10px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.dev-creneau-opt:hover{background:#f0f6fc}
+.dev-creneau-opt.selected{background:var(--accent-soft);font-weight:700;color:var(--brand-dark)}
 </style>
 </head>
 <body>
@@ -465,8 +476,12 @@ tr:hover td{background:#f7fbff}
     <div class="form-row">
       <div class="form-group" style="flex:1"><label>Titre</label>
         <input type="text" id="dev-titre" placeholder="ex: Exercices 4 et 5 p.32" style="width:100%"></div>
-      <div class="form-group"><label>Pour quel cours</label>
-        <select id="dev-creneau" style="width:170px"></select></div>
+      <div class="form-group dev-creneau-wrap"><label>Pour quel cours</label>
+        <div id="dev-creneau-btn" class="dev-creneau-btn" onclick="toggleDevoirCreneauPicker(event)">
+          <span id="dev-creneau-btn-label">-- Choisir --</span><span class="dcb-arrow">▾</span>
+        </div>
+        <div id="dev-creneau-popup" class="dev-creneau-popup"></div>
+      </div>
       <div class="form-group"><label>&nbsp;</label>
         <button class="btn-primary" onclick="ajouterDevoir()">✅ Donner</button></div>
     </div>
@@ -1557,29 +1572,67 @@ function switchClasseDevoirs(cl,btn){
   populateDevoirCreneaux(cl);
   renderDevoirs();
 }
-// Liste tous les créneaux de l'EDT où cette classe a cours, pour choisir "pour quel cours" donner le devoir
+// Sélecteur cliquable "pour quel cours" : au lieu d'un menu déroulant classique,
+// on clique sur le bouton, une petite liste des créneaux de la classe s'affiche,
+// et on clique directement sur le cours voulu.
+let selectedDevoirCreneau = null; // {hi,ji} du créneau choisi, ou null si rien choisi
+
 function populateDevoirCreneaux(cl){
-  const sel=document.getElementById('dev-creneau');
-  if(!sel) return;
-  let opts='';
+  selectedDevoirCreneau = null;
+  updateDevoirCreneauBtn();
+  renderDevoirCreneauPopup(cl);
+  const popup=document.getElementById('dev-creneau-popup');
+  if(popup) popup.classList.remove('open');
+}
+function renderDevoirCreneauPopup(cl){
+  const pop=document.getElementById('dev-creneau-popup');
+  if(!pop) return;
+  let html='';
   HEURES.forEach((h,hi)=>{
     JOURS.forEach((j,ji)=>{
-      if(EDT[hi][ji]===cl) opts+=`<option value="${hi}-${ji}">${j} ${h}</option>`;
+      if(EDT[hi][ji]===cl){
+        const sel = selectedDevoirCreneau && selectedDevoirCreneau.hi===hi && selectedDevoirCreneau.ji===ji;
+        html+=`<div class="dev-creneau-opt${sel?' selected':''}" onclick="selectDevoirCreneau(${hi},${ji})">${j} ${h}${sel?' ✓':''}</div>`;
+      }
     });
   });
-  sel.innerHTML = opts || '<option value="">Aucun cours programmé pour cette classe</option>';
+  pop.innerHTML = html || '<div style="padding:10px;color:#9aa5b1;font-size:12.5px">Aucun cours programmé pour cette classe</div>';
 }
+function toggleDevoirCreneauPicker(e){
+  if(e) e.stopPropagation();
+  renderDevoirCreneauPopup(currentClasseDevoirs);
+  document.getElementById('dev-creneau-popup').classList.toggle('open');
+}
+function selectDevoirCreneau(hi,ji){
+  selectedDevoirCreneau={hi,ji};
+  updateDevoirCreneauBtn();
+  document.getElementById('dev-creneau-popup').classList.remove('open');
+}
+function updateDevoirCreneauBtn(){
+  const label=document.getElementById('dev-creneau-btn-label');
+  if(!label) return;
+  label.textContent = selectedDevoirCreneau ? `${JOURS[selectedDevoirCreneau.ji]} ${HEURES[selectedDevoirCreneau.hi]}` : '-- Choisir --';
+}
+// Ferme le popup si on clique ailleurs sur la page
+document.addEventListener('click', function(e){
+  const popup=document.getElementById('dev-creneau-popup');
+  const btn=document.getElementById('dev-creneau-btn');
+  if(popup && popup.classList.contains('open') && !popup.contains(e.target) && !(btn && btn.contains(e.target))){
+    popup.classList.remove('open');
+  }
+});
 function ajouterDevoir(){
   const titre=document.getElementById('dev-titre').value.trim();
-  const creneau=document.getElementById('dev-creneau').value;
   const desc=document.getElementById('dev-desc').value.trim();
   const cl=currentClasseDevoirs;
   if(!titre){toast('Donne au moins un titre au devoir !','error');return;}
-  if(!creneau){toast('Choisis pour quel cours !','error');return;}
-  const [hi,ji]=creneau.split('-').map(Number);
+  if(!selectedDevoirCreneau){toast('Choisis pour quel cours !','error');return;}
+  const {hi,ji}=selectedDevoirCreneau;
   devoirs.push({titre,desc,classe:cl,hi,ji,dateDonne:new Date().toLocaleDateString('fr-FR')});
   document.getElementById('dev-titre').value='';
   document.getElementById('dev-desc').value='';
+  selectedDevoirCreneau=null;
+  updateDevoirCreneauBtn();
   renderDevoirs();
   buildEDT();
   saveState();

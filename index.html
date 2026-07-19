@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Etudiant Super – Espace Enseignant</title>
+<title>Super Prof – Espace Enseignant</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 :root{
@@ -154,8 +154,13 @@ tr:hover td{background:#f7fbff}
 .edt-cahier-icon:hover{opacity:1;transform:scale(1.15)}
 .edt-cahier-icon.has-devoir{opacity:1;filter:drop-shadow(0 0 2px rgba(0,0,0,.25))}
 .edt-cahier-badge{position:absolute;top:-6px;right:-8px;background:#c0392b;color:white;border-radius:50%;font-size:8px;width:13px;height:13px;display:flex;align-items:center;justify-content:center;font-weight:700}
-.mat-6a{background:#fff4cc;border-left:5px solid #f9a825;color:#7a5900}
-.mat-6b{background:#d4f3ea;border-left:5px solid #00897b;color:#00453a}
+.mat-6a{background:#dcf3dc;border-left:5px solid #2e7d32;color:#1b4d1e}
+.mat-6b{background:#d7e6fa;border-left:5px solid #1565c0;color:#0d3c73}
+.edt-slot.annule{opacity:.55}
+.edt-slot.annule .cours-nom{text-decoration:line-through}
+.edt-annule-badge{position:absolute;bottom:5px;right:7px;background:#c0392b;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;letter-spacing:.3px}
+.appel-header-bar{background:#f4f6f8;border:1px solid #e5e5e5;border-radius:8px;padding:8px 14px;margin-bottom:14px;font-size:12.5px;color:#546e7a;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.appel-breadcrumb{font-size:11px;color:#9aa5b1;margin-bottom:2px}
 .mat-vide-hint{color:#9bb5cc;font-size:10px;text-align:center;padding-top:16px}
 .form-row{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px}
 .form-group{display:flex;flex-direction:column;gap:4px}
@@ -291,13 +296,13 @@ tr:hover td{background:#f7fbff}
       </div>
       <button class="login-btn" onclick="tryLogin()">Se connecter</button>
       <div class="login-error" id="login-error">❌ Identifiant ou mot de passe incorrect.</div>
-      <div class="login-footer">Etudiant Super v2.4 — Accès réservé au personnel</div>
+      <div class="login-footer">Super Prof v2.4 — Accès réservé au personnel</div>
     </div>
   </div>
 </div>
 <div class="header">
   <div class="header-left">
-    <div class="logo">🦋 Etudiant Super</div>
+    <div class="logo">🦋 Super Prof</div>
     <div class="header-info" id="header-info">Collège Flavy · Professeur de Français</div>
   </div>
   <div class="header-right">
@@ -406,8 +411,15 @@ tr:hover td{background:#f7fbff}
       <div id="appel-sidebar-list"></div>
     </div>
     <div class="card" style="flex:1;padding:0;overflow:hidden;min-width:0">
-      <div class="card-header" style="padding:16px 20px 0">
-        <span class="card-title" id="appel-title">📋 Appel</span>
+      <div style="padding:14px 20px 0">
+        <div class="appel-breadcrumb">Feuille d'appel &gt; Appel et suivi</div>
+        <div class="appel-header-bar">
+          <span id="appel-heure-range">pour le cours de 08h00 à 09h00</span>
+          <span id="appel-title" style="font-weight:700;color:var(--brand-dark)">📋 6ème A</span>
+        </div>
+      </div>
+      <div class="card-header" style="padding:0 20px">
+        <span></span>
         <button class="btn-danger" onclick="viderAppelCourant()" title="Effacer toutes les coches de ce cours">🧹 Vider ce cours</button>
       </div>
       <div class="table-wrap" style="padding:0 20px">
@@ -432,9 +444,10 @@ tr:hover td{background:#f7fbff}
     </div>
     <div class="edt-grid" id="edt-grid"></div>
     <div class="edt-legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#f9a825"></div> 6ème A</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#00897b"></div> 6ème B</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#2e7d32"></div> 6ème A</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#1565c0"></div> 6ème B</div>
       <div class="legend-item"><div class="legend-dot" style="background:#f0f0f0;border:1px dashed #aaa"></div> Libre</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div> Cours annulé</div>
       <div class="legend-item"><div class="legend-dot" style="background:#e91e63"></div> Pause déjeuner</div>
       <div class="legend-item"><div class="legend-dot" style="background:#fff;border:3px solid #ffd54f"></div> Cours en ce moment</div>
     </div>
@@ -605,6 +618,8 @@ tr:hover td{background:#f7fbff}
         <option value="">— Libre —</option>
         <option value="6A">6ème A</option>
         <option value="6B">6ème B</option>
+        <option value="6A-ann">6ème A — Annulé</option>
+        <option value="6B-ann">6ème B — Annulé</option>
       </select>
     </div>
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
@@ -768,6 +783,10 @@ let EDT = [
   ['','6A','','',''],
   ['','','','',''],
 ];
+// Un créneau EDT peut valoir '' (libre), '6A'/'6B' (cours normal), ou '6A-ann'/'6B-ann' (cours annulé : affiché mais aucun cours n'a lieu)
+function edtBase(val){ return val ? val.replace('-ann','') : ''; }
+function edtIsAnnule(val){ return !!(val && val.endsWith('-ann')); }
+function edtActif(val){ return !!(val && !edtIsAnnule(val)); } // true seulement si un cours a réellement lieu
 let currentClasse = '6A';
 let currentClasseAppel = '6A';
 let currentJourAppel = 0; // 0=Lundi … 4=Vendredi — indépendant de la vraie date du jour
@@ -1078,7 +1097,7 @@ function getCoursActuelInfo(){
   HEURES.forEach((h,i)=>{ if(parseInt(h)===heureActuelle) hi=i; });
   if(hi===-1) return null;
   const cl=EDT[hi][jourIdx];
-  if(!cl) return null;
+  if(!edtActif(cl)) return null;
   return {hi,ji:jourIdx,cl,heure:HEURES[hi]};
 }
 function renderCoursEnCoursWidget(){
@@ -1102,11 +1121,15 @@ function currentCoursHeure(){
   if(currentAppelHi===null) return HEURES[0];
   return HEURES[currentAppelHi];
 }
+// Clé unique combinant le jour ET l'heure : sans ça, deux cours de la même classe à la même heure
+// mais des jours différents (ex: 6A le lundi 8h ET le mercredi 8h) partageraient les mêmes coches d'appel.
+function slotKey(ji,heure){ return ji+'-'+heure; }
+function currentSlotKey(){ return slotKey(currentJourAppel, currentCoursHeure()); }
 
 // Trouve le premier créneau avec un cours pour le jour donné (sinon 0)
 function premierCreneauAvecCours(ji){
   for(let hi=0;hi<HEURES.length;hi++){
-    if(EDT[hi][ji]) return hi;
+    if(edtActif(EDT[hi][ji])) return hi;
   }
   return 0;
 }
@@ -1114,17 +1137,17 @@ function premierCreneauAvecCours(ji){
 function changeAppelJour(delta){
   currentJourAppel = (currentJourAppel + delta + JOURS.length) % JOURS.length;
   currentAppelHi = premierCreneauAvecCours(currentJourAppel);
-  const cl = EDT[currentAppelHi][currentJourAppel];
-  if(cl) currentClasseAppel = cl;
+  const val = EDT[currentAppelHi][currentJourAppel];
+  if(edtActif(val)) currentClasseAppel = val;
   renderAppelSidebar();
   buildAppel();
 }
 
 function selectAppelSlot(hi){
-  const cl = EDT[hi][currentJourAppel];
-  if(!cl) return; // créneau libre, non cliquable
+  const val = EDT[hi][currentJourAppel];
+  if(!edtActif(val)) return; // créneau libre ou annulé, non cliquable
   currentAppelHi = hi;
-  currentClasseAppel = cl;
+  currentClasseAppel = val;
   renderAppelSidebar();
   buildAppel();
 }
@@ -1138,14 +1161,22 @@ function renderAppelSidebar(){
   const list=document.getElementById('appel-sidebar-list');
   let html='';
   HEURES.forEach((h,hi)=>{
-    const cl=EDT[hi][currentJourAppel];
-    if(!cl){
+    const val=EDT[hi][currentJourAppel];
+    if(!val){
       html+=`<div class="appel-slot-empty"></div>`;
+      return;
+    }
+    const cl=edtBase(val);
+    if(edtIsAnnule(val)){
+      html+=`<div class="appel-slot-block ${cl==='6A'?'mat-6a':'mat-6b'}" style="opacity:.5;cursor:default;text-decoration:line-through" title="Cours annulé">
+        <div class="appel-slot-heure">${h}</div>
+        <div class="appel-slot-classe">6ème ${cl.replace('6','')} — Annulé</div>
+      </div>`;
       return;
     }
     const colorClass = cl==='6A' ? 'mat-6a' : 'mat-6b';
     const selected = hi===currentAppelHi;
-    const termine = !!(appelTermine[cl] && appelTermine[cl][h]);
+    const termine = !!(appelTermine[cl] && appelTermine[cl][slotKey(currentJourAppel,h)]);
     html+=`<div class="appel-slot-block ${colorClass}${selected?' selected':''}" onclick="selectAppelSlot(${hi})">
       <div class="appel-slot-heure">${h}</div>
       <div class="appel-slot-classe">6ème ${cl.replace('6','')}</div>
@@ -1177,13 +1208,16 @@ function buildAppel(){
   const cl=currentClasseAppel;
   const heure=currentCoursHeure();
   const eleves=CLASSES[cl];
-  document.getElementById('appel-title').textContent=`📋 Appel — 6ème ${cl.replace('6','')} · ${JOURS[currentJourAppel]} ${heure}`;
+  document.getElementById('appel-title').textContent=`📋 6ème ${cl.replace('6','')} · ${JOURS[currentJourAppel]} ${heure}`;
+  const heureIdx=HEURES.indexOf(heure);
+  const heureFin = heureIdx>=0 && heureIdx<HEURES.length-1 ? HEURES[heureIdx+1] : (parseInt(heure)+1)+'h00';
+  document.getElementById('appel-heure-range').textContent=`pour le cours de ${heure} à ${heureFin}`;
   const head=document.getElementById('appel-head');
   head.innerHTML=`<tr><th class="eleve-col">${eleves.length} élèves</th>${APPEL_CATS.map(c=>`<th>${c.l}</th>`).join('')}</tr>`;
   const body=document.getElementById('appel-body');
   body.innerHTML='';
   eleves.forEach((e,i)=>{
-    const row=getAppelRow(cl,heure,i);
+    const row=getAppelRow(cl,currentSlotKey(),i);
     const nomColor = row.absence>0 ? '#922b21' : 'var(--brand-dark)';
     const cells=APPEL_CATS.map(c=>{
       const checked=row[c.k]>0;
@@ -1198,8 +1232,7 @@ function buildAppel(){
   updateAppelStatus();
 }
 function toggleAppelCell(cl,i,cat){
-  const heure=currentCoursHeure();
-  const row=getAppelRow(cl,heure,i);
+  const row=getAppelRow(cl,currentSlotKey(),i);
   const dejaCoche=row[cat]>0;
   if(!dejaCoche && (cat==='absence' || cat==='retard')){ openMotifModal(cl,i,cat); return; }
   if(!dejaCoche && cat==='exclusion'){ openExclusionModal(cl,i); return; }
@@ -1229,9 +1262,10 @@ function decrementAppelCell(cl,i,cat){
 function viderAppelCourant(){
   const cl=currentClasseAppel;
   const heure=currentCoursHeure();
-  askConfirm(`Effacer les coches de la 6ème ${cl.replace('6','')} pour ${heure} ? (le total cumulé de l'année n'est pas modifié)`, ()=>{
-    appelData[cl][heure]={};
-    if(appelTermine[cl]) appelTermine[cl][heure]=false;
+  const key=currentSlotKey();
+  askConfirm(`Effacer les coches de la 6ème ${cl.replace('6','')} pour ${JOURS[currentJourAppel]} ${heure} ? (le total cumulé de l'année n'est pas modifié)`, ()=>{
+    appelData[cl][key]={};
+    if(appelTermine[cl]) appelTermine[cl][key]=false;
     buildAppel();
     saveState();
     toast('🧹 Coches de ce cours effacées','warn');
@@ -1239,17 +1273,17 @@ function viderAppelCourant(){
 }
 function toggleAppelTermine(){
   const cl=currentClasseAppel;
-  const heure=currentCoursHeure();
+  const key=currentSlotKey();
   if(!appelTermine[cl]) appelTermine[cl]={};
-  const etaitTermine=!!appelTermine[cl][heure];
-  appelTermine[cl][heure]=!etaitTermine;
+  const etaitTermine=!!appelTermine[cl][key];
+  appelTermine[cl][key]=!etaitTermine;
   updateAppelStatus();
   const eleves=CLASSES[cl];
-  const absCount=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,heure,i).absence>0?1:0),0);
+  const absCount=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,key,i).absence>0?1:0),0);
   document.getElementById('nb-abs').textContent=absCount;
-  toast(appelTermine[cl][heure] ? '✅ Appel terminé pour ce cours ! Les coches se videront automatiquement au prochain cours.' : 'Appel rouvert');
-  if(appelTermine[cl][heure]){
-    const presents=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,heure,i).absence>0?0:1),0);
+  toast(appelTermine[cl][key] ? '✅ Appel terminé pour ce cours !' : 'Appel rouvert');
+  if(appelTermine[cl][key]){
+    const presents=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,key,i).absence>0?0:1),0);
     showAppelOverlay(presents);
   }
   saveState();
@@ -1278,7 +1312,7 @@ function selectMotif(motif){
   if(!motifModalCtx) return;
   const {cl,i,cat}=motifModalCtx;
   const heure=currentCoursHeure();
-  const row=getAppelRow(cl,heure,i);
+  const row=getAppelRow(cl,currentSlotKey(),i);
   row[cat]=1;
   const hist=getHistoryRow(cl,i);
   hist[cat]=hist[cat]+1;
@@ -1310,8 +1344,7 @@ function validerExclusion(){
   const {cl,i}=exclusionModalCtx;
   const motif=document.getElementById('exc-motif').value.trim();
   if(!motif){ toast('Écris un motif avant de valider !','error'); return; }
-  const heure=currentCoursHeure();
-  const row=getAppelRow(cl,heure,i);
+  const row=getAppelRow(cl,currentSlotKey(),i);
   row.exclusion=1;
   const hist=getHistoryRow(cl,i);
   hist.exclusion=hist.exclusion+1;
@@ -1342,13 +1375,14 @@ function showAppelOverlay(presents){
 function updateAppelStatus(){
   const cl=currentClasseAppel;
   const heure=currentCoursHeure();
+  const key=currentSlotKey();
   const eleves=CLASSES[cl];
-  const presents=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,heure,i).absence>0?0:1),0);
-  const termine = !!(appelTermine[cl] && appelTermine[cl][heure]);
+  const presents=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,key,i).absence>0?0:1),0);
+  const termine = !!(appelTermine[cl] && appelTermine[cl][key]);
   const statusEl=document.getElementById('appel-status');
   statusEl.textContent = termine
-    ? `✅ Appel terminé (${heure}) — ${presents} élève(s) présent(s) dans la salle`
-    : `☐ Appel non terminé (${heure}) — ${presents} élève(s) présent(s) dans la salle`;
+    ? `✅ Appel terminé (${JOURS[currentJourAppel]} ${heure}) — ${presents} élève(s) présent(s) dans la salle`
+    : `☐ Appel non terminé (${JOURS[currentJourAppel]} ${heure}) — ${presents} élève(s) présent(s) dans la salle`;
 }
 function buildEDT(){
   const g=document.getElementById('edt-grid');
@@ -1358,18 +1392,21 @@ function buildEDT(){
     const isLunch = h==='12h00';
     g.innerHTML+=`<div class="edt-time${isLunch?' lunch-row':''}">${h}</div>`;
     JOURS.forEach((_,ji)=>{
-      const cl=EDT[hi][ji];
+      const val=EDT[hi][ji];
+      const cl=edtBase(val);
+      const annule=edtIsAnnule(val);
       const isNow = info && info.hi===hi && info.ji===ji;
       if(cl){
         const colorClass=cl==='6A'?'mat-6a':'mat-6b';
         const nb=devoirsPourCreneau(cl,hi,ji).length;
-        const appelFait = !!(appelTermine[cl] && appelTermine[cl][h]);
-        g.innerHTML+=`<div class="edt-slot cours ${colorClass}${isLunch?' lunch-row':''}${isNow?' now':''}" onclick="openEdtModal(${hi},${ji})">
+        const appelFait = !!(appelTermine[cl] && appelTermine[cl][slotKey(ji,h)]);
+        g.innerHTML+=`<div class="edt-slot cours ${colorClass}${annule?' annule':''}${isLunch?' lunch-row':''}${isNow?' now':''}" onclick="openEdtModal(${hi},${ji})" title="${annule?'Cours annulé — cliquer pour modifier':'Cliquer pour modifier'}">
           <div class="cours-nom">6ème ${cl.replace('6','')}</div>
           <div class="cours-salle">Français — M. Leroy</div>
           <div class="edt-edit-hint">✏️</div>
-          <div class="edt-check-hint" style="opacity:${appelFait?'1':'.3'}" title="${appelFait?'Appel fait':'Appel non fait'}">${appelFait?'✔️':'☐'}</div>
-          ${nb>0?`<div class="edt-cahier-icon has-devoir" onclick="event.stopPropagation();showDevoirSlotModal(${hi},${ji})" title="Voir le(s) devoir(s) de ce cours">📔<span class="edt-cahier-badge">${nb}</span></div>`:''}
+          ${!annule?`<div class="edt-check-hint" style="opacity:${appelFait?'1':'.3'}" title="${appelFait?'Appel fait':'Appel non fait'}">${appelFait?'✔️':'☐'}</div>`:''}
+          ${annule?`<div class="edt-annule-badge">ANNULÉ</div>`:''}
+          ${(!annule && nb>0)?`<div class="edt-cahier-icon has-devoir" onclick="event.stopPropagation();showDevoirSlotModal(${hi},${ji})" title="Voir le(s) devoir(s) de ce cours">📔<span class="edt-cahier-badge">${nb}</span></div>`:''}
         </div>`;
       }else{
         g.innerHTML+=`<div class="edt-slot vide${isLunch?' lunch-row':''}${isNow?' now':''}" onclick="openEdtModal(${hi},${ji})" title="Ajouter un cours"></div>`;
@@ -1381,7 +1418,7 @@ function devoirsPourCreneau(cl,hi,ji){
   return devoirs.filter(d=>d.classe===cl && d.hi===hi && d.ji===ji);
 }
 function showDevoirSlotModal(hi,ji){
-  const cl=EDT[hi][ji];
+  const cl=edtBase(EDT[hi][ji]);
   const liste=devoirsPourCreneau(cl,hi,ji);
   document.getElementById('devoir-slot-title').textContent=`📔 6ème ${cl.replace('6','')} · ${JOURS[ji]} ${HEURES[hi]}`;
   const body=document.getElementById('devoir-slot-body');
@@ -1594,14 +1631,21 @@ function buildDevoirCreneauGrid(){
     const isLunch = h==='12h00';
     g.innerHTML+=`<div class="edt-time${isLunch?' lunch-row':''}">${h}</div>`;
     JOURS.forEach((_,ji)=>{
-      const slotCl=EDT[hi][ji];
-      if(slotCl===cl){
+      const slotVal=EDT[hi][ji];
+      const slotCl=edtBase(slotVal);
+      const annule=edtIsAnnule(slotVal);
+      if(slotCl===cl && !annule){
         const colorClass=cl==='6A'?'mat-6a':'mat-6b';
         const selected = devSelectedCreneau && devSelectedCreneau.hi===hi && devSelectedCreneau.ji===ji;
         g.innerHTML+=`<div class="edt-slot cours ${colorClass}${isLunch?' lunch-row':''}" style="min-height:48px;${selected?'outline:3px solid var(--accent);outline-offset:-3px;':''}" onclick="selectDevoirCreneau(${hi},${ji})">
           <div class="cours-nom">6ème ${cl.replace('6','')}</div>
           <div class="cours-salle">${h}</div>
           ${selected?'<div class="edt-check-hint">✔️</div>':''}
+        </div>`;
+      }else if(slotCl && annule){
+        g.innerHTML+=`<div class="edt-slot" style="min-height:48px;background:#f3f4f8;color:#c0392b;cursor:default;box-shadow:none;opacity:.6">
+          <div class="cours-nom" style="font-size:10.5px;text-decoration:line-through">6ème ${slotCl.replace('6','')}</div>
+          <div style="font-size:9px">Annulé</div>
         </div>`;
       }else if(slotCl){
         g.innerHTML+=`<div class="edt-slot" style="min-height:48px;background:#f3f4f8;color:#b7bfc9;cursor:default;box-shadow:none">
@@ -1835,7 +1879,7 @@ function exporterPDF(){
   boutons.forEach(b=>b.style.display='none');
   const opt = {
     margin: 15,
-    filename: 'bulletin_etudiant_super.pdf',
+    filename: 'bulletin_super_prof.pdf',
     image: { type:'jpeg', quality:0.98 },
     html2canvas: { scale:2, useCORS:true },
     jsPDF: { unit:'mm', format:'a4', orientation:'portrait' }
@@ -1917,7 +1961,7 @@ populateSelect('san-eleve','6A');
 populateBulSelect('6A');
 renderAccueil();
 currentAppelHi = premierCreneauAvecCours(currentJourAppel);
-if(EDT[currentAppelHi][currentJourAppel]) currentClasseAppel = EDT[currentAppelHi][currentJourAppel];
+if(edtActif(EDT[currentAppelHi][currentJourAppel])) currentClasseAppel = EDT[currentAppelHi][currentJourAppel];
 renderAppelSidebar();
 buildAppel();
 buildEDT();

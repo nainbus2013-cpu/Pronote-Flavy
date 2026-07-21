@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Super Prof – Espace Enseignant</title>
+<title>French Prof – Espace Enseignant</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 :root{
@@ -17,14 +17,18 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Arial,sans-serif;background:#f3f4f8;color:#1a1a2e;min-height:100vh;display:flex;flex-direction:column}
 #login-screen{position:fixed;inset:0;background:linear-gradient(135deg,var(--brand-dark) 0%,var(--brand) 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
-.login-panel{background:white;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.4);display:flex;overflow:hidden;max-width:560px;width:100%}
-.login-modes-rail{display:flex;flex-direction:column;gap:8px;background:#f4f6f8;padding:18px 14px;width:130px;flex-shrink:0}
-.login-mode-btn{border:2px solid #e3e7ee;border-radius:12px;background:white;padding:12px 8px;text-align:center;cursor:pointer;transition:all .2s}
-.login-mode-btn:hover{border-color:var(--accent-light)}
-.login-mode-btn.active{border-color:var(--brand);background:var(--brand);color:white}
-.lmb-icon{font-size:24px;margin-bottom:4px}
-.lmb-label{font-size:11px;font-weight:700;line-height:1.25}
-.login-form-panel{flex:1;padding:28px 30px;text-align:left}
+.login-panel{background:white;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.4);overflow:hidden;max-width:520px;width:100%}
+.login-step-inner{padding:32px 34px}
+.login-step1-title{font-size:16px;font-weight:700;color:var(--brand-dark);margin-bottom:18px;text-align:center}
+.login-modes-grid{display:flex;gap:12px}
+.login-mode-card{flex:1;border:2px solid #e3e7ee;border-radius:12px;background:white;padding:20px 10px;text-align:center;cursor:pointer;transition:all .2s}
+.login-mode-card:hover{border-color:var(--accent-light);background:var(--accent-soft)}
+.lmb-icon{font-size:30px;margin-bottom:8px}
+.lmb-label{font-size:12px;font-weight:700;line-height:1.3;color:var(--brand-dark)}
+.login-back-btn{background:none;border:none;color:var(--brand);font-size:12px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px}
+.login-back-btn:hover{text-decoration:underline}
+.login-selected-mode-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--brand-dark);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;margin-bottom:18px}
+.login-form-panel{text-align:left}
 .login-flag-row{display:flex;align-items:center;gap:10px;margin-bottom:20px}
 .flag-mini{display:flex;width:26px;height:18px;border-radius:2px;overflow:hidden;box-shadow:0 0 0 1px #ddd;flex-shrink:0}
 .flag-mini span{flex:1;height:100%}
@@ -62,17 +66,17 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f3f4f8;color:#1a1a2e;mi
 .nav-item.active{background:rgba(46,134,193,.3);color:white;border-left-color:var(--accent)}
 .nav-icon{font-size:16px;width:18px;text-align:center}
 .classe-tabs{display:flex;gap:8px;margin-bottom:16px}
-.classe-tab{padding:8px 20px;border-radius:8px;border:2px solid #d5dbdf;background:white;cursor:pointer;font-size:13px;font-weight:600;color:#6c7a89;transition:all .2s}
+.classe-tab{padding:8px 20px;border-radius:4px;border:2px solid #d5dbdf;background:white;cursor:pointer;font-size:13px;font-weight:600;color:#6c7a89;transition:all .2s}
 .classe-tab.active{border-color:var(--accent);background:var(--accent);color:white}
 .main{flex:1;overflow-y:auto;padding:20px}
 .section{display:none}
 .section.active{display:block}
-.card{background:white;border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(0,0,0,.12);margin-bottom:20px;border:1px solid #ececec}
+.card{background:white;border-radius:4px;padding:22px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:20px;border:1px solid #e0e0e0}
 .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .card-title{font-size:15px;font-weight:600;color:var(--brand-dark)}
 .card-badge{background:#eaf4fc;color:var(--brand);padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.stat-card{background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,.08)}
+.stat-card{background:white;border-radius:4px;padding:16px;text-align:center;box-shadow:none;border:1px solid #e0e0e0}
 .stat-number{font-size:28px;font-weight:700}
 .stat-label{font-size:11px;color:#6c7a89;margin-top:4px}
 .stat-blue .stat-number{color:var(--accent)}
@@ -204,7 +208,7 @@ tr:hover td{background:#f7fbff}
 .sanc-form{background:#fff8f0;border:1px solid #fdebd0;border-radius:8px;padding:14px;margin-bottom:16px}
 .widget-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:start}
 @media(max-width:900px){.widget-grid{grid-template-columns:1fr}}
-.widget{background:white;border-radius:16px;box-shadow:0 6px 22px rgba(0,0,0,.08);margin-bottom:18px;overflow:hidden;border:1px solid #ececec}
+.widget{background:white;border-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:18px;overflow:hidden;border:1px solid #e0e0e0}
 .widget-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(120deg,var(--brand-dark),var(--brand));color:white;font-size:13px;font-weight:700}
 .widget-body{padding:14px 16px}
 .widget-empty{color:#9aa5b1;font-size:12.5px;font-style:italic;padding:6px 0}
@@ -247,7 +251,7 @@ tr:hover td{background:#f7fbff}
 @keyframes pulse-live{0%{box-shadow:0 0 0 0 rgba(229,57,53,.6)}70%{box-shadow:0 0 0 8px rgba(229,57,53,0)}100%{box-shadow:0 0 0 0 rgba(229,57,53,0)}}
 
 /* Barre latérale des cours du jour (appel), façon vrai Pronote */
-.appel-sidebar-card{width:150px;flex-shrink:0;background:white;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.08);border:1px solid #ececec;padding:10px}
+.appel-sidebar-card{width:150px;flex-shrink:0;background:white;border-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,.08);border:1px solid #e0e0e0;padding:10px}
 .appel-jour-nav{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;font-weight:700;color:var(--brand-dark);padding:2px 2px 10px;border-bottom:1px solid #f0f0f0;margin-bottom:8px}
 .appel-jour-nav button{background:#f0f3f7;border:none;width:22px;height:22px;border-radius:6px;cursor:pointer;font-size:11px;color:var(--brand-dark);flex-shrink:0}
 .appel-jour-nav button:hover{background:var(--accent-soft)}
@@ -260,7 +264,7 @@ tr:hover td{background:#f7fbff}
 .appel-slot-done{position:absolute;top:4px;right:5px;font-size:10px}
 
 /* Fenêtre "Connexion en cours..." avec sablier et barre de progression rouge, façon vieille appli Windows */
-.loading-overlay{position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:600;display:none;align-items:center;justify-content:center}
+.loading-overlay{position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:10000;display:none;align-items:center;justify-content:center}
 .loading-overlay.show{display:flex}
 .loading-box{background:#f3f3f3;border:1px solid #8f8f8f;border-radius:4px;box-shadow:0 6px 24px rgba(0,0,0,.35);padding:16px 20px;display:flex;align-items:center;gap:14px;min-width:300px}
 .loading-hourglass{font-size:34px;animation:loading-hourglass-spin 1.1s ease-in-out infinite}
@@ -275,18 +279,32 @@ tr:hover td{background:#f7fbff}
 <body>
 <div id="login-screen">
   <div class="login-panel">
-    <div class="login-modes-rail" id="login-modes-rail">
-      <div class="login-mode-btn" data-role="admin" onclick="selectModeV2('admin')">
-        <div class="lmb-icon">🧭</div><div class="lmb-label">Mode<br>administratif</div>
+    <!-- Étape 1 : choix de l'espace -->
+    <div id="login-step1" class="login-step-inner">
+      <div class="login-flag-row">
+        <div class="flag-mini"><span></span><span></span><span></span></div>
+        <div class="login-school-name">
+          <strong>RÉPUBLIQUE FRANÇAISE</strong>
+          <div>COLLÈGE FLAVY</div>
+        </div>
       </div>
-      <div class="login-mode-btn" data-role="prof" onclick="selectModeV2('prof')">
-        <div class="lmb-icon">🖊️</div><div class="lmb-label">Mode<br>enseignant</div>
+      <div class="login-step1-title">Choisis ton espace de connexion</div>
+      <div class="login-modes-grid">
+        <div class="login-mode-card" onclick="selectModeV2('admin')">
+          <div class="lmb-icon">🧭</div><div class="lmb-label">Mode<br>administratif</div>
+        </div>
+        <div class="login-mode-card" onclick="selectModeV2('prof')">
+          <div class="lmb-icon">🖊️</div><div class="lmb-label">Mode<br>enseignant</div>
+        </div>
+        <div class="login-mode-card" onclick="selectModeV2('vie')">
+          <div class="lmb-icon">🗂️</div><div class="lmb-label">Mode<br>vie scolaire</div>
+        </div>
       </div>
-      <div class="login-mode-btn" data-role="vie" onclick="selectModeV2('vie')">
-        <div class="lmb-icon">🗂️</div><div class="lmb-label">Mode<br>vie scolaire</div>
-      </div>
+      <div class="login-footer" style="text-align:center;margin-top:22px">French Prof v2.4 — Accès réservé au personnel</div>
     </div>
-    <div class="login-form-panel">
+    <!-- Étape 2 : identifiants -->
+    <div id="login-step2" class="login-step-inner" style="display:none">
+      <button class="login-back-btn" onclick="backToStep1()">← Changer d'espace</button>
       <div class="login-flag-row">
         <div class="flag-mini"><span></span><span></span><span></span></div>
         <div class="login-school-name">
@@ -294,27 +312,30 @@ tr:hover td{background:#f7fbff}
           <div id="login-school-title">COLLÈGE FLAVY</div>
         </div>
       </div>
-      <div class="login-group">
-        <label>Année scolaire</label>
-        <select id="login-annee"></select>
+      <div class="login-selected-mode-badge" id="login-selected-mode-badge"></div>
+      <div class="login-form-panel">
+        <div class="login-group">
+          <label>Année scolaire</label>
+          <select id="login-annee"></select>
+        </div>
+        <div class="login-group">
+          <label>Identifiant</label>
+          <input type="text" id="login-id" placeholder="Votre identifiant" autocomplete="username">
+        </div>
+        <div class="login-group">
+          <label>Mot de passe</label>
+          <input type="password" id="login-pw" placeholder="Votre mot de passe" autocomplete="current-password" onkeydown="if(event.key==='Enter')tryLogin()">
+        </div>
+        <button class="login-btn" onclick="tryLogin()">Se connecter</button>
+        <div class="login-error" id="login-error">❌ Identifiant ou mot de passe incorrect.</div>
+        <div class="login-footer">French Prof v2.4 — Accès réservé au personnel</div>
       </div>
-      <div class="login-group">
-        <label>Identifiant</label>
-        <input type="text" id="login-id" placeholder="Votre identifiant" autocomplete="username">
-      </div>
-      <div class="login-group">
-        <label>Mot de passe</label>
-        <input type="password" id="login-pw" placeholder="Votre mot de passe" autocomplete="current-password" onkeydown="if(event.key==='Enter')tryLogin()">
-      </div>
-      <button class="login-btn" onclick="tryLogin()">Se connecter</button>
-      <div class="login-error" id="login-error">❌ Identifiant ou mot de passe incorrect.</div>
-      <div class="login-footer">Super Prof v2.4 — Accès réservé au personnel</div>
     </div>
   </div>
 </div>
 <div class="header">
   <div class="header-left">
-    <div class="logo">🦋 Super Prof</div>
+    <div class="logo">🐞 French Prof</div>
     <div class="header-info" id="header-info">Collège Flavy · Professeur de Français</div>
   </div>
   <div class="header-right">
@@ -615,7 +636,7 @@ tr:hover td{background:#f7fbff}
     <div class="form-row">
       <div class="form-group"><label>Nom de l'établissement</label><input type="text" value="Collège Flavy" style="width:220px"></div>
       <div class="form-group"><label>Année scolaire</label><input type="text" value="2026-2027" style="width:120px"></div>
-      <div class="form-group"><label>&nbsp;</label><button class="btn-primary" onclick="toast('✅ Paramètres enregistrés !')">💾 Enregistrer</button></div>
+      <div class="form-group"><label>&nbsp;</label><button class="btn-primary" onclick="showLoading('Enregistrement en cours ...', 1300, ()=>toast('✅ Paramètres enregistrés !'))">💾 Enregistrer</button></div>
     </div>
   </div>
 </div>
@@ -1922,20 +1943,28 @@ const ROLE_INFO = {
   vie:{label:'MODE VIE SCOLAIRE',subtitle:'Espace Vie Scolaire · Collège Flavy',badge:'🗂️ Mme Petit — Vie scolaire',info:'Collège Flavy · Vie scolaire'}
 };
 const ACCOUNTS = {
-  'adm':        {password:'Theoleroy2013', roles:['admin','prof','vie']},
-  't.leroy346': {password:'Theoleroy2013', roles:['prof','vie']}
+  'adm': {password:'Theoleroy2013', roles:['admin','prof','vie']}
 };
 function selectModeV2(role){
   currentRole = role;
-  document.querySelectorAll('.login-mode-btn').forEach(b=>b.classList.toggle('active', b.dataset.role===role));
+  document.getElementById('login-selected-mode-badge').innerHTML =
+    (role==='admin'?'🧭 Mode administratif':role==='prof'?'🖊️ Mode enseignant':'🗂️ Mode vie scolaire');
+  document.getElementById('login-step1').style.display='none';
+  document.getElementById('login-step2').style.display='block';
+  document.getElementById('login-error').style.display='none';
+  setTimeout(()=>document.getElementById('login-id').focus(),50);
+}
+function backToStep1(){
+  currentRole=null;
+  document.getElementById('login-step2').style.display='none';
+  document.getElementById('login-step1').style.display='block';
+  document.getElementById('login-id').value='';
+  document.getElementById('login-pw').value='';
   document.getElementById('login-error').style.display='none';
 }
 function tryLogin(){
   if(!currentRole){
-    const err=document.getElementById('login-error');
-    err.textContent='❌ Choisis un mode (administratif, enseignant, vie scolaire) avant de te connecter.';
-    err.style.display='block';
-    setTimeout(()=>err.style.display='none',3000);
+    backToStep1();
     return;
   }
   const id=document.getElementById('login-id').value.trim();
@@ -1968,11 +1997,7 @@ function applyRole(role){
 function logout(){
   showLoading('Déconnexion en cours ...', 1000, ()=>{
     document.getElementById('login-screen').style.display='flex';
-    document.querySelectorAll('.login-mode-btn').forEach(b=>b.classList.remove('active'));
-    document.getElementById('login-id').value='';
-    document.getElementById('login-pw').value='';
-    document.getElementById('login-error').style.display='none';
-    currentRole = null;
+    backToStep1();
   });
 }
 loadState();

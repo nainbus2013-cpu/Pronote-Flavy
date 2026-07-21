@@ -41,7 +41,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:#f3f4f8;color:#1a1a2e;mi
 .login-group label{display:block;font-size:11px;font-weight:600;color:#6c7a89;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
 .login-group input,.login-group select{width:100%;border:1.5px solid #d5dbdf;border-radius:8px;padding:10px 12px;font-size:13.5px;outline:none;transition:border-color .2s;background:white}
 .login-group input:focus,.login-group select:focus{border-color:var(--brand)}
-.login-btn{width:100%;background:var(--brand);color:white;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;transition:background .2s}
+.login-btn{width:100%;background:var(--brand);color:white;border:none;padding:12px;border-radius:4px;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;transition:background .2s}
 .login-btn:hover{background:var(--accent)}
 .login-error{color:#c0392b;font-size:12.5px;margin-top:10px;display:none}
 .login-footer{margin-top:16px;font-size:10.5px;color:#aab}
@@ -117,7 +117,7 @@ tr:hover td{background:#f7fbff}
 .btn-a{background:#fde8e8;color:#c0392b}.btn-a:hover{background:#f5b7b1}
 .btn-r{background:#fef9e7;color:#b7770d}.btn-r:hover{background:#fdebd0}
 .notes-grid-table{border-collapse:collapse;font-size:12.5px;width:max-content;min-width:100%}
-.btn-devoir-pill{background:var(--brand);color:white;border:none;padding:9px 18px;border-radius:20px;font-weight:700;font-size:13px;cursor:pointer;transition:.2s;margin-right:8px}
+.btn-devoir-pill{background:var(--brand);color:white;border:none;padding:9px 18px;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer;transition:.2s;margin-right:8px}
 .btn-devoir-pill:hover{background:var(--brand-dark)}
 .notes-grid-table th,.notes-grid-table td{border:1px solid #eef0f3;text-align:center;padding:6px 10px;white-space:nowrap}
 .notes-grid-table th.ng-eleve-col,.notes-grid-table td.ng-eleve-col{text-align:left;position:sticky;left:0;background:#fff;z-index:2;min-width:170px}
@@ -171,11 +171,11 @@ tr:hover td{background:#f7fbff}
 .form-group label{font-size:11px;color:#6c7a89;font-weight:500}
 .form-group input,.form-group select{border:1px solid #d5dbdf;border-radius:6px;padding:7px 10px;font-size:13px;outline:none;background:white}
 .form-group input:focus,.form-group select:focus{border-color:var(--accent)}
-.btn-primary{background:var(--brand);color:white;border:none;padding:10px 18px;border-radius:12px;font-weight:bold;font-size:13px;transition:.3s;cursor:pointer}
+.btn-primary{background:var(--brand);color:white;border:none;padding:10px 18px;border-radius:6px;font-weight:bold;font-size:13px;transition:.3s;cursor:pointer}
 .btn-primary:hover{background:var(--brand-dark);transform:translateY(-2px)}
-.btn-secondary{background:white;color:var(--brand-dark);border:2px solid var(--brand-dark);padding:8px 16px;border-radius:12px;font-weight:bold;font-size:13px;transition:.3s;cursor:pointer}
+.btn-secondary{background:white;color:var(--brand-dark);border:2px solid var(--brand-dark);padding:8px 16px;border-radius:6px;font-weight:bold;font-size:13px;transition:.3s;cursor:pointer}
 .btn-secondary:hover{background:var(--brand-dark);color:white}
-.btn-danger{background:#e74c3c;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px}
+.btn-danger{background:#e74c3c;color:white;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:12px}
 .event-list{display:flex;flex-direction:column;gap:8px}
 .event-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#f9fafb;border-radius:8px;border-left:4px solid}
 .event-item.abs{border-left-color:#e74c3c}
@@ -435,11 +435,13 @@ tr:hover td{background:#f7fbff}
 </div>
 <div class="section" id="s-appel">
   <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
-    <div class="appel-sidebar-card" style="width:auto;min-width:420px">
-      <div class="appel-jour-nav" style="justify-content:center">
-        <span>📅 Emploi du temps — clique un cours pour faire l'appel</span>
+    <div class="appel-sidebar-card">
+      <div class="appel-jour-nav">
+        <button onclick="changeAppelJour(-1)" title="Jour précédent">◀</button>
+        <span id="appel-jour-label">Lundi</span>
+        <button onclick="changeAppelJour(1)" title="Jour suivant">▶</button>
       </div>
-      <div class="edt-grid" id="appel-mini-edt" style="font-size:10px"></div>
+      <div id="appel-sidebar-list"></div>
     </div>
     <div class="card" style="flex:1;padding:0;overflow:hidden;min-width:420px">
       <div style="padding:14px 20px 0">
@@ -943,7 +945,7 @@ function navigate(id){
   if(sec)sec.classList.add('active');
   if(nav)nav.classList.add('active');
   try{
-    if(id==='appel'){ buildAppelMiniEDT(); buildAppel(); }
+    if(id==='appel'){ renderAppelSidebar(); buildAppel(); }
     if(id==='edt') buildEDT();
     if(id==='accueil') renderDashboardWidgets();
     if(id==='devoirs') renderDevoirs();
@@ -1152,49 +1154,58 @@ function premierCreneauAvecCours(ji){
   return 0;
 }
 
-// Sélectionne un créneau (jour + heure) directement depuis l'emploi du temps affiché à côté de l'appel
-function selectAppelCreneau(hi,ji){
-  const val = EDT[hi][ji];
-  if(!edtActif(val)) return; // créneau libre ou annulé, non cliquable
-  currentAppelHi = hi;
-  currentJourAppel = ji;
-  currentClasseAppel = val;
-  buildAppelMiniEDT();
+function changeAppelJour(delta){
+  currentJourAppel = (currentJourAppel + delta + JOURS.length) % JOURS.length;
+  currentAppelHi = premierCreneauAvecCours(currentJourAppel);
+  const val = EDT[currentAppelHi][currentJourAppel];
+  if(edtActif(val)) currentClasseAppel = val;
+  renderAppelSidebar();
   buildAppel();
 }
 
-// Affiche l'emploi du temps complet de la semaine à côté de l'appel ; cliquer un cours = le sélectionner pour l'appel
-function buildAppelMiniEDT(){
-  const g=document.getElementById('appel-mini-edt');
-  if(!g) return;
-  if(currentAppelHi===null) currentAppelHi = premierCreneauAvecCours(currentJourAppel);
-  const JOURS_ABBR=['Lun.','Mar.','Mer.','Jeu.','Ven.'];
-  g.innerHTML='<div class="edt-header"></div>'+JOURS_ABBR.map(j=>`<div class="edt-header" style="padding:5px">${j}</div>`).join('');
-  HEURES.forEach((h,hi)=>{
-    const isLunch = h==='12h00';
-    g.innerHTML+=`<div class="edt-time${isLunch?' lunch-row':''}" style="font-size:9.5px">${h}</div>`;
-    JOURS_ABBR.forEach((_,ji)=>{
-      const val=EDT[hi][ji];
-      const cl=edtBase(val);
-      const annule=edtIsAnnule(val);
-      const selected = hi===currentAppelHi && ji===currentJourAppel;
-      if(cl && !annule){
-        const colorClass=cl==='6A'?'mat-6a':'mat-6b';
-        const termine = !!(appelTermine[cl] && appelTermine[cl][slotKey(ji,h)]);
-        g.innerHTML+=`<div class="edt-slot cours ${colorClass}${isLunch?' lunch-row':''}" style="min-height:32px;padding:3px 5px;${selected?'outline:3px solid var(--accent);outline-offset:-3px;':''}" onclick="selectAppelCreneau(${hi},${ji})" title="6ème ${cl.replace('6','')} — cliquer pour faire l'appel">
-          <div class="cours-nom" style="font-size:10px">6e${cl.replace('6','')}</div>
-          ${termine?'<span style="position:absolute;top:2px;right:4px;font-size:9px">✔️</span>':''}
-        </div>`;
-      }else if(cl && annule){
-        g.innerHTML+=`<div class="edt-slot" style="min-height:32px;padding:3px 5px;background:#f3f4f8;color:#c0392b;cursor:default;box-shadow:none;opacity:.55" title="Cours annulé">
-          <div class="cours-nom" style="font-size:9.5px;text-decoration:line-through">6e${cl.replace('6','')}</div>
-        </div>`;
-      }else{
-        g.innerHTML+=`<div class="edt-slot vide${isLunch?' lunch-row':''}" style="min-height:32px;cursor:default"></div>`;
-      }
-    });
-  });
+function selectAppelSlot(hi){
+  const val = EDT[hi][currentJourAppel];
+  if(!edtActif(val)) return; // créneau libre ou annulé, non cliquable
+  currentAppelHi = hi;
+  currentClasseAppel = val;
+  renderAppelSidebar();
+  buildAppel();
+}
+
+// Affiche les cours du jour sélectionné, façon "feuille d'appel" Pronote, avec navigation par flèches
+function renderAppelSidebar(){
+  const label=document.getElementById('appel-jour-label');
+  if(!label) return;
+  label.textContent = JOURS[currentJourAppel];
   document.getElementById('appel-date-label').textContent = JOURS[currentJourAppel];
+  if(currentAppelHi===null) currentAppelHi = premierCreneauAvecCours(currentJourAppel);
+
+  const list=document.getElementById('appel-sidebar-list');
+  let html='';
+  HEURES.forEach((h,hi)=>{
+    const val=EDT[hi][currentJourAppel];
+    const cl=edtBase(val);
+    if(!cl){
+      html+=`<div class="appel-slot-empty"></div>`;
+      return;
+    }
+    if(edtIsAnnule(val)){
+      html+=`<div class="appel-slot-block ${cl==='6A'?'mat-6a':'mat-6b'}" style="opacity:.5;cursor:default;text-decoration:line-through" title="Cours annulé">
+        <div class="appel-slot-heure">${h}</div>
+        <div class="appel-slot-classe">6ème ${cl.replace('6','')} — Annulé</div>
+      </div>`;
+      return;
+    }
+    const colorClass = cl==='6A' ? 'mat-6a' : 'mat-6b';
+    const selected = hi===currentAppelHi;
+    const termine = !!(appelTermine[cl] && appelTermine[cl][slotKey(currentJourAppel,h)]);
+    html+=`<div class="appel-slot-block ${colorClass}${selected?' selected':''}" onclick="selectAppelSlot(${hi})">
+      <div class="appel-slot-heure">${h}</div>
+      <div class="appel-slot-classe">6ème ${cl.replace('6','')}<br><span style="font-weight:400;font-size:10px">207</span></div>
+      <span class="appel-slot-done">${termine?'✔️':'☒'}</span>
+    </div>`;
+  });
+  list.innerHTML=html;
 }
 function getAppelRow(cl,heure,i){
   if(!appelData[cl][heure]) appelData[cl][heure]={};
@@ -1278,7 +1289,7 @@ function viderAppelCourant(){
     appelData[cl][key]={};
     if(appelTermine[cl]) appelTermine[cl][key]=false;
     buildAppel();
-    buildAppelMiniEDT();
+    renderAppelSidebar();
     saveState();
     toast('🧹 Coches de ce cours effacées','warn');
   });
@@ -1291,7 +1302,7 @@ function toggleAppelTermine(){
   const finaliser=()=>{
     appelTermine[cl][key]=!etaitTermine;
     updateAppelStatus();
-    buildAppelMiniEDT();
+    renderAppelSidebar();
     const eleves=CLASSES[cl];
     const absCount=eleves.reduce((a,e,i)=>a+(getAppelRow(cl,key,i).absence>0?1:0),0);
     document.getElementById('nb-abs').textContent=absCount;
@@ -2008,7 +2019,7 @@ populateBulSelect('6A');
 renderAccueil();
 currentAppelHi = premierCreneauAvecCours(currentJourAppel);
 if(edtActif(EDT[currentAppelHi][currentJourAppel])) currentClasseAppel = EDT[currentAppelHi][currentJourAppel];
-buildAppelMiniEDT();
+renderAppelSidebar();
 buildAppel();
 buildEDT();
 renderOublis();

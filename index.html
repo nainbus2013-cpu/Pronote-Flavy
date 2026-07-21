@@ -341,6 +341,7 @@ tr:hover td{background:#f7fbff}
   <div class="header-right">
     <div class="header-clock" id="header-clock"><span class="hc-time">--:--</span><span class="hc-date">--</span></div>
     <span class="prof-badge" id="header-badge">👨‍🏫 M. Leroy — Français</span>
+    <button class="notif-btn" onclick="openEvalGenModal()" title="Générer une évaluation">🪄</button>
     <button class="notif-btn" onclick="navigate('messages')">🔔<span class="notif-dot"></span></button>
     <button class="notif-btn" onclick="logout()" title="Changer d'espace">🚪</button>
   </div>
@@ -752,6 +753,68 @@ tr:hover td{background:#f7fbff}
     <div class="edt-grid" id="devoir-creneau-grid" style="font-size:11px"></div>
     <div style="margin-top:14px;text-align:right">
       <button class="btn-danger" onclick="closeDevoirCreneauModal()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL GÉNÉRATEUR D'ÉVALUATION RAPIDE -->
+<div class="modal-overlay" id="evalgen-modal">
+  <div class="modal" style="max-width:420px">
+    <button class="modal-close" onclick="closeEvalGenModal()">✕</button>
+    <div class="modal-title">🪄 Générer une évaluation — Étape 1/3</div>
+    <p style="font-size:12.5px;color:#6c7a89;margin-bottom:14px">Donne un nom à l'évaluation.</p>
+    <div class="form-group" style="margin-bottom:14px">
+      <label>Nom de l'évaluation</label>
+      <input type="text" id="evalgen-titre" placeholder="ex: Le conditionnel présent" style="width:100%;border:1px solid #d5dbdf;border-radius:8px;padding:9px 12px;font-size:13px;outline:none" onkeydown="if(event.key==='Enter')evalGenStep1Next()">
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn-danger" onclick="closeEvalGenModal()">Annuler</button>
+      <button class="btn-primary" onclick="evalGenStep1Next()">Suivant →</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="evalgen-step2-modal">
+  <div class="modal" style="max-width:420px">
+    <button class="modal-close" onclick="closeEvalGenModal()">✕</button>
+    <div class="modal-title">🪄 Générer une évaluation — Étape 2/3</div>
+    <p style="font-size:12.5px;color:#6c7a89;margin-bottom:14px">Quel est le sujet de cette évaluation ? Les questions générées porteront sur ce thème.</p>
+    <div class="form-group" style="margin-bottom:14px">
+      <label>Sujet</label>
+      <select id="evalgen-sujet" style="width:100%;border:1px solid #d5dbdf;border-radius:8px;padding:9px 12px;font-size:13px;outline:none"></select>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:space-between">
+      <button class="btn-secondary" onclick="evalGenBackTo(1)">← Retour</button>
+      <button class="btn-primary" onclick="evalGenStep2Next()">Suivant →</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="evalgen-step3-modal">
+  <div class="modal" style="max-width:460px">
+    <button class="modal-close" onclick="closeEvalGenModal()">✕</button>
+    <div class="modal-title">🪄 Générer une évaluation — Étape 3/3</div>
+    <p style="font-size:12.5px;color:#6c7a89;margin-bottom:14px">Veux-tu imposer une ou plusieurs questions obligatoires dans l'évaluation ? (optionnel — une question par ligne)</p>
+    <div class="form-group" style="margin-bottom:14px">
+      <label>Questions obligatoires</label>
+      <textarea id="evalgen-questions-obligatoires" rows="4" placeholder="ex: Cite deux verbes du 1er groupe." style="width:100%;border:1px solid #d5dbdf;border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;resize:vertical;outline:none"></textarea>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:space-between">
+      <button class="btn-secondary" onclick="evalGenBackTo(2)">← Retour</button>
+      <button class="btn-primary" onclick="genererEvaluationRapide()">✅ Générer</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="evalgen-result-modal">
+  <div class="modal" style="max-width:640px">
+    <button class="modal-close" onclick="closeEvalGenResultModal()">✕</button>
+    <div class="modal-title" id="evalgen-result-title">📝 Évaluation générée</div>
+    <div style="display:flex;gap:8px;margin-bottom:14px">
+      <button class="classe-tab active" id="evalgen-tab-eleve" onclick="switchEvalGenTab('eleve')">📄 Fiche élève</button>
+      <button class="classe-tab" id="evalgen-tab-corrige" onclick="switchEvalGenTab('corrige')">✅ Fiche corrigée</button>
+    </div>
+    <div id="evalgen-sheet" style="max-height:420px;overflow-y:auto;border:1px solid #eef0f3;border-radius:6px;padding:18px;background:#fff"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+      <button class="btn-danger" onclick="closeEvalGenResultModal()">Fermer</button>
+      <button class="btn-primary" onclick="exporterEvalGenPDF()">📄 Télécharger en PDF</button>
     </div>
   </div>
 </div>
@@ -1201,7 +1264,7 @@ function renderAppelSidebar(){
     const termine = !!(appelTermine[cl] && appelTermine[cl][slotKey(currentJourAppel,h)]);
     html+=`<div class="appel-slot-block ${colorClass}${selected?' selected':''}" onclick="selectAppelSlot(${hi})">
       <div class="appel-slot-heure">${h}</div>
-      <div class="appel-slot-classe">6ème ${cl.replace('6','')}<br><span style="font-weight:400;font-size:10px">207</span></div>
+      <div class="appel-slot-classe">6ème ${cl.replace('6','')}<br><span style="font-weight:400;font-size:10px">003</span></div>
       <span class="appel-slot-done">${termine?'✔️':'☒'}</span>
     </div>`;
   });
@@ -1921,6 +1984,165 @@ function genererBulletinImpl(i){
       <button class="btn-primary" onclick="exporterPDF()">📄 Télécharger en PDF</button>
     </div>`;
   toast('📄 Bulletin généré !');
+}
+// Banques d'exercices de français, organisées par sujet réel (choisi par l'enseignant à l'étape 2)
+const SUJETS_EVAL = {
+  'conditionnel-present': {label:"Le conditionnel présent", exercices:[
+    {consigne:"Conjugue le verbe entre parenthèses au conditionnel présent.", enonce:"Si j'avais de l'argent, je _______ (voyager) autour du monde.", reponse:"voyagerais"},
+    {consigne:"Conjugue le verbe entre parenthèses au conditionnel présent.", enonce:"Nous _______ (aimer) venir avec vous si possible.", reponse:"aimerions"},
+    {consigne:"Conjugue le verbe entre parenthèses au conditionnel présent.", enonce:"Il _______ (pouvoir) t'aider si tu le lui demandais.", reponse:"pourrait"},
+    {consigne:"Conjugue le verbe entre parenthèses au conditionnel présent.", enonce:"Vous _______ (être) content de le revoir.", reponse:"seriez"},
+    {consigne:"Conjugue le verbe entre parenthèses au conditionnel présent.", enonce:"Elles _______ (vouloir) partir plus tôt.", reponse:"voudraient"}
+  ]},
+  'expansions-nom': {label:"Les expansions du nom", exercices:[
+    {consigne:"Identifie l'expansion du nom soulignée.", enonce:"J'ai acheté une robe en soie. → Quelle est l'expansion du nom qui complète « robe » ?", reponse:"en soie (complément du nom)"},
+    {consigne:"Enrichis le nom avec un adjectif épithète.", enonce:"Le chat _______ dort sur le canapé. (ajoute un adjectif)", reponse:"Exemple : Le chat noir dort sur le canapé."},
+    {consigne:"Identifie la nature de l'expansion du nom soulignée.", enonce:"La maison que j'habite est ancienne. → Nature de l'expansion « que j'habite » :", reponse:"Proposition subordonnée relative"},
+    {consigne:"Réécris la phrase en remplaçant la relative par un complément du nom.", enonce:"Le livre qui est sur la table appartient à Léa. →", reponse:"Le livre de la table appartient à Léa."},
+    {consigne:"Enrichis le groupe nominal avec une expansion du nom de ton choix.", enonce:"un vélo → ajoute une expansion du nom (adjectif, complément du nom ou relative) :", reponse:"Exemple : un vélo rouge / un vélo de course / un vélo qui roule vite"}
+  ]},
+  'present': {label:"Le présent de l'indicatif", exercices:[
+    {consigne:"Conjugue le verbe entre parenthèses au présent.", enonce:"Je _______ (finir) mes devoirs avant le dîner.", reponse:"finis"},
+    {consigne:"Conjugue le verbe entre parenthèses au présent.", enonce:"Nous _______ (aller) à la piscine le mercredi.", reponse:"allons"},
+    {consigne:"Conjugue le verbe entre parenthèses au présent.", enonce:"Ils _______ (prendre) le bus tous les matins.", reponse:"prennent"},
+    {consigne:"Indique le temps du verbe souligné.", enonce:"Elle chante une chanson. → Quel est le temps du verbe « chante » ?", reponse:"Présent de l'indicatif"},
+    {consigne:"Conjugue le verbe entre parenthèses au présent.", enonce:"Tu _______ (être) très patient aujourd'hui.", reponse:"es"}
+  ]},
+  'imparfait': {label:"L'imparfait", exercices:[
+    {consigne:"Conjugue le verbe entre parenthèses à l'imparfait.", enonce:"Quand j'étais petit, je _______ (jouer) tous les jours dehors.", reponse:"jouais"},
+    {consigne:"Conjugue le verbe entre parenthèses à l'imparfait.", enonce:"Nous _______ (avoir) un chien quand nous habitions à la campagne.", reponse:"avions"},
+    {consigne:"Conjugue le verbe entre parenthèses à l'imparfait.", enonce:"Il _______ (faire) beau ce jour-là.", reponse:"faisait"},
+    {consigne:"Mets la phrase à l'imparfait.", enonce:"Je mange une pomme. →", reponse:"Je mangeais une pomme."},
+    {consigne:"Conjugue le verbe entre parenthèses à l'imparfait.", enonce:"Vous _______ (être) très jeunes à l'époque.", reponse:"étiez"}
+  ]},
+  'passe-compose': {label:"Le passé composé", exercices:[
+    {consigne:"Conjugue le verbe entre parenthèses au passé composé.", enonce:"Hier, nous _______ (aller) au marché.", reponse:"sommes allés"},
+    {consigne:"Conjugue le verbe entre parenthèses au passé composé.", enonce:"Elle _______ (manger) une glace ce midi.", reponse:"a mangé"},
+    {consigne:"Conjugue le verbe entre parenthèses au passé composé.", enonce:"Ils _______ (partir) tôt ce matin.", reponse:"sont partis"},
+    {consigne:"Accorde correctement le participe passé.", enonce:"La lettre qu'il a _______ (écrire) est arrivée.", reponse:"écrite"},
+    {consigne:"Conjugue le verbe entre parenthèses au passé composé.", enonce:"J'_______ (finir) mon travail avant 18h.", reponse:"ai fini"}
+  ]},
+  'futur-simple': {label:"Le futur simple", exercices:[
+    {consigne:"Conjugue le verbe entre parenthèses au futur simple.", enonce:"Demain, je _______ (finir) mes devoirs.", reponse:"finirai"},
+    {consigne:"Conjugue le verbe entre parenthèses au futur simple.", enonce:"Nous _______ (partir) en vacances la semaine prochaine.", reponse:"partirons"},
+    {consigne:"Conjugue le verbe entre parenthèses au futur simple.", enonce:"Il _______ (avoir) quinze ans l'année prochaine.", reponse:"aura"},
+    {consigne:"Conjugue le verbe entre parenthèses au futur simple.", enonce:"Vous _______ (être) présents demain ?", reponse:"serez"},
+    {consigne:"Conjugue le verbe entre parenthèses au futur simple.", enonce:"Ils _______ (venir) nous voir bientôt.", reponse:"viendront"}
+  ]},
+  'accords': {label:"Les accords (adjectifs / noms)", exercices:[
+    {consigne:"Accorde l'adjectif avec le nom.", enonce:"Des fleurs _______ (magnifique) poussent dans le jardin.", reponse:"magnifiques"},
+    {consigne:"Accorde l'adjectif avec le nom.", enonce:"Une histoire _______ (passionnant).", reponse:"passionnante"},
+    {consigne:"Accorde l'adjectif avec le nom.", enonce:"Des enfants _______ (heureux) jouent dehors.", reponse:"heureux"},
+    {consigne:"Accorde le verbe avec son sujet.", enonce:"Les chats _______ (dormir) toute la journée.", reponse:"dorment"},
+    {consigne:"Accorde l'adjectif avec le sujet.", enonce:"Elle est très _______ (fatigué).", reponse:"fatiguée"}
+  ]},
+  'homophones': {label:"Les homophones grammaticaux", exercices:[
+    {consigne:"Complète avec le bon homophone (a / à).", enonce:"Il _______ mangé une pomme _______ midi.", reponse:"a … à"},
+    {consigne:"Complète avec le bon homophone (son / sont).", enonce:"Ils _______ arrivés avec _______ chien.", reponse:"sont … son"},
+    {consigne:"Complète avec le bon homophone (ou / où).", enonce:"Je ne sais pas _______ il est allé.", reponse:"où"},
+    {consigne:"Complète avec le bon homophone (ces / ses).", enonce:"_______ voisins sont très sympathiques.", reponse:"Ces"},
+    {consigne:"Complète avec le bon homophone (on / ont).", enonce:"_______ dit qu'ils _______ raison.", reponse:"On … ont"}
+  ]},
+  'vocabulaire': {label:"Vocabulaire — synonymes et antonymes", exercices:[
+    {consigne:"Trouve un synonyme du mot souligné.", enonce:"Le paysage était magnifique. → Synonyme de « magnifique » :", reponse:"superbe / splendide"},
+    {consigne:"Trouve un antonyme du mot souligné.", enonce:"Le lièvre est très rapide. → Antonyme de « rapide » :", reponse:"lent"},
+    {consigne:"Trouve un synonyme du mot souligné.", enonce:"Il était très content de sa journée. → Synonyme de « content » :", reponse:"heureux / joyeux"},
+    {consigne:"Trouve un antonyme du mot souligné.", enonce:"C'est un grand immeuble. → Antonyme de « grand » :", reponse:"petit"},
+    {consigne:"Trouve un synonyme du mot souligné.", enonce:"Nous allons parler du projet. → Synonyme de « parler » :", reponse:"discuter / dire"}
+  ]}
+};
+let evalGenData=null; // {titre, sujetLabel, exercices}
+let evalGenTabActuel='eleve';
+function openEvalGenModal(){
+  document.getElementById('evalgen-titre').value='';
+  const sel=document.getElementById('evalgen-sujet');
+  sel.innerHTML=Object.entries(SUJETS_EVAL).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+  document.getElementById('evalgen-questions-obligatoires').value='';
+  document.getElementById('evalgen-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('evalgen-titre').focus(),50);
+}
+function closeEvalGenModal(){
+  document.getElementById('evalgen-modal').classList.remove('open');
+  document.getElementById('evalgen-step2-modal').classList.remove('open');
+  document.getElementById('evalgen-step3-modal').classList.remove('open');
+}
+function evalGenStep1Next(){
+  const titre=document.getElementById('evalgen-titre').value.trim();
+  if(!titre){ toast('Donne un nom à l\'évaluation !','error'); return; }
+  document.getElementById('evalgen-modal').classList.remove('open');
+  document.getElementById('evalgen-step2-modal').classList.add('open');
+}
+function evalGenStep2Next(){
+  document.getElementById('evalgen-step2-modal').classList.remove('open');
+  document.getElementById('evalgen-step3-modal').classList.add('open');
+}
+function evalGenBackTo(step){
+  document.getElementById('evalgen-modal').classList.remove('open');
+  document.getElementById('evalgen-step2-modal').classList.remove('open');
+  document.getElementById('evalgen-step3-modal').classList.remove('open');
+  document.getElementById('evalgen-'+(step===1?'modal':'step'+step+'-modal')).classList.add('open');
+}
+function genererEvaluationRapide(){
+  const titre=document.getElementById('evalgen-titre').value.trim();
+  const sujetKey=document.getElementById('evalgen-sujet').value;
+  const sujet=SUJETS_EVAL[sujetKey];
+  const questionsObligatoires=document.getElementById('evalgen-questions-obligatoires').value.split('\n').map(q=>q.trim()).filter(Boolean);
+  closeEvalGenModal();
+  showLoading('Génération de l\'évaluation en cours ...', 1400, ()=>{
+    const exercices=[
+      ...sujet.exercices,
+      ...questionsObligatoires.map(q=>({consigne:"Question imposée par l'enseignant.", enonce:q, reponse:"(à corriger par l'enseignant)"}))
+    ];
+    evalGenData={titre,sujetLabel:sujet.label,exercices};
+    evalGenTabActuel='eleve';
+    document.getElementById('evalgen-result-title').textContent=`📝 ${titre}`;
+    document.getElementById('evalgen-tab-eleve').classList.add('active');
+    document.getElementById('evalgen-tab-corrige').classList.remove('active');
+    renderEvalGenSheet();
+    document.getElementById('evalgen-result-modal').classList.add('open');
+    toast('✅ Évaluation générée !');
+  });
+}
+function switchEvalGenTab(tab){
+  evalGenTabActuel=tab;
+  document.getElementById('evalgen-tab-eleve').classList.toggle('active', tab==='eleve');
+  document.getElementById('evalgen-tab-corrige').classList.toggle('active', tab==='corrige');
+  renderEvalGenSheet();
+}
+function renderEvalGenSheet(){
+  if(!evalGenData) return;
+  const corrige = evalGenTabActuel==='corrige';
+  let html=`<div style="text-align:center;margin-bottom:16px">
+    <div style="font-size:10px;color:#9aa5b1;text-transform:uppercase;letter-spacing:1px">Collège Flavy · Français · M. Leroy · ${evalGenData.sujetLabel}</div>
+    <div style="font-size:17px;font-weight:700;color:var(--brand-dark);margin-top:4px">${evalGenData.titre}${corrige?' — Corrigé':''}</div>
+    <div style="font-size:11px;color:#9aa5b1;margin-top:4px">Nom : ………………………………………… &nbsp;&nbsp; Classe : ………… &nbsp;&nbsp; Date : …………</div>
+  </div>`;
+  evalGenData.exercices.forEach((ex,i)=>{
+    html+=`<div style="margin-bottom:16px;padding-bottom:12px;border-bottom:1px dashed #eef0f3">
+      <div style="font-weight:700;font-size:13px;color:var(--brand-dark)">Exercice ${i+1}</div>
+      <div style="font-size:12.5px;color:#6c7a89;margin:3px 0 6px">${ex.consigne}</div>
+      <div style="font-size:13px;color:#1a1a2e">${ex.enonce}</div>
+      ${corrige
+        ? `<div style="margin-top:6px;font-size:13px;font-weight:700;color:#1e8449">✔ Réponse : ${ex.reponse}</div>`
+        : `<div style="margin-top:10px;border-bottom:1px solid #d5dbdf;height:1px"></div>`}
+    </div>`;
+  });
+  document.getElementById('evalgen-sheet').innerHTML=html;
+}
+function closeEvalGenResultModal(){
+  document.getElementById('evalgen-result-modal').classList.remove('open');
+}
+function exporterEvalGenPDF(){
+  const el=document.getElementById('evalgen-sheet');
+  const suffix = evalGenTabActuel==='corrige' ? 'corrige' : 'eleve';
+  const opt={
+    margin:15,
+    filename:`evaluation_${(evalGenData.titre||'sans_titre').replace(/[^a-z0-9]+/gi,'_').toLowerCase()}_${suffix}.pdf`,
+    image:{type:'jpeg',quality:0.98},
+    html2canvas:{scale:2,useCORS:true},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+  };
+  html2pdf().set(opt).from(el).save().then(()=>toast('✅ PDF téléchargé !'));
 }
 function exporterPDF(){
   const el = document.getElementById('bulletin-display');
